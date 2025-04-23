@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="placeholder_style.css" rel="stylesheet">
+	  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <!-- 添加 highlight.js CSS -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+      <!-- 添加 highlight.js JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      <title>My Webview</title>
+      <style>
+        /* 深色主题样式 */
+        [data-theme="dark"] {
+          --bg-color: #1e1e1e;
+          --text-color: #d4d4d4;
+          --input-bg: #2d2d2d;
+          --border-color: #404040;
+          --hover-color: #3c3c3c;
+          --settings-bg: #252526;
+          --user-msg-bg: #2b5b84;
+          --user-msg-color: #ffffff;
+          --bot-msg-bg: #2d2d2d;
+          --scroll-thumb: rgba(255, 255, 255, 0.2);
+          --scroll-thumb-hover: rgba(255, 255, 255, 0.3);
+          --selection-info-bg: #393939;
+          --selection-info-border: #505050;
+        }
+
+        /* 浅色主题样式 */
+        [data-theme="light"] {
+          --bg-color: #ffffff;
+          --text-color: #333333;
+          --input-bg: #f3f3f3;
+          --border-color: #e0e0e0;
+          --hover-color: #f0f0f0;
+          --settings-bg: #f3f3f3;
+          --user-msg-bg: #007acc;
+          --user-msg-color: #ffffff;
+          --bot-msg-bg: #f3f3f3;
+          --scroll-thumb: rgba(0, 0, 0, 0.2);
+          --scroll-thumb-hover: rgba(0, 0, 0, 0.3);
+          --selection-info-bg: #e8e8e8;
+          --selection-info-border: #cccccc;
+        }
+
+        /* 应用主题变量 */
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+        }
+
+        .chat-input {
+          background-color: var(--input-bg);
+          color: var(--text-color);
+          border: 1px solid var(--border-color);
+        }
+
+        .message-box {
+          margin-bottom: 10px; /* Add some margin instead for spacing */
+        }
+
+        .settings-panel {
+          background-color: var(--settings-bg);
+          border: 1px solid var(--border-color);
+        }
+
+        .settings-group input,
+        .settings-group select {
+          background-color: var(--input-bg);
+          color: var(--text-color);
+          border: 1px solid var(--border-color);
+        }
+
+        .chat-send-btn:hover,
+        .chat-settings-btn:hover {
+          background-color: var(--hover-color);
+        }
+
+        /* 选中代码信息样式 */
+        .selection-info {
+          background-color: var(--selection-info-bg);
+          border: 1px solid var(--selection-info-border);
+          border-radius: 4px;
+          padding: 8px 12px;
+          margin-bottom: 8px;
+          font-size: 13px;
+          color: var(--text-color);
+          position: fixed;
+          bottom: 92px;
+          width: 98%;
+          z-index: 100;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .selection-info span {
+          display: flex;
+          align-items: center;
+        }
+        
+        .selection-info span::before {
+          content: "";
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          background-color: var(--user-msg-bg);
+          margin-right: 8px;
+          border-radius: 50%;
+        }
+
+        /* 底部容器样式 */
+        .bottom-container {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 10px;
+          box-sizing: border-box;
+          z-index: 100;
+        }
+      </style>
+      <!-- 
+        编辑器上下文结构:
+        window.editorContext = {
+            selectedCode: string - 选中的代码
+            fileContent: string - 整个文件内容
+            fileName: string - 文件名称
+            fileType: string - 文件类型/语言
+            hasSelection: boolean - 是否有选中内容
+            startLine: number - 选中内容的起始行
+            endLine: number - 选中内容的结束行
+        }
+        
+        window.acceptCodeToVSCode(code: string): boolean - 将代码发送到VSCode
+      -->
+    </head>
+    <body>
+    <div id="app">
+        <div class="container">
+            <div class="chat-window" id="chat-window"></div>
+        </div>
+        <div class="bottom-container">
+            <div id="selection-info" class="selection-info" style="margin-top: -15px;">
+                <span id="selection-text">No code selected</span>
+            </div>
+            <div class="input-container">
+                <textarea type="text" class="chat-input" id="message-input" placeholder="Ask IoTPilot for help"></textarea>
+                <button class="chat-settings-btn" id="settings_button" title="Settings"></button>
+                <button class="chat-send-btn" id="send_button" title="Send message"></button>
+            </div>
+        </div>
+        
+        <!-- 设置面板 -->
+        <div class="settings-panel" id="settings_panel">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <button class="settings-close-btn" id="settings_close">&times;</button>
+            </div>
+            <div class="settings-content">
+                <div class="settings-group">
+                    <label for="settings_username">Username:</label>
+                    <input type="text" id="settings_username" value="gkj">
+                </div>
+                <div class="settings-group">
+                    <label for="settings_model">Model:</label>
+                    <select id="settings_model">
+                        <option value="gpt-4o">GPT-4o</option>
+                        <option value="deepseek-coder" selected>Deepseek Coder</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="settings_max_attempts">Max Attempts:</label>
+                    <input type="number" id="settings_max_attempts" min="1" max="5" value="1">
+                </div>
+                <div class="settings-group">
+                    <label for="settings_iscontext">Use Context:</label>
+                    <select id="settings_iscontext">
+                        <option value="False" selected>False</option>
+                        <option value="True">True</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="settings_os_type">OS Type:</label>
+                    <select id="settings_os_type">
+                        <option value="RIOT" selected>RIOT</option>
+                        <option value="Zephyr">Zephyr</option>
+                        <option value="FreeRTOS">FreeRTOS</option>
+                        <option value="Contiki">Contiki</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="settings_device_type">Device Type:</label>
+                    <select id="settings_device_type">
+                        <option value="esp32" selected>ESP32</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="settings_api_key">API Key:</label>
+                    <input type="text" id="settings_api_key" placeholder="Enter API key">
+                </div>
+                <div class="settings-group">
+                    <label for="settings_api_base">API Base URL:</label>
+                    <input type="text" id="settings_api_base" placeholder="https://api.deepseek.com/v1">
+                </div>
+                <button class="settings-save-btn" id="settings_save">Save Settings</button>
+            </div>
+        </div>
+    </div>
+		<script>
+            document.addEventListener("DOMContentLoaded", function() {
+                console.log("JavaScript is working!");
+                
+                // 在页面加载后强制请求一次选中的代码
+                setTimeout(function() {
+                    if (typeof vscode !== 'undefined') {
+                        console.log("Sending delayed request for editor selection");
+                        vscode.postMessage({ command: 'getSelectedCode' });
+                    }
+                }, 1000);
+                
+                // 保存编辑器上下文
+                window.editorContext = {
+                    selectedCode: '',
+                    fileContent: '',
+                    fileName: '',
+                    fileType: '',
+                    hasSelection: false,
+                    startLine: 0,
+                    endLine: 0
+                };
+                
+                // 在全局范围内获取一次VSCode API
+                let vscode = undefined;
+                try {
+                    if (typeof acquireVsCodeApi === 'function') {
+                        vscode = acquireVsCodeApi();
+                        console.log("VSCode API acquired successfully");
+                    } else {
+                        console.log("acquireVsCodeApi is not available");
+                    }
+                } catch (error) {
+                    console.error("Error acquiring VSCode API:", error);
+                }
+                
+                // 检测 VSCode 主题
+                function updateTheme() {
+                    // 检查 VSCode 主题类
+                    const isDark = document.body.classList.contains('vscode-dark') || 
+                                 document.body.classList.contains('vscode-high-contrast');
+                    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                    console.log("Theme detected:", isDark ? "dark" : "light");
+                }
+                
+                // 初始化主题和验证选择信息元素
+                updateTheme();
+                
+                // 验证DOM元素是否存在
+                const selectionInfoEl = document.getElementById('selection-info');
+                const selectionTextEl = document.getElementById('selection-text');
+                
+                if (!selectionInfoEl) {
+                    console.error("Selection info element not found!");
+                } else {
+                    console.log("Selection info element found", selectionInfoEl);
+                }
+                
+                if (!selectionTextEl) {
+                    console.error("Selection text element not found!");
+                } else {
+                    console.log("Selection text element found", selectionTextEl);
+                }
+                
+                // 如果在 VS Code 环境中，设置主题监听
+                if (vscode) {
+                    // 监听主题变化和编辑器选择变化
+                    window.addEventListener('message', event => {
+                        const message = event.data;
+                        if (message.type === 'themeChanged') {
+                            updateTheme();
+                        } else if (message.command === 'updateEditorContext') {
+                            // 接收并保存编辑器上下文信息
+                            window.editorContext = {
+                                selectedCode: message.selectedCode || '',
+                                fileContent: message.fileContent || '',
+                                fileName: message.fileName || '',
+                                fileType: message.fileType || '',
+                                hasSelection: message.hasSelection || false,
+                                startLine: message.startLine || 0,
+                                endLine: message.endLine || 0
+                            };
+                            
+                            // 调试输出
+                            console.log("Received editor context:", {
+                                hasSelection: message.hasSelection,
+                                fileName: message.fileName,
+                                startLine: message.startLine,
+                                endLine: message.endLine
+                            });
+                            
+                            // 更新选中代码信息显示
+                            updateSelectionInfo();
+                            
+                            console.log("Editor context updated:", window.editorContext.hasSelection ? "Selection present" : "No selection");
+                        }
+                    });
+                    
+                    // 请求当前选中的代码
+                    vscode.postMessage({ command: 'getSelectedCode' });
+                    console.log("Requested selected code from extension");
+                }
+                
+                // 定义全局函数以在外部使用VSCode API
+                window.acceptCodeToVSCode = function(code) {
+                    if (vscode) {
+                        console.log("Sending code to VSCode extension...");
+                        vscode.postMessage({
+                            command: 'acceptCode',
+                            code: code
+                        });
+                        return true;
+                    } else {
+                        console.error("VSCode API not available for code acceptance");
+                        return false;
+                    }
+                };
+                
+                // 主题变化时重新检测（防止DOM变化）
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'class' && mutation.target === document.body) {
+                            updateTheme();
+                        }
+                    });
+                });
+                
+                observer.observe(document.body, { attributes: true });
+            });
+
+            // 设置默认参数
+            let requestParams = {
+                username: "username",
+                model: "deepseek-coder", // gpt-4o deepseek-coder
+                max_attempts: 1,
+                iscontext: "False",
+                os_type: "RIOT", // RIOT Zepyhr FreeRTOS Contiki
+                device_type: "esp32", // ESP32 
+                api_key: "sk-c7db17eef21346f4a4a94e450c759a63",
+                api_base: "https://api.deepseek.com/v1"
+            };
+
+            // 跟踪请求状态的变量
+            let isRequestPending = false;
+            
+            // 设置输入界面的可用状态
+            function setInputState(disabled) {
+                const inputField = document.getElementById('message-input');
+                const sendButton = document.getElementById('send_button');
+                
+                inputField.disabled = disabled;
+                sendButton.disabled = disabled;
+                
+                if (disabled) {
+                    sendButton.classList.add('disabled');
+                    inputField.classList.add('disabled');
+                } else {
+                    sendButton.classList.remove('disabled');
+                    inputField.classList.remove('disabled');
+                }
+            }
+
+            // 从localStorage加载设置，如果有的话
+            try {
+                const savedParams = localStorage.getItem('iotpilot_settings');
+                if (savedParams) {
+                    requestParams = JSON.parse(savedParams);
+                    console.log('Settings loaded from localStorage:', requestParams);
+                }
+            } catch (error) {
+                console.error('Error loading settings from localStorage:', error);
+            }
+
+            // 存储设置到localStorage
+            function saveSettingsToStorage() {
+                try {
+                    localStorage.setItem('iotpilot_settings', JSON.stringify(requestParams));
+                    console.log('Settings saved to localStorage');
+                } catch (error) {
+                    console.error('Error saving settings to localStorage:', error);
+                }
+            }
+
+            // 初始化消息数组，从localStorage中恢复消息历史
+            let messages = [];
+            try {
+                const savedMessages = localStorage.getItem('iotpilot_messages');
+                if (savedMessages) {
+                    messages = JSON.parse(savedMessages);
+                    console.log(`Loaded ${messages.length} messages from localStorage`);
+                }
+                
+                // 如果没有消息历史或加载失败，设置默认欢迎消息
+                if (messages.length === 0) {
+                    messages = [
+                        { sender: 'IoTPilot', text: 'Hello, I\'m IoTPilot.' },
+                    ];
+                    // 保存默认消息
+                    localStorage.setItem('iotpilot_messages', JSON.stringify(messages));
+                }
+            } catch (error) {
+                console.error('Error loading messages from localStorage:', error);
+                messages = [
+                { sender: 'IoTPilot', text: 'Hello, I\'m IoTPilot.' },
+            ];
+                // 保存默认消息
+                localStorage.setItem('iotpilot_messages', JSON.stringify(messages));
+            }
+
+            // 存储消息到localStorage
+            function saveMessagesToStorage() {
+                try {
+                    // 始终只保留最新的10条消息
+                    const MAX_MESSAGES = 10;
+                    if (messages.length > MAX_MESSAGES) {
+                        messages = messages.slice(-MAX_MESSAGES);
+                        console.log(`Trimmed messages to ${messages.length} (fixed limit: ${MAX_MESSAGES})`);
+                    }
+                    
+                    // 保存消息到localStorage
+                    localStorage.setItem('iotpilot_messages', JSON.stringify(messages));
+                    console.log(`Saved ${messages.length} messages to localStorage`);
+                } catch (error) {
+                    console.error('Error saving messages to localStorage:', error);
+                }
+            }
+
+            // 清除聊天历史
+            function clearChatHistory() {
+                // 创建自定义确认对话框
+                const confirmDialog = document.createElement('div');
+                confirmDialog.className = 'custom-confirm-dialog';
+                confirmDialog.innerHTML = `
+                    <div class="confirm-dialog-content">
+                        <h3>Confirm</h3>
+                        <p>Are you sure you want to clear all chat history?</p>
+                        <div class="confirm-dialog-buttons">
+                            <button id="confirm-cancel-btn">Cancel</button>
+                            <button id="confirm-ok-btn">OK</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(confirmDialog);
+                
+                // 添加确认对话框的事件监听
+                document.getElementById('confirm-cancel-btn').addEventListener('click', function() {
+                    document.body.removeChild(confirmDialog);
+                });
+                
+                document.getElementById('confirm-ok-btn').addEventListener('click', function() {
+                    // 完全清空消息数组
+                    messages = [];
+                    
+                    // 保存空消息数组到localStorage
+                    localStorage.setItem('iotpilot_messages', JSON.stringify(messages));
+                    
+                    // 清空聊天窗口
+                    document.getElementById('chat-window').innerHTML = '';
+                    
+                    console.log('Chat history has been cleared completely');
+                    
+                    // 关闭设置面板
+                    settingsPanel.classList.remove('active');
+                    
+                    // 移除对话框
+                    document.body.removeChild(confirmDialog);
+                });
+            }
+
+            // 渲染所有消息到聊天窗口
+            function renderAllMessages() {
+                const chatWindow = document.getElementById('chat-window');
+                chatWindow.innerHTML = ''; // 清空当前显示
+                
+                // 渲染所有消息
+                messages.forEach(message => {
+                    renderSingleMessage(message, chatWindow);
+                });
+                
+                // 滚动到底部
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            // 渲染单条消息
+            function renderSingleMessage(message, chatWindow) {
+                const messageBox = document.createElement('div');
+                messageBox.className = 'message-box';
+                messageBox.setAttribute('data-sender', message.sender);
+
+                const icon = document.createElement('img');
+                icon.className = 'icon';
+                if (message.sender === 'user') 
+                    icon.src = 'placeholder_icon.png';
+                else
+                    icon.src = 'placeholder_icon_bot.png';
+                
+                const senderBox = document.createElement('div');
+                senderBox.className = 'sender-box';
+                senderBox.appendChild(icon);
+                
+                const textBox = document.createElement('div');
+                textBox.className = 'text-box';
+                
+                // 处理加载消息
+                if (message.isLoading) {
+                    textBox.className = 'text-box loading-message';
+                    textBox.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div></div>';
+                    messageBox.appendChild(senderBox);
+                    messageBox.appendChild(textBox);
+                    chatWindow.appendChild(messageBox);
+                    return;
+                }
+
+                let formattedText = message.text;
+                
+                // 检查是否是代码（通过特征判断）
+                const isLikelyCode = (text) => {
+                    // 检查是否包含常见的代码特征
+                    const codeIndicators = [
+                        /^(function|class|def|import|from|public|private|const|let|var)\s/m,  // 常见关键字开头
+                        /[{};]\s*$/m,  // 以 {, }, ; 结尾的行
+                        /^\s*(if|for|while|switch)\s*\(/m,  // 控制结构
+                        /=>/,  // 箭头函数
+                        /^[\s\t]*[a-zA-Z_$][a-zA-Z0-9_$]*\s*\([^)]*\)\s*{/m,  // 函数定义
+                        /\breturn\b/,  // return 语句
+                    ];
+                    
+                    return codeIndicators.some(pattern => pattern.test(text));
+                };
+
+                if (isLikelyCode(formattedText)) {
+                    // 如果看起来是代码，创建代码块元素
+                    const preElement = document.createElement('pre');
+                    const codeElement = document.createElement('code');
+                    codeElement.textContent = formattedText;
+                    preElement.appendChild(codeElement);
+                    
+                    // 创建代码包装器（用于放置代码块和复制按钮）
+                    const codeWrapper = document.createElement('div');
+                    codeWrapper.className = 'code-wrapper';
+                    
+                    // 创建按钮容器
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.className = 'code-buttons';
+                    
+                    // 创建复制按钮
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'copy-code-btn';
+                    copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                    copyButton.title = "Copy to clipboard";
+                    copyButton.addEventListener('click', function() {
+                        // 复制代码到剪贴板
+                        navigator.clipboard.writeText(formattedText).then(() => {
+                            // 成功复制后临时改变按钮状态
+                            const originalContent = copyButton.innerHTML;
+                            copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                            copyButton.classList.add('copied');
+                            
+                            // 1.5秒后恢复原始状态
+                            setTimeout(() => {
+                                copyButton.innerHTML = originalContent;
+                                copyButton.classList.remove('copied');
+                            }, 1500);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
+                    });
+                    
+                    // 创建接受按钮
+                    const acceptButton = document.createElement('button');
+                    acceptButton.className = 'accept-code-btn';
+                    acceptButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>';
+                    acceptButton.title = "Apply code to current file";
+                    acceptButton.addEventListener('click', function() {
+                        // 使用全局定义的函数发送代码到VSCode
+                        const result = window.acceptCodeToVSCode(formattedText);
+                        
+                        // 无论结果如何，都显示视觉反馈（实际结果会在VSCode中显示）
+                        const originalContent = acceptButton.innerHTML;
+                        acceptButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                        acceptButton.classList.add('accepted');
+                        
+                        // 1.5秒后恢复原始状态
+                        setTimeout(() => {
+                            acceptButton.innerHTML = originalContent;
+                            acceptButton.classList.remove('accepted');
+                        }, 1500);
+                    });
+                    
+                    // 添加按钮到容器
+                    buttonContainer.appendChild(copyButton);
+                    buttonContainer.appendChild(acceptButton);
+                    
+                    codeWrapper.appendChild(buttonContainer);
+                    codeWrapper.appendChild(preElement);
+                    textBox.appendChild(codeWrapper);
+                } else {
+                    // 如果是普通文本，处理换行
+                    formattedText = formattedText.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+                    textBox.innerHTML = formattedText;
+                }
+
+                messageBox.appendChild(senderBox);
+                messageBox.appendChild(textBox);
+                chatWindow.appendChild(messageBox);
+                
+                // 高亮代码块
+                textBox.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            }
+
+            // 渲染消息到聊天窗口 - 只渲染最新的消息
+            function renderMessages() {
+                const chatWindow = document.getElementById('chat-window');
+                const message = messages[messages.length - 1];
+                
+                renderSingleMessage(message, chatWindow);
+
+                // 滚动到底部
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            // 处理发送按钮点击事件
+            async function handleSend() {
+                // 如果已经有请求在处理中，则不允许发送新消息
+                if (isRequestPending) {
+                    console.log('Request is pending, cannot send another message');
+                    return;
+                }
+                
+                const inputField = document.getElementById('message-input'); 
+                const newMessageText = inputField.value.trim();
+
+                if (newMessageText !== '') { 
+                    // 设置请求状态为处理中
+                    isRequestPending = true;
+                    setInputState(true);
+                    
+                    // 添加新消息到数组 
+                    messages.push({sender:'user',text:newMessageText}); 
+
+                    // 保存消息到localStorage
+                    saveMessagesToStorage();
+
+                    // 清空输入框并重新渲染消息 
+                    inputField.value=''; 
+                    renderMessages(); 
+                    
+                    // 添加等待消息
+                    const loadingMessage = {sender: 'IoTPilot', text: 'waiting for response...', isLoading: true};
+                    messages.push(loadingMessage);
+                    renderMessages();
+
+                    try {
+                        // 构建包含环境信息和编辑器上下文的完整问题
+                        let formattedPrompt = `[IoT OS: ${requestParams.os_type}, Development Board: ${requestParams.device_type}]`;
+                        
+                        // 如果有选中的代码，添加文件信息和选中的代码
+                        if (window.editorContext && window.editorContext.hasSelection) {
+                            // formattedPrompt += `\n\n当前文件: ${window.editorContext.fileName} (${window.editorContext.fileType})`;
+                            formattedPrompt += `\n\nYou need pay more attention to the following code:\n\`\`\`${window.editorContext.fileType}\n${window.editorContext.selectedCode}\n\`\`\``;
+                            
+                            // 如果不是特别大的文件，也包含整个文件内容作为上下文
+                            if (window.editorContext.fileContent.length < 10000) { // 限制文件大小，避免过大
+                                formattedPrompt += `\n\nYou can also refer to the whole file:\n\`\`\`${window.editorContext.fileType}\n${window.editorContext.fileContent}\n\`\`\``;
+                            }
+                        }
+                        
+                        // 添加用户的问题
+                        formattedPrompt += `\n\n用户问题: ${newMessageText}`;
+                        
+                        // 获取当前网页的url 与 html内容
+                        const response = await axios.post("http://47.102.103.1:20018/run ", {
+                            username: requestParams.username,
+                            userproblem: formattedPrompt, 
+                            max_attempts: requestParams.max_attempts, 
+                            iscontext: requestParams.iscontext, 
+                            model: requestParams.model,
+                            os_type: requestParams.os_type,
+                            device_type: requestParams.device_type,
+                            api_key: requestParams.api_key,
+                            api_base: requestParams.api_base
+                        });
+                        // 拿到的response.data是一个json对象
+                        const content = response['data']['code']; //好奇怪 这里用response['data']可以顺利渲染，response.data会输出[object object]
+                        console.log("response:\n",response);   
+                        console.log("content: ",content); 
+
+                        // 删除加载消息
+                        messages.pop();
+                        
+                        const llmMessage = {sender: 'IoTPilot', text: content}; 
+                        messages.push(llmMessage);
+
+                        // 保存消息到localStorage
+                        saveMessagesToStorage();
+
+                        // 重新渲染所有消息
+                        renderAllMessages();
+                        
+                    }catch(error){
+                        console.error('Error:', error);
+                        
+                        // 删除加载消息
+                        messages.pop();
+                        
+                        // 添加错误消息
+                        const errorMessage = {
+                            sender: 'IoTPilot', 
+                            text: 'Sorry, an error occurred: ' + (error.message ? '\nError message: ' + error.message : '')
+                        };
+                        messages.push(errorMessage);
+                        
+                        // 保存消息到localStorage
+                        saveMessagesToStorage();
+                        
+                        // 重新渲染所有消息
+                        renderAllMessages();
+                    } finally {
+                        // 无论成功还是失败，都重置请求状态
+                        isRequestPending = false;
+                        setInputState(false);
+                    }
+                }
+            }
+
+            // 设置面板功能
+            const settingsBtn = document.getElementById('settings_button');
+            const settingsPanel = document.getElementById('settings_panel');
+            const settingsCloseBtn = document.getElementById('settings_close');
+            const settingsSaveBtn = document.getElementById('settings_save');
+
+            // 显示设置面板
+            settingsBtn.addEventListener('click', function() {
+                settingsPanel.classList.add('active');
+                
+                // 填充当前设置
+                document.getElementById('settings_username').value = requestParams.username;
+                document.getElementById('settings_model').value = requestParams.model;
+                document.getElementById('settings_max_attempts').value = requestParams.max_attempts;
+                document.getElementById('settings_iscontext').value = requestParams.iscontext;
+                document.getElementById('settings_os_type').value = requestParams.os_type;
+                document.getElementById('settings_device_type').value = requestParams.device_type;
+                document.getElementById('settings_api_key').value = requestParams.api_key || '';
+                document.getElementById('settings_api_base').value = requestParams.api_base || '';
+                
+                // 添加清除聊天历史按钮
+                const settingsContent = document.querySelector('.settings-content');
+                if (!document.getElementById('clear_history_btn')) {
+                    const clearHistoryBtn = document.createElement('button');
+                    clearHistoryBtn.id = 'clear_history_btn';
+                    clearHistoryBtn.className = 'settings-clear-btn';
+                    clearHistoryBtn.textContent = 'Clear Chat History';
+                    clearHistoryBtn.addEventListener('click', clearChatHistory);
+                    
+                    // 在保存按钮前插入清除历史按钮
+                    settingsContent.insertBefore(clearHistoryBtn, settingsSaveBtn);
+                    
+                    // 添加分隔线
+                    const separator = document.createElement('hr');
+                    separator.className = 'settings-separator';
+                    settingsContent.insertBefore(separator, clearHistoryBtn);
+                }
+            });
+
+            // 关闭设置面板
+            settingsCloseBtn.addEventListener('click', function() {
+                settingsPanel.classList.remove('active');
+            });
+
+            // 保存设置
+            settingsSaveBtn.addEventListener('click', function() {
+                requestParams.username = document.getElementById('settings_username').value;
+                requestParams.model = document.getElementById('settings_model').value;
+                requestParams.max_attempts = parseInt(document.getElementById('settings_max_attempts').value);
+                requestParams.iscontext = document.getElementById('settings_iscontext').value;
+                requestParams.os_type = document.getElementById('settings_os_type').value;
+                requestParams.device_type = document.getElementById('settings_device_type').value;
+                requestParams.api_key = document.getElementById('settings_api_key').value;
+                requestParams.api_base = document.getElementById('settings_api_base').value;
+                
+                // 保存设置到localStorage
+                saveSettingsToStorage();
+                
+                settingsPanel.classList.remove('active');
+                console.log('Settings saved:', requestParams);
+            });
+
+            document.getElementById('send_button').addEventListener('click', handleSend); // 将handleSend绑定到发送按钮
+
+            document.getElementById('message-input').addEventListener('keydown', function(event){
+                if (event.key == 'Enter' && !event.shiftKey){
+                    event.preventDefault(); // prevent default behavior
+                    handleSend();
+                }
+            }); //  add event listener for keydown
+
+
+            // 初始化渲染所有消息
+            renderAllMessages();
+
+            // 更新选中代码信息显示
+            function updateSelectionInfo() {
+                const selectionInfo = document.getElementById('selection-info');
+                const selectionText = document.getElementById('selection-text');
+                
+                if (!selectionInfo || !selectionText) {
+                    console.error("Selection info elements not available", { selectionInfo, selectionText });
+                    return;
+                }
+                
+                if (window.editorContext && window.editorContext.hasSelection) {
+                    // 有选中代码时，显示信息
+                    const fileName = window.editorContext.fileName || 'untitled';
+                    const startLine = window.editorContext.startLine || 0;
+                    const endLine = window.editorContext.endLine || 0;
+                    
+                    // 设置详细的选择信息
+                    const selectedText = `${fileName} (Line ${startLine} - ${endLine})`;
+                    selectionText.textContent = selectedText;
+                    selectionInfo.style.display = 'flex';
+                    selectionInfo.classList.add('has-selection');
+                    // console.log("Selection info updated:", selectedText);
+                } else {
+                    // 没有选中代码时，隐藏信息栏
+                    selectionInfo.style.display = 'none';
+                    selectionInfo.classList.remove('has-selection');
+                    // console.log("Selection info hidden - no selection");
+                }
+            }
+            
+            // 初始化选中代码信息
+            updateSelectionInfo();
+        </script>
+    </body>
+
+</html>

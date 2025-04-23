@@ -1,224 +1,115 @@
-# IoTPilot Tutorial
+# Programming Embedded IoT Applications in Natural Language with IoTPilot
 
-**Step 1:** User→ Give me a MQTT application, which need to update local device state (ready or not ready) to Cloud EMQX. It builds on RIOT OS and runs on ESP32. 
+IoTPilot is an LLM-driven embedded IoT programming tool.
+IoTPilot is accepted by ACM MobiSys'25.
 
-IoTPilot→ Exec. `python3 iotpilot.py --model="gpt-4o" --iscontext=True --isexecution=True --userproblem="I need to develop a RIOT-based MQTT program runing on ESP32. It needs to update local device state (ready or not ready) to Cloud EMQX Broker."` 
+* ./core: includes the code of IoTPilot prototype.
+* ./benchmark: includes the benchmarks of RIOT, FreeRTOS, Zephyr and Contiki.
+* ./datasets: includes the task description and RAG documents (extracted from OS repositories and API documentation).
+* ./extension: includes the source code of IoTPilot VScode extension.
+* ./test: includes scripts for calculating the success rate of API and header usage.
 
-```c
-#include <ztimer.h>
-#include <timex.h>
-#include <time_units.h>
-#include <thread.h>
-#include <paho_mqtt.h>
-#include <arpa/inet.h>
-#include <MQTTClient.h>
+# Inroduction
+We take a first step towards LLM-based embedded IoT application development and present IoTPilot, an LLM-driven embedded IoT programming tool. IoTPilot introduces two self-thinking chains to integrate internal LLM knowledge with external documentation, addressing conflicts in APIs and headers. 
 
-/* Function to update the local device state to Cloud EMQX Broker using MQTT */
-int main(void) {
-    Network network;
-    MQTTClient client;
-    unsigned int command_timeout_ms = 5000;
-    uint8_t sendbuf[100], readbuf[100];
+## Preparation
 
-    // Initialize the network struct
-    NetworkInit(&network);
+We prepare the running environment with a Docker image. 
+You can download the image file from [this link](https://drive.google.com/drive/folders/1llBLg2D8NM25jAn-zCmKUyigpMNsTqlK?usp=**drive_link**).
 
-    // Connect to the network (replace with actual address and port)
-    char *address = "broker.emqx.io";
-    int port = 1883;
-    int rc = NetworkConnect(&network, address, port);
+First, download IoTPilot docker image
 
-    if (rc != 0) {
-        printf("Network connection failed\n");
-        return -1;
-    }
+```bash
+docker load -i iotpilot.tar
+```
+Then, run IoTPilot docker to start the container.
 
-    // Initialize MQTT client with unsigned char buffers
-    MQTTClientInit(&client, &network, command_timeout_ms,
-                   (unsigned char*)sendbuf, sizeof(sendbuf),
-                   (unsigned char*)readbuf, sizeof(readbuf));
-
-    // Connect the MQTT client to the broker
-    MQTTPacket_connectData connectData = MQTTPacket_connectData_initializer;
-    connectData.MQTTVersion = 3;
-    connectData.clientID.cstring = "esp32-client";
-
-    rc = MQTTConnect(&client, &connectData);
-
-    if (rc != 0) {
-        printf("MQTT connection failed\n");
-        return -1;
-    }
-
-    printf("MQTT connection successful\n");
-
-    // Publish a message about the device state
-    const char* topic = "device/state";
-    MQTTMessage message;
-    message.qos = 1;
-    message.retained = 0;
-    message.payload = "ready";  // or "not ready" based on the device state
-    message.payloadlen = strlen((char*)message.payload);
-
-    rc = MQTTPublish(&client, topic, &message);
-
-    if (rc != 0) {
-        printf("MQTT Publish failed\n");
-        return -1;
-    }
-
-    printf("Device state published successfully\n");
-
-    return 0;
-}
+```bash
+docker run -it --name iotpilot iotpilot:0.1
 ```
 
-**Step 2:** user→My MQTT broker address is "47.102.103.1”, port is “1883”.   [user point：(line 36-37) ]
+After that, you can find the relevant code in the `/root/iotpilotv2` folder.
 
-IoTPilot→ Exec.`python3 iotpilot.py --model="gpt-4o" --iscontext=True --isexecution=True --userproblem="The current code: {curr_code}. You need to modify the current code line 36-37 by {new prompt}"` 
+## Running Experiments
 
-```c
-#include <ztimer.h>
-#include <timex.h>
-#include <time_units.h>
-#include <thread.h>
-#include <paho_mqtt.h>
-#include <arpa/inet.h>
-#include <MQTTClient.h>
+In the `./core` folder, you can start the experiment evaluation by running the command:
 
-/* Function to update the local device state to Cloud EMQX Broker using MQTT */
-int main(void) {
-    Network network;
-    MQTTClient client;
-    unsigned int command_timeout_ms = 5000;
-    uint8_t sendbuf[100], readbuf[100];
+```bash
+python3 start.py --api_key="xxx" --api_base="xxx"
+```
+The gpt-4o API key and base URL are needed. Then, it will test each RIOT task in sequence. Each task will undergo self-debugging for up to 15 iterations. If the program compiles successfully, the process will stop early.
 
-    // Initialize the network struct
-    NetworkInit(&network);
+The RIOT task is described in `./datasets/app.csv`.The generated code will be saved in the `./output` directory.The benchmarks for each prgram are in the `./benchmark` folder to evaluate the quality of IoTPilot's generated code.
 
-    // Connect to the network with the correct IP address
-    char *address = "47.102.103.1";
-    int port = 1883;
-    int rc = NetworkConnect(&network, address, port);
+After all RIOT applications have been generated (it might take some time), test the results the following command. For pass@rate, '1' indicates success, and '0' indicates failure. For acc@API and acc@Header, record the number of successful calls that match those in the reference correct code for APIs and Headers.
 
-    if (rc != 0) {
-        printf("Network connection failed\n");
-        return -1;
-    }
-
-    // Initialize MQTT client with unsigned char buffers
-    MQTTClientInit(&client, &network, command_timeout_ms,
-                   (unsigned char*)sendbuf, sizeof(sendbuf),
-                   (unsigned char*)readbuf, sizeof(readbuf));
-
-    // Connect the MQTT client to the broker
-    MQTTPacket_connectData connectData = MQTTPacket_connectData_initializer;
-    connectData.MQTTVersion = 3;
-    connectData.clientID.cstring = "esp32-client";
-
-    rc = MQTTConnect(&client, &connectData);
-
-    if (rc != 0) {
-        printf("MQTT connection failed\n");
-        return -1;
-    }
-
-    printf("MQTT connection successful\n");
-
-    // Publish a message about the device state
-    const char* topic = "device/state";
-    MQTTMessage message;
-    message.qos = 1;
-    message.retained = 0;
-    message.payload = "ready";  // or "not ready" based on the device state
-    message.payloadlen = strlen((char*)message.payload);
-
-    rc = MQTTPublish(&client, topic, &message);
-
-    if (rc != 0) {
-        printf("MQTT Publish failed\n");
-        return -1;
-    }
-
-    printf("Device state published successfully\n");
-
-    return 0;
-}
+```bash
+python3 test/passtest # pass@rate
+python3 test/acctest_RIOT # acc@API, acc@Header
 ```
 
-**Step3:** user→We should upload local device state to EMQX broker each five seconds. [user point：(line 71-73) ]
+Currently, this image only integrates the RIOT compilation environment for verifying and testing the entire experimental process. [Zephyr](https://docs.zephyrproject.org/3.7.0/develop/getting_started/index.html), [Contiki](https://docs.contiki-ng.org/en/develop/doc/getting-started/Docker.html), and [FreeRTOS](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#manual-installation) compilation environments need to be installed locally.
+Then, generate code for different OSes, by
 
-IoTPilot→Exec.`python3 iotpilot.py --model="gpt-4o" --iscontext=True --isexecution=True --userproblem="The current code: {curr_code}. You need to modify the current code line 71-73 by {new prompt}"` 
-
-```c
-#include <ztimer.h>
-#include <timex.h>
-#include <time_units.h>
-#include <thread.h>
-#include <paho_mqtt.h>
-#include <arpa/inet.h>
-#include <MQTTClient.h>
-
-/* Function to update the local device state to Cloud EMQX Broker using MQTT */
-int main(void) {
-    Network network;
-    MQTTClient client;
-    unsigned int command_timeout_ms = 5000;
-    uint8_t sendbuf[100], readbuf[100];
-
-    // Initialize the network struct
-    NetworkInit(&network);
-
-    // Connect to the network (replace with actual address and port)
-    char *address = "47.102.103.1";
-    int port = 1883;
-    int rc = NetworkConnect(&network, address, port);
-
-    if (rc != 0) {
-        printf("Network connection failed\n");
-        return -1;
-    }
-
-    // Initialize MQTT client with unsigned char buffers
-    MQTTClientInit(&client, &network, command_timeout_ms,
-                   (unsigned char*)sendbuf, sizeof(sendbuf),
-                   (unsigned char*)readbuf, sizeof(readbuf));
-
-    // Connect the MQTT client to the broker
-    MQTTPacket_connectData connectData = MQTTPacket_connectData_initializer;
-    connectData.MQTTVersion = 3;
-    connectData.clientID.cstring = "esp32-client";
-
-    rc = MQTTConnect(&client, &connectData);
-
-    if (rc != 0) {
-        printf("MQTT connection failed\n");
-        return -1;
-    }
-
-    printf("MQTT connection successful\n");
-
-    // Publish a message about the device state every 5 seconds
-    const char* topic = "device/state";
-    MQTTMessage message;
-    message.qos = 1;
-    message.retained = 0;
-    message.payload = "ready";  // or "not ready" based on the device state
-    message.payloadlen = strlen((char*)message.payload);
-
-    while(1) {
-        rc = MQTTPublish(&client, topic, &message);
-        if (rc != 0) {
-            printf("MQTT Publish failed\n");
-            return -1;
-        }
-
-        printf("Device state published successfully\n");
-
-        // Sleep for 5 seconds
-        xtimer_sleep(5);
-    }
-
-    return 0;
-}
+```bash
+python3 start.py  --api_key="xxx" --api_base="xxx" --os_type="XXX"  # Possible values: 'RIOT', 'FreeRTOS', 'Zephyr', 'Contiki'
 ```
+
+
+## VSCode Extension (Recommended)
+
+We also provide a VSCode extension to enable users to use IoTPilot.
+All source code for this extension is also available in the `./extension` directory.
+
+If you want to deploy this extension yourself, you need to start the backend service by running the command and modify the IP address and port accordingly in the source code.
+
+```bash
+cd ./core & python gateway.py
+```
+
+### Installation
+IoTPilot is available as a VS Code extension. You can install it directly from the VS Code extension marketplace by searching for "IoTPilot" . 
+
+For development purposes, you can clone this repository and run the extension locally:
+1. Clone the repository
+2. Navigate to the extension directory
+3. Run `npm install` to install dependencies
+4. Press F5 in VS Code to launch the extension in debug mode
+
+For more details, refer to the [official VS Code extension documentation](https://code.visualstudio.com/api/get-started/your-first-extension) or check our [extension quickstart guide](vscode_extension/vsc-extension-quickstart.md).
+
+### Usage
+
+Here are the configurable parameters for the IoTPilot plugin (see Figure 1):
+
+* Username: It must be provided. It can be any input (currently no validation is required).
+* API_KEY and API Base URL: It must be provided. By default, the deepseek-coder model is used.
+* Model: Choose the backend LLM for IoTPilot, supporting GPT4o and deepseek-coder.
+* OS Type: RIOT/FreeRTOS/Zephyr/Contiki. RIOT is fully supported, while the others are a work in progress.
+* Device Type: Select the device on which the application will run.
+* Max Attempts: The maximum number of self-debug attempts allowed. More iterations can improve the quality of the final code but will also take longer (We recommend setting this to 3).
+* Use Context: This is a temporary parameter. If set to True, IoTPilot will introduce self-thinking chains; otherwise, it functions similarly to existing methods (such as MapCoder).
+
+To use IoTPilot, follow these steps:
+1. First, you can configure IoTPIlot parameters and save settings (see Figure 1).
+2. Second, you can enter your IoT development requirements in the dialog box, and IoTPilot will generate code (see Figure 2). 
+3. Third, after the server returns IoTPilot's generated results, there will be two buttons in the upper right corner of each response. These buttons allow you to conveniently copy the code to the clipboard or directly overwrite the current file content with that code (see Figure 3). 
+4. Fourth, if most of the code is usable but contains minor errors, you can select the relevant code lines and continue the conversation with IoTPilot. This selected content will be included in the prompt to assist IoTPilot in subsequent generation (see Figure 3).
+5. With the generated code, you can quickly start your IoT programming tasks. You can interact with IoTPilot in multiple iterations to enhance the quality of the generated code, making it eventually usable.
+ 
+ <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px; flex-wrap: wrap;">
+  <figure style="text-align: center; margin: 12px;">
+    <img src="extension/images/setting.png" alt="Figure 1" style="max-width: 190px;" />
+    <figcaption>Figure 1: Settings Interface</figcaption>
+  </figure>
+  <figure style="text-align: center; margin: 12px;">
+    <img src="extension/images/dialogue.png" alt="Figure 2" style="max-width: 195px;" />
+    <figcaption>Figure 2: Dialogue Interface</figcaption>
+  </figure>
+  <figure style="text-align: center; margin: 12px;">
+    <img src="extension/images/4.png" alt="Figure 3" style="max-width: 320px;" />
+    <figcaption>Figure 3: Select and Accept Interface</figcaption>
+  </figure>
+</div>
+
+

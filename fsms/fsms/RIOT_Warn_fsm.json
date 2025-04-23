@@ -1,0 +1,44 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "GPIO_INIT_OK",
+                    "target": "READ_DHT"
+                }
+            ]
+        },
+        {
+            "name": "READ_DHT",
+            "transitions": [
+                {
+                    "condition": "TEMP_ABOVE_THRESHOLD",
+                    "target": "LED_ON"
+                },
+                {
+                    "condition": "TEMP_BELOW_THRESHOLD",
+                    "target": "LED_OFF"
+                }
+            ]
+        },
+        {
+            "name": "LED_ON",
+            "transitions": [
+                {
+                    "condition": "SLEEP_EXPIRED",
+                    "target": "READ_DHT"
+                }
+            ]
+        },
+        {
+            "name": "LED_OFF",
+            "transitions": [
+                {
+                    "condition": "SLEEP_EXPIRED",
+                    "target": "READ_DHT"
+                }
+            ]
+        }
+    ]
+}

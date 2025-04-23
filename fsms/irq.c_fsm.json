@@ -1,0 +1,110 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "start",
+                    "target": "VERIFY_IRQ_STATE"
+                }
+            ]
+        },
+        {
+            "name": "VERIFY_IRQ_STATE",
+            "transitions": [
+                {
+                    "condition": "(state_a != 0) && (state_b == 0) && (state_c != 0)",
+                    "target": "SUCCESS_PRINT"
+                },
+                {
+                    "condition": "else",
+                    "target": "FAILURE_PRINT"
+                }
+            ]
+        },
+        {
+            "name": "SUCCESS_PRINT",
+            "transitions": [
+                {
+                    "condition": "complete",
+                    "target": "VERIFY_TEST_WORKS"
+                }
+            ]
+        },
+        {
+            "name": "FAILURE_PRINT",
+            "transitions": [
+                {
+                    "condition": "complete",
+                    "target": "VERIFY_TEST_WORKS"
+                }
+            ]
+        },
+        {
+            "name": "VERIFY_TEST_WORKS",
+            "transitions": [
+                {
+                    "condition": "(atomic_load(&a) == atomic_load(&a_during_isr)) && (atomic_load(&b) != atomic_load(&b_during_isr))",
+                    "target": "SUCCESS_PRINT2"
+                },
+                {
+                    "condition": "else",
+                    "target": "FAILURE_PRINT2"
+                }
+            ]
+        },
+        {
+            "name": "SUCCESS_PRINT2",
+            "transitions": [
+                {
+                    "condition": "complete",
+                    "target": "TEST_RESULT"
+                }
+            ]
+        },
+        {
+            "name": "FAILURE_PRINT2",
+            "transitions": [
+                {
+                    "condition": "complete",
+                    "target": "TEST_RESULT"
+                }
+            ]
+        },
+        {
+            "name": "TEST_RESULT",
+            "transitions": [
+                {
+                    "condition": "(atomic_load(&a) == atomic_load(&a_during_isr)) && (atomic_load(&b) == atomic_load(&b_during_isr))",
+                    "target": "SUCCESS_PRINT3"
+                },
+                {
+                    "condition": "else",
+                    "target": "FAILURE_PRINT3"
+                }
+            ]
+        },
+        {
+            "name": "SUCCESS_PRINT3",
+            "transitions": [
+                {
+                    "condition": "end",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "FAILURE_PRINT3",
+            "transitions": [
+                {
+                    "condition": "end",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "END"
+        }
+    ]
+}

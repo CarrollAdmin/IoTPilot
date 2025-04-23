@@ -1,0 +1,53 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "DHT_INIT_OK",
+                    "target": "NETWORK_INIT"
+                },
+                {
+                    "condition": "DHT_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_INIT",
+            "transitions": [
+                {
+                    "condition": "THREAD_CREATED",
+                    "target": "DATA_READ"
+                }
+            ]
+        },
+        {
+            "name": "DATA_READ",
+            "transitions": [
+                {
+                    "condition": "DHT_READ_SUCCESS",
+                    "target": "SLEEP"
+                },
+                {
+                    "condition": "DHT_READ_FAIL",
+                    "target": "SLEEP"
+                }
+            ]
+        },
+        {
+            "name": "SLEEP",
+            "transitions": [
+                {
+                    "condition": "TIMER_EXPIRED",
+                    "target": "DATA_READ"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": []
+        }
+    ]
+}

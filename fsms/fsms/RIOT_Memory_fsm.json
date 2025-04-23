@@ -1,0 +1,52 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "INIT_OK",
+                    "target": "PERIODIC_EVENT_INIT"
+                },
+                {
+                    "condition": "INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "PERIODIC_EVENT_INIT",
+            "transitions": [
+                {
+                    "condition": "EVENT_INIT_OK",
+                    "target": "PERIODIC_EVENT_START"
+                },
+                {
+                    "condition": "EVENT_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "PERIODIC_EVENT_START",
+            "transitions": [
+                {
+                    "condition": "PERIODIC_EVENT_RUNNING",
+                    "target": "PERIODIC_EVENT_START"
+                },
+                {
+                    "condition": "EVENT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "ERROR_HANDLED",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

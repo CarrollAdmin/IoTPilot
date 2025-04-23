@@ -1,0 +1,56 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "EVENT_TIMER_SETUP_OK",
+                    "target": "WAIT_FOR_MESSAGES"
+                },
+                {
+                    "condition": "EVENT_TIMER_SETUP_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WAIT_FOR_MESSAGES",
+            "transitions": [
+                {
+                    "condition": "MESSAGE_RECEIVED",
+                    "target": "PROCESS_MESSAGE"
+                }
+            ]
+        },
+        {
+            "name": "PROCESS_MESSAGE",
+            "transitions": [
+                {
+                    "condition": "PROCESSING_COMPLETE",
+                    "target": "WAIT_FOR_MESSAGES"
+                },
+                {
+                    "condition": "PROCESSING_ERROR",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY",
+                    "target": "INIT"
+                },
+                {
+                    "condition": "FAILURE_LIMIT_REACHED",
+                    "target": "SHUTDOWN"
+                }
+            ]
+        },
+        {
+            "name": "SHUTDOWN",
+            "transitions": []
+        }
+    ]
+}

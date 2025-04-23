@@ -1,0 +1,46 @@
+{"states": [
+    {
+        "name": "INIT",
+        "transitions": [
+            {
+                "condition": "SERVER_IP_VALID && SOCKET_CREATED",
+                "target": "TIMER_SETUP"
+            },
+            {
+                "condition": "!SERVER_IP_VALID",
+                "target": "ERROR"
+            },
+            {
+                "condition": "!SOCKET_CREATED",
+                "target": "ERROR"
+            }
+        ]
+    },
+    {
+        "name": "TIMER_SETUP",
+        "transitions": [
+            {
+                "condition": "TIMER_INITIALIZED",
+                "target": "SEND_STATE"
+            }
+        ]
+    },
+    {
+        "name": "SEND_STATE",
+        "transitions": [
+            {
+                "condition": "MSG_RECEIVED",
+                "target": "SEND_STATE"
+            }
+        ]
+    },
+    {
+        "name": "ERROR",
+        "transitions": [
+            {
+                "condition": "RETRY_CONNECTION",
+                "target": "INIT"
+            }
+        ]
+    }
+]}

@@ -1,0 +1,35 @@
+As a professional IoT programmer proficient in Finite-state machines (FSM), 
+you are tasked with meticulously analyzing the given IoT program to construct comprehensive FSMs step by step. 
+Specifically, you need to:
+
+You shoud first extract all the APIs and the control flow. 
+Then, each apis lead to a new state. You should present the location of APIs in CFG and the state transition.
+Then, extract the transition relationships between these states along with the conditions that govern these transitions.
+Output the constructed FSM in JSON format. Please write your complete output using ```json.
+The FSMs you generate must cover as many states and state transitions as possible.
+The FSMs must contain appropriate exception handling logic and specific control flow such as "while", "if..else.."
+You must contain the apis in the loop, which need perfom repeatly, such as network connect must be reconnected.
+Your output format need follow the below JSON format:
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "DHT_INIT_OK",
+                    "target": "NETWORK_INIT"
+                },
+                {
+                    "condition": "DHT_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        }
+    ]
+}
+
+
+# Problem
+<<Problem>>
+# Your generated FSMs
+

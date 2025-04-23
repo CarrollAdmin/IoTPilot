@@ -1,0 +1,43 @@
+code_name,problem
+RIOT_COAP,"I need to develop RIOT code on an ESP32, which  sends a CoAP request to an COAP server. The program is configured to send CoAP POST requests ""Hello, COAP Cloud"" to the COAP server at IP address ""47.102.103.1"" and port 5683, with the URI path ""/coap/test"". "
+RIOT_RTC,"I need to develop RIOT code on an ESP32 to achieve RTC alarms. It sets the date to June 1, 2024, and triggers an alarm after 5 seconds, printing ""Alarm triggered!"" upon activation."
+RIOT_IRQ,"I need to develop RIOT code on an ESP32 to achieve interrupt handling. The program uses atomic variables to verify if disabling and restoring interrupts works correctly. You should use irq but not use gpio interface. "
+RIOT_Flash,"I need to develop RIOT code on an ESP32 that uses Non-Volatile Storage (NVS) to store a temperature value persistently. The program initializes NVS, opens a handle to the storage, writes the state value (1 in this case) to NVS, and commits the changes. This process repeats every second, ensuring the temperature is continuously updated in storage."
+RIOT_MBOX,"I need to develop RIOT code on an ESP32 to achieve message box functionality. The program sets up a message box, sending events at intervals."
+RIOT_MQTT,I need to develop a RIOT program for the ESP32 that connects to an MQTT broker at 47.102.103.1:1883 to publish state (”work or not work”) each five seconds. Do not use emcute lib.
+RIOT_MQTT_SN,"I need to develop a RIOT program for the ESP32 that connects to an MQTT-SN broker at 47.102.103.1:1883 to publish state (”work or not work”) every five seconds. To reduce energy, you must use emcute lib."
+RIOT_Event,I need to develop RIOT code on an ESP32. It initializes and starts a event_periodic callback function every second.
+RIOT_UDP,I need to develop a RIOT program for the ESP32 that connects to a UDP server at `47.102.103.1:20001` to send device state (”work or not work”) by UDP method every five seconds.
+RIOT_Thread,"I need to develop RIOT code on an ESP32, where one thread sends messages to another with different priorities. We also need to achieve inter-thread communication using msg_t."
+RIOT_Flash,"I need to develop RIOT code on an ESP32 that uses Non-Volatile Storage (NVS) to store a device state (”1” or “0”) persistently. This process repeats every second, ensuring the temperature is continuously updated in storage."
+RIOT_MMA,I need to develop RIOT code on an ESP32. It read MMA8x5x every 5 seconds.
+RIOT_Timer,I need to develop RIOT code on an ESP32. It sets up a timer that triggers every second and turn on led.
+RIOT_Sched,I need to develop RIOT code on an ESP32. It starts two threads and change priority at runtime.
+RIOT_DHT11,I need to develop RIOT code on an ESP32. It read dht11 each five seconds. The dht11 connects to gpio 2.
+RIOT_Warn,I need to develop RIOT code on an ESP32. It reads the DHT11 every 5 seconds and turns on an LED warning when the temperature exceeds a threshold.
+Zephyr_COAP,"I need to develop Zephyr code on an ESP32, which  sends a CoAP request to an COAP server. The program is configured to send CoAP POST requests ""Hello, COAP Cloud"" to the COAP server at IP address ""47.102.103.1"" and port 5683, with the URI path ""/coap/test"". "
+Zephyr_RTC,"I need to develop Zephyr code on an ESP32 to achieve RTC alarms. It sets the date to June 1, 2024, and triggers an alarm after 5 seconds, printing ""Alarm triggered!"" upon activation."
+Zephyr_IRQ,"I need to develop Zephyr code on an ESP32 to achieve interrupt handling. The program uses atomic variables to verify if disabling and restoring interrupts works correctly. You should use irq but not use gpio interface. "
+Zephyr_Flash,"I need to develop Zephyr code on an ESP32 that uses Non-Volatile Storage (NVS) to store a temperature value persistently. The program initializes NVS, opens a handle to the storage, writes the state value (1 in this case) to NVS, and commits the changes. This process repeats every second, ensuring the temperature is continuously updated in storage."
+Zephyr_MBOX,"I need to develop Zephyr code on an ESP32 to achieve message box functionality. The program sets up a message box, sending events at intervals."
+Zephyr_MQTT,I need to develop a Zephyr program for the ESP32 that connects to an MQTT broker at 47.102.103.1:1883 to publish state (”work or not work”) each five seconds. Do not use emcute lib.
+Zephyr_MQTT_SN,"I need to develop a Zephyr program for the ESP32 that connects to an MQTT-SN broker at 47.102.103.1:1883 to publish state (”work or not work”) every five seconds. To reduce energy, you must use emcute lib."
+Zephyr_Event,I need to develop Zephyr code on an ESP32. It initializes and starts a event_periodic callback function every second.
+Zephyr_UDP,I need to develop a Zephyr program for the ESP32 that connects to a UDP server at `47.102.103.1:20001` to send device state (”work or not work”) by UDP method every five seconds.
+Zephyr_Thread,"I need to develop Zephyr code on an ESP32, where one thread sends messages to another with different priorities. We also need to achieve inter-thread communication using msg_t."
+Zephyr_Flash,"I need to develop Zephyr code on an ESP32 that uses Non-Volatile Storage (NVS) to store a device state (”1” or “0”) persistently. This process repeats every second, ensuring the temperature is continuously updated in storage."
+Zephyr_MMA,"I need to develop Zephyr code on an ESP32. It read MMA8x5x every 5 seconds and uses NVS to store the reading value persistently. "
+Zephyr_Timer,I need to develop Zephyr code on an ESP32. It sets up a timer that triggers every second and turn on led.
+Zephyr_Sched,I need to develop Zephyr code on an ESP32. It starts two threads and change priority at runtime.
+Zephyr_DHT11,I need to develop Zephyr code on an ESP32. It read dht11 each five seconds. The dht11 connects to gpio 2.
+Zephyr_Warn,I need to develop Zephyr code on an ESP32. It reads the DHT11 every 5 seconds and turns on an LED warning when the temperature exceeds a threshold.
+Contiki_MQTT,I need to develop a Contiki program for the NRF52840 that connects to an MQTT broker at 47.102.103.1:1883 to publish state (”work or not work”) each five seconds.
+Contiki_DHT11,I need to develop Contiki code on an NRF52840. It read dht11 each five seconds. The dht11 connects to gpio 2.
+Contiki_UDP,I need to develop a Contiki program for the NRF52840 that connects to a UDP server at `47.102.103.1:20001` to send device state (”work or not work”) by UDP method every five seconds.
+Contiki_COAP,"I need to develop Contiki code on an NRF52840, which  sends a CoAP request to an COAP server. The program is configured to send CoAP POST requests ""Hello, COAP Cloud"" to the COAP server at IP address ""47.102.103.1"" and port 5683, with the URI path ""/coap/test"". "
+Contiki_led,I need to develop Contiki code on an NRF52840. It read dht11 each five seconds and turn on a rgb_led.
+FreeRTOS_MQTT,"I need to develop a FreeRTOS program for the ESP32 that first ensures WIFI connected and connects to an MQTT broker at 47.102.103.1:1883 to publish state (""work or not work"") each five seconds."
+FreeRTOS_COAP,"I need to develop FreeRTOS  code on an ESP32, which sends a CoAP request to a COAP server. The program is configured to send CoAP POST requests """"Hello, COAP Cloud"""" to the COAP server at IP address """"47.102.103.1"""" and port 5683, with the URI path """"/coap/test"""".  It needs to ensure WIFI connected."
+FreeRTOS_UDP,"I need to develop a FreeRTOS  program for the ESP32 that connects to a UDP server at `47.102.103.1:20001` to send device state (”work or not work”) by UDP method every five seconds. It needs to ensure WIFI connected."""
+FreeRTOS_FLASH,"I need to develop FreeRTOS code on an ESP32 that uses Non-Volatile Storage (NVS) to store a device state (”1” or “0”) persistently. This process repeats every second, ensuring the temperature is continuously updated in storage."
+FreeRTOS_MMA,I need to develop FreeRTOS code on an ESP32. It read MMA8x5x by I2Cevery 5 seconds.

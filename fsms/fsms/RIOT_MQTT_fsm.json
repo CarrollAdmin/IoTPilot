@@ -1,0 +1,91 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "NetworkInit_OK",
+                    "target": "NETWORK_CONNECT"
+                },
+                {
+                    "condition": "NetworkInit_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_CONNECT",
+            "transitions": [
+                {
+                    "condition": "NetworkConnect_OK",
+                    "target": "MQTT_INIT"
+                },
+                {
+                    "condition": "NetworkConnect_FAIL",
+                    "target": "NETWORK_RECONNECT"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_INIT",
+            "transitions": [
+                {
+                    "condition": "MQTTClientInit_OK",
+                    "target": "MQTT_CONNECT"
+                },
+                {
+                    "condition": "MQTTClientInit_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_CONNECT",
+            "transitions": [
+                {
+                    "condition": "MQTTConnect_OK",
+                    "target": "PUBLISH"
+                },
+                {
+                    "condition": "MQTTConnect_FAIL",
+                    "target": "NETWORK_RECONNECT"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH",
+            "transitions": [
+                {
+                    "condition": "MQTTPublish_OK",
+                    "target": "PUBLISH"
+                },
+                {
+                    "condition": "MQTTPublish_FAIL",
+                    "target": "NETWORK_RECONNECT"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_RECONNECT",
+            "transitions": [
+                {
+                    "condition": "Reconnect_OK",
+                    "target": "MQTT_CONNECT"
+                },
+                {
+                    "condition": "Reconnect_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "Restart",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

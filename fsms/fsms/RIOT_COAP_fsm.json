@@ -1,0 +1,57 @@
+{
+    "states": [
+        {
+            "name": "START",
+            "transitions": [
+                {
+                    "condition": "SOCKET_CREATE_SUCCESS",
+                    "target": "SET_SERVER_ADDRESS"
+                },
+                {
+                    "condition": "SOCKET_CREATE_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SET_SERVER_ADDRESS",
+            "transitions": [
+                {
+                    "condition": "ADDRESS_SET_SUCCESS",
+                    "target": "SEND_COAP_REQUEST"
+                },
+                {
+                    "condition": "ADDRESS_SET_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SEND_COAP_REQUEST",
+            "transitions": [
+                {
+                    "condition": "REQUEST_SENT",
+                    "target": "CLOSE_SOCKET"
+                }
+            ]
+        },
+        {
+            "name": "CLOSE_SOCKET",
+            "transitions": [
+                {
+                    "condition": "SOCKET_CLOSED",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "HANDLE_ERROR",
+                    "target": "END"
+                }
+            ]
+        }
+    ]
+}

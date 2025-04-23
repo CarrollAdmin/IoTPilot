@@ -1,0 +1,14 @@
+// FSM
+digraph {
+	INIT_STATE [label=INIT_STATE]
+	INIT_STATE -> CONFIGURE_STATE [label=event_periodic_callback_init_success]
+	INIT_STATE -> ERROR [label=event_periodic_callback_init_failure]
+	CONFIGURE_STATE [label=CONFIGURE_STATE]
+	CONFIGURE_STATE -> RUNNING_STATE [label="event_periodic_callback_set_count_success && event_periodic_callback_start_success"]
+	CONFIGURE_STATE -> ERROR [label="event_periodic_callback_set_count_failure || event_periodic_callback_start_failure"]
+	RUNNING_STATE [label=RUNNING_STATE]
+	RUNNING_STATE -> END_STATE [label=ztimer_sleep_expired]
+	RUNNING_STATE -> ERROR [label=exception_occurred]
+	END_STATE [label=END_STATE]
+	ERROR [label=ERROR]
+}

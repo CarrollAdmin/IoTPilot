@@ -1,0 +1,87 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "IP_VALID",
+                    "target": "MQTT_CONNECT"
+                },
+                {
+                    "condition": "IP_INVALID",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_CONNECT",
+            "transitions": [
+                {
+                    "condition": "CONNECT_OK",
+                    "target": "TOPIC_REGISTER"
+                },
+                {
+                    "condition": "CONNECT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "TOPIC_REGISTER",
+            "transitions": [
+                {
+                    "condition": "REGISTER_OK",
+                    "target": "PUBLISH"
+                },
+                {
+                    "condition": "REGISTER_FAIL",
+                    "target": "DISCONNECT"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH",
+            "transitions": [
+                {
+                    "condition": "PUBLISH_OK",
+                    "target": "SLEEP"
+                },
+                {
+                    "condition": "PUBLISH_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SLEEP",
+            "transitions": [
+                {
+                    "condition": "WAKE_UP",
+                    "target": "PUBLISH"
+                }
+            ]
+        },
+        {
+            "name": "DISCONNECT",
+            "transitions": [
+                {
+                    "condition": "DISCONNECT_OK",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY",
+                    "target": "MQTT_CONNECT"
+                },
+                {
+                    "condition": "DISCONNECT",
+                    "target": "DISCONNECT"
+                }
+            ]
+        }
+    ]
+}

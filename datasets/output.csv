@@ -1,0 +1,26 @@
+id,code
+0,Espressif Systems (Shanghai)
+1,"default priority (1,2,3)"
+2,"esp_err_t i2c_new_master_bus(const i2c_master_bus_config_t *bus_config, i2c_master_bus_handle_t *ret_bus_handle)"
+3,"esp_err_t i2c_master_bus_add_device(i2c_master_bus_handle_t bus_handle, const i2c_device_config_t *dev_config, i2c_master_dev_handle_t *ret_handle)"
+4,esp_err_t i2c_del_master_bus(i2c_master_bus_handle_t bus_handle)
+5,esp_err_t i2c_master_bus_rm_device(i2c_master_dev_handle_t handle)
+6,Operation timeout(larger than xfer_timeout_ms)
+7,"esp_err_t i2c_master_transmit(i2c_master_dev_handle_t i2c_dev, const uint8_t *write_buffer, size_t write_size, int xfer_timeout_ms)"
+8,Operation timeout(larger than xfer_timeout_ms)
+9,"esp_err_t i2c_master_multi_buffer_transmit(i2c_master_dev_handle_t i2c_dev, i2c_master_transmit_multi_buffer_info_t *buffer_info_array, size_t array_size, int xfer_timeout_ms)"
+10,Operation timeout(larger than xfer_timeout_ms)
+11,"esp_err_t i2c_master_transmit_receive(i2c_master_dev_handle_t i2c_dev, const uint8_t *write_buffer, size_t write_size, uint8_t *read_buffer, size_t read_size, int xfer_timeout_ms)"
+12,Operation timeout(larger than xfer_timeout_ms)
+13,"esp_err_t i2c_master_receive(i2c_master_dev_handle_t i2c_dev, uint8_t *read_buffer, size_t read_size, int xfer_timeout_ms)"
+14,wait forever (Not recommended in this function)
+15,Operation timeout(larger than xfer_timeout_ms)
+16,"esp_err_t i2c_master_probe(i2c_master_bus_handle_t bus_handle, uint16_t address, int xfer_timeout_ms)"
+17,"esp_err_t i2c_master_register_event_callbacks(i2c_master_dev_handle_t i2c_dev, const i2c_master_event_callbacks_t *cbs, void *user_data)"
+18,esp_err_t i2c_master_bus_reset(i2c_master_bus_handle_t bus_handle)
+19,"esp_err_t i2c_master_bus_wait_all_done(i2c_master_bus_handle_t bus_handle, int timeout_ms)"
+20,"esp_err_t i2c_master_get_bus_handle(i2c_port_num_t port_num, i2c_master_bus_handle_t *ret_handle)"
+21,#include stdint.h
+22,#include esp_err.h
+23,#include driver/i2c_types.h
+24,#include hal/gpio_types.h

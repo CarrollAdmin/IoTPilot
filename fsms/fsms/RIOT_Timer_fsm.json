@@ -1,0 +1,31 @@
+{
+    "states": [
+        {
+            "name": "START",
+            "transitions": [
+                {
+                    "condition": "TIMER_INITIALIZED",
+                    "target": "RUNNING"
+                }
+            ]
+        },
+        {
+            "name": "RUNNING",
+            "transitions": [
+                {
+                    "condition": "TIMER_TRIGGER",
+                    "target": "LED_TOGGLED"
+                }
+            ]
+        },
+        {
+            "name": "LED_TOGGLED",
+            "transitions": [
+                {
+                    "condition": "TIMER_RESET",
+                    "target": "RUNNING"
+                }
+            ]
+        }
+    ]
+}

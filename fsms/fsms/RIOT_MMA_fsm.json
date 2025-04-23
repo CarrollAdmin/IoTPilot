@@ -1,0 +1,53 @@
+{
+    "states": [
+        {
+            "name": "START",
+            "transitions": [
+                {
+                    "condition": "INITIALIZATION_COMPLETE",
+                    "target": "SENSOR_READ"
+                }
+            ]
+        },
+        {
+            "name": "SENSOR_READ",
+            "transitions": [
+                {
+                    "condition": "MMA8X5X_OK",
+                    "target": "READ_ACCELERATION"
+                },
+                {
+                    "condition": "MMA8X5X_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "READ_ACCELERATION",
+            "transitions": [
+                {
+                    "condition": "READ_COMPLETE",
+                    "target": "SLEEP"
+                }
+            ]
+        },
+        {
+            "name": "SLEEP",
+            "transitions": [
+                {
+                    "condition": "WAKE_UP",
+                    "target": "SENSOR_READ"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY",
+                    "target": "START"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "DHT_INIT_OK",
+                    "target": "READ_SENSOR"
+                },
+                {
+                    "condition": "DHT_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "READ_SENSOR",
+            "transitions": [
+                {
+                    "condition": "DHT_READ_OK",
+                    "target": "SLEEP"
+                },
+                {
+                    "condition": "DHT_READ_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SLEEP",
+            "transitions": [
+                {
+                    "condition": "SLEEP_INTERVAL",
+                    "target": "READ_SENSOR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

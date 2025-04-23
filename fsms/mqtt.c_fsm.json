@@ -1,0 +1,72 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "TIMER_SLEEP_COMPLETE",
+                    "target": "NETWORK_INIT"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_INIT",
+            "transitions": [
+                {
+                    "condition": "NETWORK_INIT_COMPLETE",
+                    "target": "MQTT_INIT"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_INIT",
+            "transitions": [
+                {
+                    "condition": "MQTT_INIT_COMPLETE",
+                    "target": "NETWORK_CONNECT"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_CONNECT",
+            "transitions": [
+                {
+                    "condition": "MQTT_CONNECT_SUCCESS",
+                    "target": "PUBLISH"
+                },
+                {
+                    "condition": "MQTT_CONNECT_FAIL",
+                    "target": "NETWORK_RETRY"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_RETRY",
+            "transitions": [
+                {
+                    "condition": "DELAY_COMPLETE",
+                    "target": "NETWORK_CONNECT"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH",
+            "transitions": [
+                {
+                    "condition": "PUBLISH_COMPLETE",
+                    "target": "SLEEP"
+                }
+            ]
+        },
+        {
+            "name": "SLEEP",
+            "transitions": [
+                {
+                    "condition": "SLEEP_COMPLETE",
+                    "target": "PUBLISH"
+                }
+            ]
+        }
+    ]
+}

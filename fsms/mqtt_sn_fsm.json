@@ -1,0 +1,121 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "QUEUE_INIT_OK",
+                    "target": "THREAD_CREATE"
+                }
+            ]
+        },
+        {
+            "name": "QUEUE_INIT",
+            "transitions": [
+                {
+                    "condition": "THREAD_CREATE_OK",
+                    "target": "BROKER_CONNECT"
+                },
+                {
+                    "condition": "THREAD_CREATE_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "THREAD_CREATE",
+            "transitions": [
+                {
+                    "condition": "BROKER_CONNECT_OK",
+                    "target": "SUBSCRIBE"
+                },
+                {
+                    "condition": "BROKER_CONNECT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "BROKER_CONNECT",
+            "transitions": [
+                {
+                    "condition": "SUBSCRIBE_OK",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "SUBSCRIBE_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SUBSCRIBE",
+            "transitions": [
+                {
+                    "condition": "PUBLISH_OK",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "PUBLISH_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH_LOOP",
+            "transitions": [
+                {
+                    "condition": "PUBLISH_OK",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "PUBLISH_FAIL",
+                    "target": "ERROR"
+                },
+                {
+                    "condition": "DISCONNECT_OK",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY_CONNECT",
+                    "target": "BROKER_CONNECT"
+                },
+                {
+                    "condition": "RETRY_SUBSCRIBE",
+                    "target": "SUBSCRIBE"
+                },
+                {
+                    "condition": "RETRY_PUBLISH",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "HALT",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "DISCONNECT",
+            "transitions": [
+                {
+                    "condition": "DISCONNECT_OK",
+                    "target": "END"
+                },
+                {
+                    "condition": "DISCONNECT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "END",
+            "transitions": []
+        }
+    ]
+}

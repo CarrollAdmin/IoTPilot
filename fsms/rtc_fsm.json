@@ -1,0 +1,82 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "RTC_INIT_OK",
+                    "target": "TIME_RETRIEVAL"
+                },
+                {
+                    "condition": "RTC_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "TIME_RETRIEVAL",
+            "transitions": [
+                {
+                    "condition": "RTC_GET_TIME_OK",
+                    "target": "TIME_SET"
+                },
+                {
+                    "condition": "RTC_GET_TIME_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "TIME_SET",
+            "transitions": [
+                {
+                    "condition": "RTC_SET_TIME_OK",
+                    "target": "ALARM_SETUP"
+                },
+                {
+                    "condition": "RTC_SET_TIME_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ALARM_SETUP",
+            "transitions": [
+                {
+                    "condition": "RTC_SET_ALARM_OK",
+                    "target": "MONITOR"
+                },
+                {
+                    "condition": "RTC_SET_ALARM_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "MONITOR",
+            "transitions": [
+                {
+                    "condition": "ALARM_TRIGGERED",
+                    "target": "COMPLETE"
+                },
+                {
+                    "condition": "MUTEX_LOCK_FAIL",
+                    "target": "ERROR"
+                },
+                {
+                    "condition": "REPEAT",
+                    "target": "MONITOR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": []
+        },
+        {
+            "name": "COMPLETE",
+            "transitions": []
+        }
+    ]
+}

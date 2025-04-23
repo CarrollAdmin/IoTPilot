@@ -1,0 +1,21 @@
+// FSM
+digraph {
+	INIT [label=INIT]
+	INIT -> NETWORK_INIT [label=ztimer_sleep_complete]
+	NETWORK_INIT [label=NETWORK_INIT]
+	NETWORK_INIT -> MQTT_INIT [label=NetworkInit_OK]
+	NETWORK_INIT -> ERROR [label=NetworkInit_FAIL]
+	MQTT_INIT [label=MQTT_INIT]
+	MQTT_INIT -> NETWORK_CONNECT [label=MQTTClientInit_OK]
+	MQTT_INIT -> ERROR [label=MQTTClientInit_FAIL]
+	NETWORK_CONNECT [label=NETWORK_CONNECT]
+	NETWORK_CONNECT -> MQTT_CONNECT [label=NetworkConnect_OK]
+	NETWORK_CONNECT -> NETWORK_CONNECT [label=NetworkConnect_FAIL]
+	MQTT_CONNECT [label=MQTT_CONNECT]
+	MQTT_CONNECT -> PUBLISH [label=MQTTConnect_OK]
+	MQTT_CONNECT -> NETWORK_CONNECT [label=MQTTConnect_FAIL]
+	PUBLISH [label=PUBLISH]
+	PUBLISH -> PUBLISH [label=Publish_Interval]
+	ERROR [label=ERROR]
+	ERROR -> INIT [label=Error_Handler]
+}

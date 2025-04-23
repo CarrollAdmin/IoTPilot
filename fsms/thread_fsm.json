@@ -1,0 +1,98 @@
+
+{
+    "states": [
+        {
+            "name": "INITIAL",
+            "transitions": [
+                {
+                    "condition": "THREAD1_START",
+                    "target": "THREAD1_RUNNING"
+                },
+                {
+                    "condition": "THREAD2_START",
+                    "target": "THREAD2_RUNNING"
+                }
+            ]
+        },
+        {
+            "name": "THREAD1_RUNNING",
+            "transitions": [
+                {
+                    "condition": "MSG_REQUEST_SENT",
+                    "target": "WAIT_FOR_THREAD2_RESPONSE"
+                }
+            ]
+        },
+        {
+            "name": "WAIT_FOR_THREAD2_RESPONSE",
+            "transitions": [
+                {
+                    "condition": "VALID_RESPONSE_RECEIVED",
+                    "target": "THREAD1_SUCCESS"
+                },
+                {
+                    "condition": "INVALID_RESPONSE_RECEIVED",
+                    "target": "THREAD1_FAILURE"
+                }
+            ]
+        },
+        {
+            "name": "THREAD2_RUNNING",
+            "transitions": [
+                {
+                    "condition": "MSG_RECEIVED",
+                    "target": "PROCESS_MESSAGE"
+                }
+            ]
+        },
+        {
+            "name": "PROCESS_MESSAGE",
+            "transitions": [
+                {
+                    "condition": "MSG_PROCESSED",
+                    "target": "SEND_REPLY_TO_THREAD1"
+                }
+            ]
+        },
+        {
+            "name": "SEND_REPLY_TO_THREAD1",
+            "transitions": [
+                {
+                    "condition": "REPLY_SENT",
+                    "target": "THREAD2_WAIT_FOR_NEXT_MSG"
+                }
+            ]
+        },
+        {
+            "name": "THREAD2_WAIT_FOR_NEXT_MSG",
+            "transitions": [
+                {
+                    "condition": "NEXT_MSG",
+                    "target": "PROCESS_MESSAGE"
+                }
+            ]
+        },
+        {
+            "name": "THREAD1_SUCCESS",
+            "transitions": [
+                {
+                    "condition": "ITERATION_COMPLETE",
+                    "target": "EXIT"
+                }
+            ]
+        },
+        {
+            "name": "THREAD1_FAILURE",
+            "transitions": [
+                {
+                    "condition": "FAILURE_HANDLING",
+                    "target": "EXIT"
+                }
+            ]
+        },
+        {
+            "name": "EXIT",
+            "transitions": []
+        }
+    ]
+}

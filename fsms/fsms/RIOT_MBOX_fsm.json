@@ -1,0 +1,44 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "THREADS_CREATED",
+                    "target": "RUNNING"
+                },
+                {
+                    "condition": "THREAD_CREATION_FAILED",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "RUNNING",
+            "transitions": [
+                {
+                    "condition": "MESSAGE_SENT",
+                    "target": "WAITING"
+                }
+            ]
+        },
+        {
+            "name": "WAITING",
+            "transitions": [
+                {
+                    "condition": "MESSAGE_RECEIVED",
+                    "target": "RUNNING"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,869 @@
+id,code
+0,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+1,#include contiki.h
+2,#include net/ipv6/tcpip.h
+3,#include net/ipv6/uip.h
+4,#include net/ipv6/uiplib.h
+5,#include net/ipv6/uip-udp-packet.h
+6,#include net/ipv6/simple-udp.h
+7,#include net/ipv6/uip-nameserver.h
+8,#include net/routing/routing.h
+9,#include net/ipv6/uip-icmp6.h
+10,#include net/ipv6/uip-ds6.h
+11,#include net/ipv6/psock.h
+12,#include net/ipv6/udp-socket.h
+13,#include net/ipv6/tcp-socket.h
+14,#include net/netstack.h
+15,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+16,#include contiki-conf.h
+17,#include contiki-default-conf.h
+18,#include sys/process.h
+19,#include sys/autostart.h
+20,#include sys/timer.h
+21,#include sys/ctimer.h
+22,#include sys/etimer.h
+23,#include sys/rtimer.h
+24,#include sys/pt.h
+25,#include sys/clock.h
+26,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+27,"typedef coap_handler_status_t
+(* coap_handler_callback_t)"
+28,"define COAP_HANDLER(name, handler)"
+29,void coap_add_handler(coap_handler_t *handler)
+30,void coap_remove_handler(coap_handler_t *handler)
+31,void coap_engine_init(void)
+32,"int coap_receive(const coap_endpoint_t *src,
+                 uint8_t *payload, uint16_t payload_length)"
+33,"coap_handler_status_t coap_call_handlers(coap_message_t *request,
+                                         coap_message_t *response,
+                                         uint8_t *buffer,
+                                         uint16_t buffer_size,
+                                         int32_t *offset)"
+34,typedef void (* coap_resource_handler_t)
+35,typedef void (* coap_resource_periodic_handler_t)
+36,typedef void (* coap_resource_response_handler_t)
+37,typedef void (* coap_resource_trigger_handler_t)
+38,"define RESOURCE(name, attributes, get_handler, post_handler, put_handler, delete_handler)"
+39,"define PARENT_RESOURCE(name, attributes, get_handler, post_handler, put_handler, delete_handler)"
+40,"define SEPARATE_RESOURCE(name, attributes, get_handler, post_handler, put_handler, delete_handler, resume_handler)"
+41,"define EVENT_RESOURCE(name, attributes, get_handler, post_handler, put_handler, delete_handler, event_handler)"
+42,"define PERIODIC_RESOURCE(name, attributes, get_handler, post_handler, put_handler, delete_handler, period, periodic_handler)"
+43,"void coap_activate_resource(coap_resource_t *resource, const char *path)"
+44,#include coap.h
+45,#include coap-timer.h
+46,#include coap-transactions.h
+47,#include coap-observe.h
+48,#include coap-separate.h
+49,#include coap-observe-client.h
+50,#include coap-transport.h
+51,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+52,typedef void (* coap_blocking_response_handler_t)
+53,"define COAP_BLOCKING_REQUEST(server_endpoint, request, chunk_handler)"
+54,"struct coap_blocking_request_state {
+  coap_request_state_t state;
+  struct pt pt;
+  struct process *process;
+} coap_blocking_request_state_t;"
+55,#include sys/pt.h
+56,#include coap-transactions.h
+57,#include coap-request-state.h
+58,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+59,"similar peripherals (e.g. a reed relay can also be abstracted through this
+ * HAL)"
+60,this API (recommended)
+61,define BUTTON_HAL_DEBOUNCE_DURATION (CLOCK_SECOND >> 6)
+62,the BUTTON_HAL_GET_DESCRIPTION()
+63,negative logic (active: low)
+64,the duration (in seconds)
+65,"define BUTTON_HAL_BUTTON(name, descr, po, pi, u, id, nl)"
+66,"define BUTTON_HAL_BUTTON(name, descr, pi, u, id, nl)"
+67,define BUTTON_HAL_GET_DESCRIPTION(b)
+68,"define BUTTON_HAL_BUTTON(name, descr, po, pi, u, id, nl)"
+69,"define BUTTON_HAL_BUTTON(name, descr, pi, u, id, nl)"
+70,define BUTTON_HAL_GET_DESCRIPTION(b)
+71,define BUTTON_HAL_BUTTONS(...)
+72,void button_hal_init(void)
+73,"s index (0, 1, ... button_hal_button_count - 1)"
+74,a button (pressed / released)
+75,uint8_t button_hal_get_state(button_hal_button_t *button)
+76,#include contiki.h
+77,#include dev/gpio-hal.h
+78,#include sys/clock.h
+79,#include sys/ctimer.h
+80,#include stdint.h
+81,#include stdbool.h
+82,#include string.h
+83,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+84,"similar peripherals (e.g. a reed relay can also be abstracted through this
+ * HAL)"
+85,this API (recommended)
+86,define BUTTON_HAL_DEBOUNCE_DURATION (CLOCK_SECOND >> 6)
+87,the BUTTON_HAL_GET_DESCRIPTION()
+88,negative logic (active: low)
+89,the duration (in seconds)
+90,"define BUTTON_HAL_BUTTON(name, descr, po, pi, u, id, nl)"
+91,"define BUTTON_HAL_BUTTON(name, descr, pi, u, id, nl)"
+92,define BUTTON_HAL_GET_DESCRIPTION(b)
+93,"define BUTTON_HAL_BUTTON(name, descr, po, pi, u, id, nl)"
+94,"define BUTTON_HAL_BUTTON(name, descr, pi, u, id, nl)"
+95,define BUTTON_HAL_GET_DESCRIPTION(b)
+96,define BUTTON_HAL_BUTTONS(...)
+97,void button_hal_init(void)
+98,"s index (0, 1, ... button_hal_button_count - 1)"
+99,a button (pressed / released)
+100,uint8_t button_hal_get_state(button_hal_button_t *button)
+101,#include contiki.h
+102,#include dev/gpio-hal.h
+103,#include sys/clock.h
+104,#include sys/ctimer.h
+105,#include stdint.h
+106,#include stdbool.h
+107,#include string.h
+108,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+109,"define LOG_COAP_EP(level, endpoint)"
+110,define LOG_ERR_COAP_EP(endpoint)
+111,define LOG_WARN_COAP_EP(endpoint)
+112,define LOG_INFO_COAP_EP(endpoint)
+113,define LOG_DBG_COAP_EP(endpoint)
+114,"define LOG_COAP_STRING(level, text, len)"
+115,"define LOG_ERR_COAP_STRING(text, len)"
+116,"define LOG_WARN_COAP_STRING(text, len)"
+117,"define LOG_INFO_COAP_STRING(text, len)"
+118,"define LOG_DBG_COAP_STRING(text, len)"
+119,"void coap_log_string(const char *text, size_t len)"
+120,#include contiki.h
+121,#include sys/log.h
+122,#include coap-endpoint.h
+123,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+124,define DHT11_CONFIGURE_GPIO_PORT   (0)
+125,define DHT11_CONFIGURE_GPIO_PIN    (1)
+126,define DHT11_VALUE_HUMIDITY_INTEGER       (0)
+127,define DHT11_VALUE_HUMIDITY_DECIMAL       (1)
+128,define DHT11_VALUE_TEMPERATURE_INTEGER    (2)
+129,define DHT11_VALUE_TEMPERATURE_DECIMAL    (3)
+130,define DHT11_STATUS_OKAY               (0)
+131,define DHT11_STATUS_TIMEOUT            (1)
+132,define DHT11_STATUS_CHECKSUM_FAILED    (2)
+133,#include sensors.h
+134,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+135,define RGB_LED_MAGENTA (RGB_LED_RED | RGB_LED_BLUE)
+136,define RGB_LED_YELLOW  (RGB_LED_RED | RGB_LED_GREEN)
+137,define RGB_LED_CYAN    (RGB_LED_GREEN | RGB_LED_BLUE )
+138,define RGB_LED_WHITE   (RGB_LED_RED | RGB_LED_GREEN | RGB_LED_BLUE)
+139,void rgb_led_off(void)
+140,void rgb_led_set(uint8_t colour)
+141,#include contiki.h
+142,#include stdint.h
+143,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+144,with etimer_set()
+145,the etimer_set()
+146,"void etimer_set(struct etimer *et, clock_time_t interval)"
+147,the etimer_restart()
+148,sa etimer_restart()
+149,void etimer_reset(struct etimer *et)
+150,sa etimer_reset()
+151,"void etimer_reset_with_new_interval(struct etimer *et, clock_time_t interval)"
+152,the etimer_set()
+153,sa etimer_reset()
+154,void etimer_restart(struct etimer *et)
+155,use etimer_set()
+156,sa etimer_set()
+157,sa etimer_reset()
+158,"void etimer_adjust(struct etimer *et, int td)"
+159,clock_time_t etimer_expiration_time(struct etimer *et)
+160,"start time (when the timer
+ *             was last set)"
+161,clock_time_t etimer_start_time(struct etimer *et)
+162,"bool
+etimer_expired(struct etimer *et)"
+163,with etimer_set()
+164,or etimer_reset()
+165,void etimer_stop(struct etimer *et)
+166,void etimer_request_poll(void)
+167,int etimer_pending(void)
+168,clock_time_t etimer_next_expiration_time(void)
+169,#include contiki.h
+170,#include stdbool.h
+171,#include stddef.h
+172,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+173,transmission status (see os/net/mac/mac.h)
+174,#include contiki.h
+175,#include net/ipv6/uip.h
+176,#include net/ipv6/uip-ds6-nbr.h
+177,#include net/ipv6/uip-ds6-route.h
+178,#include net/ipv6/uip-sr.h
+179,#include net/linkaddr.h
+180,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+181,void random_init(unsigned short seed)
+182,short random_rand(void)
+183,int rand()
+184,long random()
+185,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+186,network stack (NETSTACK)
+187,"void
+netstack_init(void)"
+188,enum netstack_ip_action (*process_input)
+189,enum netstack_ip_action (*process_output)
+190,"netstack_ip_action netstack_process_ip_callback(uint8_t type, const linkaddr_t *localdest)"
+191,void netstack_ip_packet_processor_add(struct netstack_ip_packet_processor *p)
+192,void netstack_ip_packet_processor_remove(struct netstack_ip_packet_processor *p)
+193,"define NETSTACK_SNIFFER(name, input_callback, output_callback)"
+194,void netstack_sniffer_add(struct netstack_sniffer *s)
+195,void netstack_sniffer_remove(struct netstack_sniffer *s)
+196,"enum netstack_ip_action {
+  NETSTACK_IP_PROCESS = 0, /* Default behaviour - nothing else */
+  NETSTACK_IP_DROP = 1, /* Drop this packet before processing/sending anymore */
+};"
+197,"enum netstack_ip_callback_type {
+  NETSTACK_IP_INPUT = 0,
+  NETSTACK_IP_OUTPUT = 1,
+};"
+198,#include contiki.h
+199,#include net/mac/mac.h
+200,#include net/mac/framer/framer.h
+201,#include dev/radio.h
+202,#include net/linkaddr.h
+203,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+204,typedef void (* simple_udp_callback)
+205,"int simple_udp_register(struct simple_udp_connection *c,
+                        uint16_t local_port,
+                        uip_ipaddr_t *remote_addr,
+                        uint16_t remote_port,
+                        simple_udp_callback receive_callback)"
+206,sa simple_udp_sendto()
+207,"int simple_udp_send(struct simple_udp_connection *c,
+                    const void *data, uint16_t datalen)"
+208,with simple_udp_register()
+209,sa simple_udp_send()
+210,"int simple_udp_sendto(struct simple_udp_connection *c,
+                      const void *data, uint16_t datalen,
+                      const uip_ipaddr_t *to)"
+211,with simple_udp_register()
+212,sa simple_udp_sendto()
+213,"int simple_udp_sendto_port(struct simple_udp_connection *c,
+			   const void *data, uint16_t datalen,
+			   const uip_ipaddr_t *to, uint16_t to_port)"
+214,void simple_udp_init(void)
+215,#include net/ipv6/uip.h
+216,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+217,of Things (IoT)
+218,Len MSB(0)
+219,Len LSB(6)
+220,Protocol Level (3)
+221,Len MSB(0)
+222,Len LSB(4)
+223,Protocol Level (4)
+224,define DBG(...)
+225,define DBG(...)
+226,MQTT payload (after VHDR)
+227,typedef void (*mqtt_event_callback_t)
+228,typedef void (*mqtt_topic_callback_t)
+229,"MQTT_5
+  LIST_STRUCT(properties)"
+230,Binary capabilities (default: enabled)
+231,"mqtt_status_t mqtt_register(struct mqtt_connection *conn,
+                            struct process *app_process,
+                            char *client_id,
+                            mqtt_event_callback_t event_callback,
+                            uint16_t max_segment_size)"
+232,Output properties (MQTTv5-only)
+233,"mqtt_status_t mqtt_connect(struct mqtt_connection *conn,
+                           char *host,
+                           uint16_t port,
+                           uint16_t keep_alive,
+#if MQTT_5
+                           uint8_t clean_session,
+                           struct mqtt_prop_list *prop_list)"
+234,Output properties (MQTTv5-only)
+235,"void mqtt_disconnect(struct mqtt_connection *conn,
+                     struct mqtt_prop_list *prop_list)"
+236,void mqtt_disconnect(struct mqtt_connection *conn)
+237,No Local (MQTTv5-only)
+238,As Published (MQTTv5-only)
+239,handling options (MQTTv5-only)
+240,Output properties (MQTTv5-only)
+241,"mqtt_status_t mqtt_subscribe(struct mqtt_connection *conn,
+                             uint16_t *mid,
+                             char *topic,
+#if MQTT_5
+                             mqtt_qos_level_t qos_level,
+                             mqtt_nl_en_t nl, mqtt_rap_en_t rap,
+                             mqtt_retain_handling_t ret_handling,
+                             struct mqtt_prop_list *prop_list)"
+242,Output properties (MQTTv5-only)
+243,"mqtt_status_t mqtt_unsubscribe(struct mqtt_connection *conn,
+                               uint16_t *mid,
+#if MQTT_5
+                               char *topic,
+                               struct mqtt_prop_list *prop_list)"
+244,to send (MQTTv5-only)
+245,alias s(MQTTv5-only)
+246,Output properties (MQTTv5-only)
+247,"mqtt_status_t mqtt_publish(struct mqtt_connection *conn,
+                           uint16_t *mid,
+                           char *topic,
+                           uint8_t *payload,
+                           uint32_t payload_size,
+                           mqtt_qos_level_t qos_level,
+#if MQTT_5
+                           mqtt_retain_t retain,
+                           uint8_t topic_alias,
+                           mqtt_topic_alias_en_t topic_alias_en,
+                           struct mqtt_prop_list *prop_list)"
+248,"void mqtt_set_username_password(struct mqtt_connection *conn,
+                                char *username,
+                                char *password)"
+249,Will message (payload)
+250,message properties (MQTTv5-only)
+251,and message (payload)
+252,"void mqtt_set_last_will(struct mqtt_connection *conn,
+                        char *topic,
+                        char *message,
+#if MQTT_5
+                        mqtt_qos_level_t qos,
+                        struct mqtt_prop_list *will_props)"
+253,define mqtt_connected(conn)
+254,define mqtt_ready(conn)
+255,"void mqtt_encode_var_byte_int(uint8_t *vbi_out,
+                              uint8_t *vbi_bytes,
+                              uint32_t val)"
+256,"uint8_t mqtt_decode_var_byte_int(const uint8_t *input_data_ptr,
+                                 int input_data_len,
+                                 uint32_t *input_pos,
+                                 uint32_t *pkt_byte_count,
+                                 uint16_t *dest)"
+257,authentication message (MQTTv5-only)
+258,"to send (continue authentication or
+ *        re-authentication)"
+259,"mqtt_status_t mqtt_auth(struct mqtt_connection *conn,
+                        mqtt_auth_type_t auth_type,
+                        struct mqtt_prop_list *prop_list)"
+260,#include contiki.h
+261,#include contiki-net.h
+262,#include contiki-lib.h
+263,#include lib/random.h
+264,#include sys/ctimer.h
+265,#include sys/etimer.h
+266,#include net/ipv6/uip.h
+267,#include net/ipv6/uip-ds6.h
+268,#include dev/leds.h
+269,#include tcp-socket.h
+270,#include udp-socket.h
+271,#include stdlib.h
+272,#include stdio.h
+273,#include string.h
+274,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+275,to register_prop()
+276,topic aliases (when receiving)
+277,packet Properties (MQTTv5.0)
+278,Property identifier (as an MQTT Variable Byte Integer)
+279,void mqtt_prop_print_input_props(struct mqtt_connection *conn)
+280,"uint32_t mqtt_prop_encode(struct mqtt_prop_out_property **prop_out, mqtt_vhdr_prop_t prop_id,
+                          va_list args)"
+281,void mqtt_prop_parse_connack_props(struct mqtt_connection *conn)
+282,"void mqtt_prop_parse_auth_props(struct mqtt_connection *conn, struct mqtt_prop_auth_event *event)"
+283,void mqtt_prop_decode_input_props(struct mqtt_connection *conn)
+284,"define mqtt_prop_register(l, out, msg, id, ...)"
+285,"define mqtt_prop_register(l, prop, out, msg, id, ...)"
+286,"uint8_t mqtt_prop_register_internal(struct mqtt_prop_list **prop_list,
+#if !MQTT_PROP_USE_MEMB
+                                    struct mqtt_prop_out_property *prop,
+#endif
+                                    mqtt_msg_type_t msg,
+                                    mqtt_vhdr_prop_t prop_id,
+                                    struct mqtt_prop_out_property **prop_out, ...)"
+287,void mqtt_prop_create_list(struct mqtt_prop_list **prop_list_out)
+288,"void mqtt_prop_print_list(struct mqtt_prop_list *prop_list, mqtt_vhdr_prop_t prop_id)"
+289,void mqtt_prop_clear_list(struct mqtt_prop_list **prop_list)
+290,void mqtt_props_init()
+291,#include mqtt.h
+292,#include stdarg.h
+293,extern const struct sensors_sensor dht11_sensor;
+295,"/*
+ * Copyright (C) 2021 Yago Fontoura do Rosario <yago.rosario@hotmail.com.br>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*---------------------------------------------------------------------------*/
+
+/**
+ * \addtogroup dht11-sensor
+ * @{
+ * \file
+ *      DHT 11 sensor implementation
+ *
+ * \see https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
+ *
+ * \author
+ *      Yago Fontoura do Rosario <yago.rosario@hotmail.com.br
+ */
+
+#include ""contiki.h""
+#include ""dht11-sensor.h""
+#include <string.h>
+#include ""dev/gpio-hal.h""
+
+/*---------------------------------------------------------------------------*/
+/**
+ * @brief GPIO High
+ *
+ */
+#define DHT11_SIGNAL_HIGH           (1)
+
+/**
+ * @brief GPIO Low
+ *
+ */
+#define DHT11_SIGNAL_LOW            (0)
+
+/**
+ * @brief Duration of signal start phase 1 according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_START_PHASE1_DURATION (40)
+
+/**
+ * @brief Duration of signal start phase 2 according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_START_PHASE2_DURATION (80)
+
+/**
+ * @brief Duration of signal start phase 3 according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_START_PHASE3_DURATION (80)
+
+/**
+ * @brief Duration of signal response phase 1 according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_RESPONSE_PHASE1_DURATION (50)
+
+/**
+ * @brief Duration of signal response if bit is set to 0, according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_RESPONSE_BIT_0_DURATION  (28)
+
+/**
+ * @brief Duration of signal response if bit is set to 1, according to data sheet
+ *
+ */
+#define DHT11_SIGNAL_RESPONSE_BIT_1_DURATION  (70)
+
+/**
+ * @brief Sensor timer drift in ticks
+ *
+ * DHT uses 1us granularity and rtimer granularity is higher.
+ * So, allow the reading to drift by 1 tick
+ *
+ */
+#define DHT11_TICKS_GUARD  (1)
+
+/**
+ * @brief Sensor timer drift in us from rtimer
+ *
+ * DHT uses 1us granularity and rtimer granularity is higher.
+ * So, allow the reading to drift by 1 tick in us
+ *
+ */
+#define DHT11_US_GUARD     RTIMERTICKS_TO_US(1)
+
+/**
+ * @brief Number of data requests
+ *
+ */
+#define DHT11_DATA_SAMPLES  (40)
+
+/**
+ * @brief Number of bytes in data
+ *
+ */
+#define DHT11_DATA_SIZE     (5)
+
+/**
+ * @brief DHT11 maximum sample rate is 1 Hz (1 second)
+ *
+ */
+#define DHT11_SAMPLING_RATE_SECONDS (1)
+/*---------------------------------------------------------------------------*/
+/**
+ * @brief DHT struct
+ *
+ */
+typedef struct {
+  /**
+   * @brief GPIO Port
+   *
+   */
+  gpio_hal_port_t port;
+  /**
+   * @brief GPIO Pin
+   *
+   */
+  gpio_hal_pin_t pin;
+  /**
+   * @brief DH status
+   *
+   */
+  uint8_t status;
+  /**
+   * @brief Time of last read
+   *
+   */
+  clock_time_t last_read;
+  /**
+   * @brief Data array
+   *
+   */
+  uint8_t data[DHT11_DATA_SIZE];
+} dht_t;
+
+/**
+ * @brief DHT struct
+ *
+ */
+static dht_t dht;
+/*---------------------------------------------------------------------------*/
+static int
+dht11_humidity_integer(void)
+{
+  return dht.data[0];
+}
+/*---------------------------------------------------------------------------*/
+static int
+dht11_humidity_decimal(void)
+{
+  return dht.data[1];
+}
+/*---------------------------------------------------------------------------*/
+static int
+dht11_temperature_integer(void)
+{
+  return dht.data[2];
+}
+/*---------------------------------------------------------------------------*/
+static int
+dht11_temperature_decimal(void)
+{
+  return dht.data[3];
+}
+/*---------------------------------------------------------------------------*/
+static int8_t
+dht_signal_duration(uint8_t active, uint32_t max_duration)
+{
+  rtimer_clock_t elapsed_ticks;
+  rtimer_clock_t max_wait_ticks = US_TO_RTIMERTICKS(max_duration) + DHT11_TICKS_GUARD;
+  rtimer_clock_t start_ticks = RTIMER_NOW();
+
+  /* Wait for signal to change */
+  RTIMER_BUSYWAIT_UNTIL(gpio_hal_arch_read_pin(dht.port, dht.pin) != active, max_wait_ticks);
+
+  elapsed_ticks = RTIMER_NOW() - start_ticks;
+
+  if(elapsed_ticks > max_wait_ticks) {
+    return -1;
+  }
+
+  return RTIMERTICKS_TO_US(elapsed_ticks);
+}
+/*---------------------------------------------------------------------------*/
+static int8_t
+dht_signal_transition(uint8_t active, uint32_t max_duration)
+{
+  return dht_signal_duration(active, max_duration);
+}
+/*---------------------------------------------------------------------------*/
+static uint8_t
+dht_verify_checksum(void)
+{
+  return ((dht.data[0] + dht.data[1] + dht.data[2] + dht.data[3]) & 0xFF) == dht.data[4];
+}
+/*---------------------------------------------------------------------------*/
+static uint8_t
+dht_read(void)
+{
+  uint8_t j, i;
+  /* Array to store the duration of each data signal to be calculated later */
+  int8_t data_signal_duration[DHT11_DATA_SAMPLES];
+
+  /**
+   * Data Single-bus free status is at high voltage level. When the communication
+   * between MCU and DHT11 begins, the programme of MCU will set Data Single-bus
+   * voltage level from high to low and this process must take at least 18ms to
+   * ensure DHT’s detection of MCU's signal, then MCU will pull up voltage and
+   * wait 20-40us for DHT’s response.
+   */
+  gpio_hal_arch_pin_set_output(dht.port, dht.pin);
+  gpio_hal_arch_clear_pin(dht.port, dht.pin);
+  RTIMER_BUSYWAIT(US_TO_RTIMERTICKS(18000UL));
+  gpio_hal_arch_set_pin(dht.port, dht.pin);
+  gpio_hal_arch_pin_set_input(dht.port, dht.pin);
+
+  if(dht_signal_transition(DHT11_SIGNAL_HIGH, DHT11_SIGNAL_START_PHASE1_DURATION) == -1) {
+    return DHT11_STATUS_TIMEOUT;
+  }
+
+  /**
+   * Once DHT detects the start signal,it will send out a low-voltage-level response
+   * signal, which lasts 80us. Then the programme of DHT sets Data Single-bus voltage
+   * level from low to high and keeps it for 80us for DHT’s preparation for sending data.
+   */
+  if(dht_signal_transition(DHT11_SIGNAL_LOW, DHT11_SIGNAL_START_PHASE2_DURATION) == -1) {
+    return DHT11_STATUS_TIMEOUT;
+  }
+
+  if(dht_signal_transition(DHT11_SIGNAL_HIGH, DHT11_SIGNAL_START_PHASE3_DURATION) == -1) {
+    return DHT11_STATUS_TIMEOUT;
+  }
+
+  for(i = 0; i < DHT11_DATA_SAMPLES; i++) {
+    /**
+     * When DHT is sending data to MCU, every bit of data begins with the 50us
+     * low-voltage-level and the length of the following high-voltage-level signal
+     * determines whether data bit is ""0"" or ""1""
+     */
+    if(dht_signal_transition(DHT11_SIGNAL_LOW, DHT11_SIGNAL_RESPONSE_PHASE1_DURATION) == -1) {
+      return DHT11_STATUS_TIMEOUT;
+    }
+
+    /*
+     * Save in array and calculate later.
+     * Should not spend time calculating in the loop else the bit bang timing gets lost
+     * Use bit 0 and bit 1 duration summed up to improve timming
+     */
+    data_signal_duration[i] = dht_signal_duration(DHT11_SIGNAL_HIGH,
+                                                  DHT11_SIGNAL_RESPONSE_BIT_0_DURATION
+                                                  + DHT11_SIGNAL_RESPONSE_BIT_1_DURATION);
+    if(data_signal_duration[i] == -1) {
+      return DHT11_STATUS_TIMEOUT;
+    }
+  }
+
+  memset(dht.data, 0, sizeof(uint8_t) * DHT11_DATA_SIZE);
+  for(j = 0, i = 0; i < DHT11_DATA_SAMPLES; i++) {
+
+    /**
+     * 26-28us voltage-length means data ""0""
+     * 70us voltage-length means 1 bit data ""1""
+     */
+    if(data_signal_duration[i] >= DHT11_SIGNAL_RESPONSE_BIT_0_DURATION + DHT11_US_GUARD) {
+      dht.data[j] = (dht.data[j] << 1) | 1;
+    } else {
+      dht.data[j] = dht.data[j] << 1;
+    }
+
+    /* Next byte */
+    if(i % 8 == 7U) {
+      j++;
+    }
+  }
+
+  /* Verify  checksum */
+  if(!dht_verify_checksum()) {
+    return DHT11_STATUS_CHECKSUM_FAILED;
+  } else {
+    return DHT11_STATUS_OKAY;
+  }
+}
+/*---------------------------------------------------------------------------*/
+static int
+value(int type)
+{
+  switch(type) {
+  case DHT11_VALUE_HUMIDITY_INTEGER:
+    return dht11_humidity_integer();
+  case DHT11_VALUE_HUMIDITY_DECIMAL:
+    return dht11_humidity_decimal();
+  case DHT11_VALUE_TEMPERATURE_INTEGER:
+    return dht11_temperature_integer();
+  case DHT11_VALUE_TEMPERATURE_DECIMAL:
+    return dht11_temperature_decimal();
+  }
+
+  return 0;
+}
+/*---------------------------------------------------------------------------*/
+static int
+status(int type)
+{
+  (void)type;
+
+  return dht.status;
+}
+/*---------------------------------------------------------------------------*/
+static int
+configure(int type, int c)
+{
+  switch(type) {
+  case DHT11_CONFIGURE_GPIO_PORT:
+    dht.port = c;
+    break;
+  case DHT11_CONFIGURE_GPIO_PIN:
+    dht.pin = c;
+    break;
+  case SENSORS_HW_INIT:
+    dht.last_read = 0;
+  case SENSORS_ACTIVE:
+    if(c == 1) {
+      clock_time_t now;
+
+      now = clock_seconds();
+      if(now - dht.last_read < DHT11_SAMPLING_RATE_SECONDS) {
+        return 0;
+      }
+      dht.last_read = now;
+      dht.status = dht_read();
+    }
+  case SENSORS_READY:
+    break;
+  default:
+    return 0;
+  }
+
+  return 1;
+}
+/*---------------------------------------------------------------------------*/
+SENSORS_SENSOR(dht11_sensor, ""dht11"", value, configure, status);
+/*----------------------------------------------------------------------------*/
+/** @} */
+"
+296,"/*
+ * Copyright (C) 2021 Yago Fontoura do Rosario <yago.rosario@hotmail.com.br>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*---------------------------------------------------------------------------*/
+
+/**
+ * \addtogroup dev
+ * @{
+ *
+ * \defgroup dht11-sensor DHT 11 Sensor driver
+ * @{
+ *
+ * \file
+ *      DHT 11 sensor header file
+ * \author
+ *      Yago Fontoura do Rosario <yago.rosario@hotmail.com.br
+ */
+
+#ifndef DHT11_SENSOR_H_
+#define DHT11_SENSOR_H_
+
+#include ""sensors.h""
+
+extern const struct sensors_sensor dht11_sensor;
+
+/**
+ * @brief DHT11 Configuration type for GPIO Port
+ *
+ */
+#define DHT11_CONFIGURE_GPIO_PORT   (0)
+
+/**
+ * @brief DHT11 Configuration type for GPIO Pin
+ *
+ */
+#define DHT11_CONFIGURE_GPIO_PIN    (1)
+
+/**
+ * @brief DHT11 value type for humidity integer part
+ *
+ */
+#define DHT11_VALUE_HUMIDITY_INTEGER       (0)
+
+/**
+ * @brief DHT11 value type for humidity decimal part
+ *
+ */
+#define DHT11_VALUE_HUMIDITY_DECIMAL       (1)
+
+/**
+ * @brief DHT11 value type for temperature integer part
+ *
+ */
+#define DHT11_VALUE_TEMPERATURE_INTEGER    (2)
+
+/**
+ * @brief DHT11 value type for temperature decimal part
+ *
+ */
+#define DHT11_VALUE_TEMPERATURE_DECIMAL    (3)
+
+/**
+ * @brief DHT11 status okay
+ *
+ */
+#define DHT11_STATUS_OKAY               (0)
+
+/**
+ * @brief DHT11 status timeout
+ *
+ */
+#define DHT11_STATUS_TIMEOUT            (1)
+
+/**
+ * @brief DHT11 status checksum failed
+ *
+ */
+#define DHT11_STATUS_CHECKSUM_FAILED    (2)
+
+#endif /* DHT11_SENSOR_H_ */
+
+/**
+ * @}
+ * @}
+ */
+"

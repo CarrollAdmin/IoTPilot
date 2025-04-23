@@ -1,0 +1,104 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "mbox_init_OK",
+                    "target": "EVTIMER_INIT_MBOX"
+                },
+                {
+                    "condition": "mbox_init_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "EVTIMER_INIT_MBOX",
+            "transitions": [
+                {
+                    "condition": "evtimer_init_mbox_OK",
+                    "target": "EVTIMER_INIT_MSG"
+                },
+                {
+                    "condition": "evtimer_init_mbox_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "EVTIMER_INIT_MSG",
+            "transitions": [
+                {
+                    "condition": "evtimer_init_msg_OK",
+                    "target": "ADD_EVENTS"
+                },
+                {
+                    "condition": "evtimer_init_msg_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ADD_EVENTS",
+            "transitions": [
+                {
+                    "condition": "FOR_LOOP_EVENTS_COMPLETE",
+                    "target": "ADD_TRIGGER_EVENT"
+                },
+                {
+                    "condition": "evtimer_add_mbox_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ADD_TRIGGER_EVENT",
+            "transitions": [
+                {
+                    "condition": "evtimer_add_msg_OK",
+                    "target": "WAIT_MESSAGE"
+                },
+                {
+                    "condition": "evtimer_add_msg_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WAIT_MESSAGE",
+            "transitions": [
+                {
+                    "condition": "msg_receive_OK",
+                    "target": "VERIFY_MBOX"
+                },
+                {
+                    "condition": "msg_receive_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "VERIFY_MBOX",
+            "transitions": [
+                {
+                    "condition": "FOR_LOOP_VERIFICATION_FAIL",
+                    "target": "ERROR"
+                },
+                {
+                    "condition": "FOR_LOOP_VERIFICATION_SUCCESS",
+                    "target": "SUCCESS"
+                }
+            ]
+        },
+        {
+            "name": "SUCCESS",
+            "transitions": []
+        },
+        {
+            "name": "ERROR",
+            "transitions": []
+        }
+    ]
+}

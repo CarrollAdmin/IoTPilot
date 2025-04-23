@@ -1,0 +1,70 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "START",
+                    "target": "WIFI_INIT"
+                }
+            ]
+        },
+        {
+            "name": "WIFI_INIT",
+            "transitions": [
+                {
+                    "condition": "WIFI_INIT_SUCCESS",
+                    "target": "WIFI_CONNECTED"
+                },
+                {
+                    "condition": "WIFI_INIT_FAILURE",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WIFI_CONNECTED",
+            "transitions": [
+                {
+                    "condition": "WIFI_IS_CONNECTED",
+                    "target": "COAP_SEND"
+                },
+                {
+                    "condition": "WIFI_NOT_CONNECTED",
+                    "target": "WIFI_INIT"
+                }
+            ]
+        },
+        {
+            "name": "COAP_SEND",
+            "transitions": [
+                {
+                    "condition": "GCOAP_MEMO_TIMEOUT",
+                    "target": "ERROR"
+                },
+                {
+                    "condition": "GCOAP_MEMO_RESP_TRUNC",
+                    "target": "COAP_SEND"
+                },
+                {
+                    "condition": "GCOAP_MEMO_RESP_OTHER_ERROR",
+                    "target": "ERROR"
+                },
+                {
+                    "condition": "GCOAP_MEMO_RESP_SUCCESS",
+                    "target": "COAP_SEND"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "HANDLE_ERROR_RECOVERY",
+                    "target": "WIFI_INIT"
+                }
+            ]
+        }
+    ]
+}

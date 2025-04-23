@@ -1,0 +1,1610 @@
+id,code
+129,define MQTT_THREAD_PRIORITY            (THREAD_PRIORITY_MAIN - 1)
+130,define MQTT_THREAD_STACKSIZE           (THREAD_STACKSIZE_LARGE)
+131,define MQTT_YIELD_POLLING_MS           (30)
+132,void TimerInit(Timer *timer)
+133,char TimerIsExpired(Timer *timer)
+134,"void TimerCountdownMS(Timer *timer, unsigned int msecs)"
+135,"void TimerCountdown(Timer *timer, unsigned int secs)"
+136,int TimerLeftMS(Timer *timer)
+137,void NetworkInit(Network *n)
+138,"int NetworkConnect(Network *n, char* address_ip, int port_number)"
+139,void NetworkDisconnect(Network *n)
+140,void MutexInit(Mutex *mutex)
+141,int MutexLock(Mutex *mutex)
+142,int MutexUnlock(Mutex *mutex)
+143,"int ThreadStart(Thread *thread, void (*fn)"
+144,"struct Network {
+    sock_tcp_t sock; 
+    int (*mqttread) (struct Network*, unsigned char*, int, int);
+    int (*mqttwrite) (struct Network*, unsigned char*, int, int);
+} Network;"
+145,#include mutex.h
+146,#include thread.h
+147,#include net/sock/tcp.h
+148,if defined(__cplusplus)
+149,if defined(WIN32_DLL)
+150,DLLImport __declspec(dllimport)
+151,DLLExport __declspec(dllexport)
+152,elif defined(LINUX_SO)
+153,"DLLExport  __attribute__ ((visibility (""default"")"
+154,if defined(MQTTCLIENT_PLATFORM_HEADER)
+155,define xstr(s)
+156,define str(s)
+157,include xstr(MQTTCLIENT_PLATFORM_HEADER)
+158,void TimerInit(Timer*)
+159,char TimerIsExpired(Timer*)
+160,"void TimerCountdownMS(Timer*, unsigned int)"
+161,"void TimerCountdown(Timer*, unsigned int)"
+162,int TimerLeftMS(Timer*)
+163,typedef void (*messageHandler)
+164,if defined(MQTT_TASK)
+165,"void MQTTClientInit(MQTTClient* client, Network* network, unsigned int command_timeout_ms,
+		unsigned char* sendbuf, size_t sendbuf_size, unsigned char* readbuf, size_t readbuf_size)"
+166,"int MQTTConnectWithResults(MQTTClient* client, MQTTPacket_connectData* options,
+    MQTTConnackData* data)"
+167,"int MQTTConnect(MQTTClient* client, MQTTPacket_connectData* options)"
+168,"int MQTTPublish(MQTTClient* client, const char*, MQTTMessage*)"
+169,"int MQTTSetMessageHandler(MQTTClient* c, const char* topicFilter, messageHandler messageHandler)"
+170,"int MQTTSubscribe(MQTTClient* client, const char* topicFilter, enum QoS, messageHandler)"
+171,"int MQTTSubscribeWithResults(MQTTClient* client, const char* topicFilter, enum QoS, messageHandler, MQTTSubackData* data)"
+172,"int MQTTUnsubscribe(MQTTClient* client, const char* topicFilter)"
+173,int MQTTDisconnect(MQTTClient* client)
+174,"int MQTTYield(MQTTClient* client, int time)"
+175,int MQTTIsConnected(MQTTClient* client)
+176,if defined(MQTT_TASK)
+177,int MQTTStartTask(MQTTClient* client)
+178,if defined(__cplusplus)
+179,"struct Network
+{
+	int (*mqttread)(Network*, unsigned char* read_buffer, int, int);
+	int (*mqttwrite)(Network*, unsigned char* send_buffer, int, int);
+} Network;"
+180,"struct MQTTMessage
+{
+    enum QoS qos;
+    unsigned char retained;
+    unsigned char dup;
+    unsigned short id;
+    void *payload;
+    size_t payloadlen;
+} MQTTMessage;"
+181,"struct MessageData
+{
+    MQTTMessage* message;
+    MQTTString* topicName;
+} MessageData;"
+182,"struct MQTTConnackData
+{
+    unsigned char rc;
+    unsigned char sessionPresent;
+} MQTTConnackData;"
+183,"struct MQTTSubackData
+{
+    enum QoS grantedQoS;
+} MQTTSubackData;"
+184,"enum QoS { QOS0, QOS1, QOS2, SUBFAIL=0x80 };"
+185,"enum returnCode { BUFFER_OVERFLOW = -2, FAILURE = -1, SUCCESS = 0 };"
+186,#include MQTTPacket.h
+187,basic GPIO (General-purpose input/output)
+188,signal flanks (or both)
+189,"p GPIO_PIN(port, pin)"
+190,full ports (i.e. groups of pins)
+191,"the implementations (and ease
+ * the memory consumption)"
+192,"powered on (e.g. through
+ * peripheral clock gating)"
+194,power modes (although this is not very likely)
+195,"brief   Convert (port, pin)"
+196,"define GPIO_PIN(x,y)"
+197,define GPIO_UNDEF          ((gpio_t)
+198,typedef void (*gpio_cb_t)
+199,"int gpio_init(gpio_t pin, gpio_mode_t mode)"
+200,if defined(MODULE_PERIPH_GPIO_IRQ)
+201,defined flank(s)
+202,active flank(s)
+206,int gpio_read(gpio_t pin)
+207,void gpio_set(gpio_t pin)
+208,void gpio_clear(gpio_t pin)
+209,void gpio_toggle(gpio_t pin)
+210,"void gpio_write(gpio_t pin, int value)"
+211,"int gpio_is_equal(gpio_t gpio1, gpio_t gpio2)"
+212,int gpio_is_valid(gpio_t gpio)
+213,#include limits.h
+214,#include periph_cpu.h
+215,#include periph_conf.h
+216,esp_err_t esp_idf_gpio_config(const gpio_config_t *cfg)
+217,esp_err_t esp_idf_gpio_reset_pin(gpio_num_t gpio_num)
+218,esp_err_t esp_idf_gpio_intr_enable(gpio_num_t gpio_num)
+219,esp_err_t esp_idf_gpio_intr_disable(gpio_num_t gpio_num)
+220,"esp_err_t esp_idf_gpio_set_intr_type(gpio_num_t gpio_num,
+                                     gpio_int_type_t intr_type)"
+221,esp_err_t esp_idf_gpio_install_isr_service(int intr_alloc_flags)
+222,"esp_err_t esp_idf_gpio_isr_handler_add(gpio_num_t gpio_num,
+                                       gpio_isr_t isr_handler, void *args)"
+223,"esp_err_t esp_idf_gpio_wakeup_enable(gpio_num_t gpio_num,
+                                     gpio_int_type_t intr_type)"
+224,esp_err_t esp_idf_gpio_deep_sleep_hold(void)
+225,"esp_err_t esp_idf_gpio_set_drive_capability(gpio_num_t gpio_num,
+                                            gpio_drive_cap_t strength)"
+226,esp_err_t esp_idf_rtc_gpio_deinit(gpio_num_t gpio_num)
+227,esp_err_t esp_idf_rtc_gpio_pullup_en(gpio_num_t gpio_num)
+228,esp_err_t esp_idf_rtc_gpio_pullup_dis(gpio_num_t gpio_num)
+229,esp_err_t esp_idf_rtc_gpio_pulldown_en(gpio_num_t gpio_num)
+230,esp_err_t esp_idf_rtc_gpio_pulldown_dis(gpio_num_t gpio_num)
+231,#include esp_err.h
+232,#include hal/gpio_types.h
+233,"it yields (@ref
+ *       thread_yield)"
+234,"is runnable (@ref
+ *       STATUS_ON_RUNQUEUE)"
+235,"to yield (or be interrupted
+ *       by a thread with higher priority)"
+236,"is run (if not
+ *    indicated otherwise)"
+237,int main(void)
+239,ref msg_try_send()
+240,ref msg_init_queue()
+241,inline __attribute__((always_inline)
+242,if defined(DEVELHELP)
+243,if defined(MODULE_CORE_THREAD_FLAGS)
+244,if defined(MODULE_CORE_MSG)
+245,if defined(MODULE_CORE_MSG)
+246,"this thread
+                                         (i.e. all blocked sends)"
+247,if defined(DEVELHELP)
+248,if defined(CONFIG_THREAD_NAMES)
+249,if defined(DEVELHELP)
+250,define THREAD_CREATE_SLEEPING          (1)
+251,define THREAD_AUTO_FREE                (2)
+252,call thread_yield()
+253,context switch (i.e. an interrupt)
+254,define THREAD_CREATE_WOUT_YIELD        (4)
+255,"stack usage (for
+ *        debugging and profiling purposes)"
+256,define THREAD_CREATE_STACKTEST         (8)
+257,"kernel_pid_t thread_create(char *stack,
+                           int stacksize,
+                           uint8_t priority,
+                           int flags,
+                           thread_task_func_t task_func,
+                           void *arg,
+                           const char *name)"
+258,return thread_get_unchecked(pid)
+259,thread_status_t thread_getstatus(kernel_pid_t pid)
+260,void thread_sleep(void)
+261,from thread_yield_higher()
+262,see     thread_yield_higher()
+263,if defined(MODULE_CORE_THREAD)
+264,void thread_yield(void)
+265,void thread_yield(void)
+266,from thread_yield()
+267,see     thread_yield()
+268,void thread_yield_higher(void)
+269,ref thread_kill_zombie()
+270,void thread_zombify(void)
+271,int thread_kill_zombie(kernel_pid_t pid)
+272,int thread_wakeup(kernel_pid_t pid)
+273,kernel_pid_t thread_getpid(void)
+274,by priority (internal)
+275,"void thread_add_to_list(list_node_t *list, thread_t *thread)"
+276,if defined(MODULE_CORE_THREAD)
+277,"uintptr_t measure_stack_free_internal(const char *stack, size_t size)"
+278,int thread_isr_stack_usage(void)
+279,void thread_stack_print(void)
+280,void thread_print_stack(void)
+281,ref msg_init_queue()
+282,int thread_has_msg_queue(const volatile struct _thread *thread)
+283,if defined(MODULE_CORE_MSG)
+284,thread_status_t thread_get_status(const thread_t *thread)
+285,uint8_t thread_get_priority(const thread_t *thread)
+286,is active (currently running or waiting to be scheduled)
+287,bool thread_is_active(const thread_t *thread)
+288,"thread state (or to ""unknown"")"
+289,start address (lowest)
+290,if defined(DEVELHELP)
+291,size_t thread_get_stacksize(const thread_t *thread)
+292,if defined(DEVELHELP)
+293,kernel_pid_t thread_getpid_of(const thread_t *thread)
+294,if defined(CONFIG_THREAD_NAMES)
+295,uintptr_t thread_measure_stack_free(const thread_t *thread)
+296,return measure_stack_free_internal((const char *)
+297,#include thread.h
+298,#include clist.h
+299,#include cib.h
+300,#include msg.h
+301,#include sched.h
+302,#include thread_config.h
+303,#include thread_flags.h
+304,#include thread_arch.h
+305,"void event_thread_init_multi(event_queue_t *queues, size_t queues_numof,
+                             char *stack, size_t stack_size,
+                             unsigned priority)"
+306,"void event_thread_init(event_queue_t *queue,
+                                     char *stack, size_t stack_size,
+                                     unsigned priority)"
+307,define EVENT_PRIO_HIGHEST  (&event_thread_queues[EVENT_QUEUE_PRIO_HIGHEST])
+308,define EVENT_PRIO_MEDIUM   (&event_thread_queues[EVENT_QUEUE_PRIO_MEDIUM])
+309,define EVENT_PRIO_LOWEST   (&event_thread_queues[EVENT_QUEUE_PRIO_LOWEST])
+310,#include stddef.h
+311,#include event.h
+312,Observe extension (RFC 7641)
+313,"of resources (coap_resource_t
+ * structs)"
+314,path characters (digit and capital precede lower case)
+315,Call gcoap_resp_init()
+316,the coap_opt_add_xxx()
+317,"option number (see ""CoAP option numbers"" in
+ *    [CoAP defines](group__net__coap.html)"
+319,server error (5.00)
+320,only gcoap_response()
+321,provides gcoap_encode_link()
+323,calling coap_hdr_set_type()
+324,the coap_opt_add_xxx()
+325,"option number (see ""CoAP option numbers"" in
+ *    [CoAP defines](group__net__coap.html)"
+329,callback parameter (`memo->state`)
+330,with coap_get_code_class()
+331,and coap_get_code_detail()
+332,Call gcoap_obs_init()
+333,the coap_opt_add_xxx()
+334,"option number (see ""CoAP option numbers"" in
+ *    [CoAP defines](group__net__coap.html)"
+336,call gcoap_obs_send()
+337,a reset (RST)
+338,the _riot_block2_handler()
+339,Use coap_block2_init()
+340,Use gcoap_resp_init()
+341,Use coap_opt_add_block2()
+343,use coap_block2_finish()
+344,Use coap_get_block1()
+345,Use gcoap_resp_init()
+346,Use coap_opt_add_block1_control()
+349,use coap_block_object_init()
+350,use coap_get_block2()
+352,Use coap_opt_put_block2_control()
+354,See _do_block_post()
+355,use coap_block_slicer_init()
+357,Use coap_opt_add_block1()
+359,use coap_block1_finish()
+360,by gcoap_get_sock_dtls()
+361,if IS_USED(MODULE_GCOAP_DTLS)
+362,define CONFIG_GCOAP_PORT              (5683)
+363,define CONFIG_GCOAPS_PORT             (5684)
+364,define CONFIG_GCOAP_DTLS_HANDSHAKE_TIMEOUT_MSEC    (3 * MS_PER_SEC)
+365,define CONFIG_GCOAP_DTLS_MINIMUM_AVAILABLE_SESSIONS  (1)
+366,define CONFIG_GCOAP_DTLS_MINIMUM_AVAILABLE_SESSIONS_TIMEOUT_MSEC  (15 * MS_PER_SEC)
+367,define CONFIG_GCOAP_PDU_BUF_SIZE      (128)
+368,define CONFIG_GCOAP_REQ_WAITING_MAX   (2)
+369,define GCOAP_TOKENLEN_MAX      (8)
+370,define GCOAP_HEADER_MAXLEN     (sizeof(coap_hdr_t)
+371,define CONFIG_GCOAP_TOKENLEN          (2)
+372,define GCOAP_PAYLOAD_MARKER    (0xFF)
+373,define GCOAP_MEMO_UNUSED       (0)
+374,define GCOAP_MEMO_RETRANSMIT   (1)
+375,define GCOAP_MEMO_WAIT         (2)
+376,define GCOAP_MEMO_RESP         (3)
+377,define GCOAP_MEMO_TIMEOUT      (4)
+378,define GCOAP_MEMO_ERR          (5)
+379,define GCOAP_MEMO_RESP_TRUNC   (6)
+380,define GCOAP_SEND_LIMIT_NON    (-1)
+381,when defined (undefined per default)
+382,define CONFIG_GCOAP_NON_TIMEOUT_MSEC       (5000U)
+383,define CONFIG_GCOAP_OBS_CLIENTS_MAX   (2)
+384,define CONFIG_GCOAP_OBS_REGISTRATIONS_MAX     (2)
+385,define GCOAP_OBS_MEMO_UNUSED   (0)
+386,define GCOAP_OBS_MEMO_IDLE     (1)
+387,define GCOAP_OBS_MEMO_PENDING  (2)
+388,"latency period (128
+ * sec)"
+389,define CONFIG_GCOAP_OBS_VALUE_WIDTH   (3)
+390,define GCOAP_OBS_TICK_EXPONENT (0)
+391,define GCOAP_OBS_TICK_EXPONENT (6)
+392,define GCOAP_OBS_TICK_EXPONENT (14)
+393,for gcoap_obs_init()
+394,define GCOAP_OBS_INIT_OK       (0)
+395,define GCOAP_OBS_INIT_ERR      (-1)
+396,define GCOAP_OBS_INIT_UNUSED   (-2)
+397,if IS_USED(MODULE_GCOAP_DTLS)
+398,define GCOAP_DTLS_EXTRA_STACKSIZE  (THREAD_STACKSIZE_DEFAULT)
+399,define GCOAP_DTLS_EXTRA_STACKSIZE  (0)
+400,if IS_USED(MODULE_GCOAP_FILESERVER)
+401,define GCOAP_VFS_EXTRA_STACKSIZE   (VFS_DIR_BUFFER_SIZE + VFS_FILE_BUFFER_SIZE)
+402,define GCOAP_VFS_EXTRA_STACKSIZE   (0)
+403,"define GCOAP_STACK_SIZE (THREAD_STACKSIZE_DEFAULT + DEBUG_EXTRA_STACKSIZE \
+                          + sizeof(coap_pkt_t)"
+404,define CONFIG_GCOAP_RESEND_BUFS_MAX      (1)
+405,define COAP_LINK_FLAG_INIT_RESLIST  (1)
+406,p buf (or writable if @p buf is null)
+407,typedef ssize_t (*gcoap_link_encoder_t)
+408,define GCOAP_RESOURCE_FOUND        (0)
+409,define GCOAP_RESOURCE_WRONG_METHOD (1)
+410,define GCOAP_RESOURCE_NO_PATH      (2)
+411,define GCOAP_RESOURCE_ERROR        (3)
+414,if IS_USED(MODULE_GCOAP_DTLS)
+415,if IS_USED(MODULE_GCOAP_DTLS)
+416,"resource paths (as per
+     * the documentation of the @ref resources and @ref resources_len
+     * fields)"
+418,if IS_USED(MODULE_NANOCOAP_CACHE)
+419,kernel_pid_t gcoap_init(void)
+420,"single listener (that is,
+ *      `listener->next == NULL`)"
+421,void gcoap_register_listener(gcoap_listener_t *listener)
+424,for cache (re-)
+425,ref coap_opt_remove()
+429,for cache (re-)
+430,ref coap_opt_remove()
+431,"int gcoap_req_init(coap_pkt_t *pdu, uint8_t *buf, size_t len,
+                                 unsigned code, const char *path)"
+434,"return coap_opt_finish(pdu, COAP_OPT_FINISH_NONE)"
+435,highest supported (by value)
+436,"ssize_t gcoap_req_send(const uint8_t *buf, size_t len,
+                       const sock_udp_ep_t *remote,
+                       gcoap_resp_handler_t resp_handler, void *context,
+                       gcoap_socket_type_t tl_type)"
+441,"ssize_t gcoap_response(coap_pkt_t *pdu, uint8_t *buf,
+                                     size_t len, unsigned code)"
+442,"int gcoap_obs_init(coap_pkt_t *pdu, uint8_t *buf, size_t len,
+                   const coap_resource_t *resource)"
+443,"size_t gcoap_obs_send(const uint8_t *buf, size_t len,
+                      const coap_resource_t *resource)"
+444,brief   Forgets (invalidates)
+445,the internal (local)
+446,"deregister request (i.e., a GET request with the token
+ * of the registration and the observe option set to COAP_OBS_DEREGISTER)"
+447,"int gcoap_obs_req_forget(const sock_udp_ep_t *remote, const uint8_t *token,
+                         size_t tokenlen)"
+448,uint8_t gcoap_op_state(void)
+449,"int gcoap_get_resource_list(void *buf, size_t maxlen, uint8_t cf,
+                               gcoap_socket_type_t tl_type)"
+450,p buf (or writable if @p buf is null)
+451,"ssize_t gcoap_encode_link(const coap_resource_t *resource, char *buf,
+                          size_t maxlen, coap_link_encoder_ctx_t *context)"
+452,if IS_USED(MODULE_GCOAP_DTLS)
+453,"struct gcoap_request_memo {
+    unsigned state;                     /**< State of this memo, a GCOAP_MEMO... */
+    int send_limit;                     /**< Remaining resends, 0 if none;
+                                             GCOAP_SEND_LIMIT_NON if non-confirmable */
+    union {
+        uint8_t hdr_buf[GCOAP_HEADER_MAXLEN];
+                                        /**< Copy of PDU header, if no resends */
+        gcoap_resend_t data;            /**< Endpoint and PDU buffer, for resend */
+    } msg;"
+454,#include stdint.h
+455,#include event/callback.h
+456,#include event/timeout.h
+457,#include net/ipv6/addr.h
+458,#include net/sock/udp.h
+459,#include net/sock/dtls.h
+460,#include net/nanocoap.h
+461,#include net/nanocoap/cache.h
+462,#include timex.h
+463,#include vfs.h
+464,int main(void)
+465,a port (`12345` in this case)
+466,ref sock_udp_recv()
+467,int main(void)
+468,"networking implementation (e.g. `gnrc_ipv6_default` for
+ * @ref net_gnrc ""GNRC"")"
+469,ref sock_udp_send()
+470,if defined (__clang__)
+471,if defined (__clang__)
+472,if defined(MODULE_SOCK_AUX_LOCAL)
+473,if defined(MODULE_SOCK_AUX_TIMESTAMP)
+474,if defined(MODULE_SOCK_AUX_RSSI)
+475,if defined(MODULE_SOCK_AUX_TTL)
+476,if defined(MODULE_SOCK_AUX_LOCAL)
+477,if defined(MODULE_SOCK_AUX_TIMESTAMP)
+478,ref sock_udp_send()
+479,ref sock_udp_send()
+480,"each other (i.e.
+ *          `(local->netif != remote->netif)"
+481,"int sock_udp_create(sock_udp_t *sock, const sock_udp_ep_t *local,
+                    const sock_udp_ep_t *remote, uint16_t flags)"
+482,void sock_udp_close(sock_udp_t *sock)
+483,"int sock_udp_get_local(sock_udp_t *sock, sock_udp_ep_t *ep)"
+484,"int sock_udp_get_remote(sock_udp_t *sock, sock_udp_ep_t *ep)"
+485,"no timeout (wait until
+ *                      data is available)"
+486,while sock_udp_recv()
+487,"ssize_t sock_udp_recv_aux(sock_udp_t *sock, void *data, size_t max_len,
+                          uint32_t timeout, sock_udp_ep_t *remote,
+                          sock_udp_aux_rx_t *aux)"
+488,"no timeout (wait until
+ *                      data is available)"
+489,while sock_udp_recv()
+490,"ssize_t sock_udp_recv(sock_udp_t *sock,
+                                    void *data, size_t max_len,
+                                    uint32_t timeout, sock_udp_ep_t *remote)"
+491,"return sock_udp_recv_aux(sock, data, max_len, timeout, remote, NULL)"
+492,"no timeout (wait until
+ *                      data is available)"
+493,while sock_udp_recv()
+494,"ssize_t sock_udp_recv_buf_aux(sock_udp_t *sock, void **data, void **buf_ctx,
+                              uint32_t timeout, sock_udp_ep_t *remote,
+                              sock_udp_aux_rx_t *aux)"
+495,"no timeout (wait until
+ *                      data is available)"
+496,while sock_udp_recv()
+497,"ssize_t sock_udp_recv_buf(sock_udp_t *sock,
+                                        void **data, void **buf_ctx,
+                                        uint32_t timeout,
+                                        sock_udp_ep_t *remote)"
+498,"return sock_udp_recv_buf_aux(sock, data, buf_ctx, timeout, remote, NULL)"
+499,"local interface (
+ssize_t sock_udp_sendv_aux(sock_udp_t *sock, const iolist_t *snips,
+                           const sock_udp_ep_t *remote, sock_udp_aux_tx_t *aux)"
+500,"local interface (
+static inline ssize_t sock_udp_send_aux(sock_udp_t *sock,
+                                        const void *data, size_t len,
+                                        const sock_udp_ep_t *remote,
+                                        sock_udp_aux_tx_t *aux)"
+501,"return sock_udp_sendv_aux(sock, &snip, remote, aux)"
+502,"local interface (
+static inline ssize_t sock_udp_send(sock_udp_t *sock,
+                                    const void *data, size_t len,
+                                    const sock_udp_ep_t *remote)"
+503,"return sock_udp_send_aux(sock, data, len, remote, NULL)"
+504,"local interface (
+static inline ssize_t sock_udp_sendv(sock_udp_t *sock,
+                                     const iolist_t *snips,
+                                     const sock_udp_ep_t *remote)"
+505,"return sock_udp_sendv_aux(sock, snips, remote, NULL)"
+506,bool sock_udp_ep_is_multicast(const sock_udp_ep_t *ep)
+507,return ipv6_addr_is_multicast((const ipv6_addr_t *)
+508,return ipv4_addr_is_multicast((const ipv4_addr_t *)
+509,bool sock_udp_ep_is_v6(const sock_udp_ep_t *ep)
+510,#include stdio.h
+511,#include net/sock/udp.h
+512,#include net/sock/udp.h
+513,#include stdio.h
+514,#include net/af.h
+515,#include net/protnum.h
+516,#include net/ipv6/addr.h
+517,#include net/sock/udp.h
+518,#include xtimer.h
+519,#include assert.h
+520,#include errno.h
+521,#include stdint.h
+522,#include stdlib.h
+523,#include sys/types.h
+524,#include net/af.h
+525,#include net/sock.h
+526,#include net/ipv4/addr.h
+527,#include net/ipv6/addr.h
+528,#include sock_types.h
+529,UDP API (to be used from TCPIP thread)
+530,"CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION)"
+531,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+532,supplied argument (udp_pcb.recv_arg)
+533,typedef void (*udp_recv_fn)
+534,IPv4 address (if not 'any')
+535,interface index (if nonzero)
+536,external reference (e.g. SNMP agent)
+537,void             udp_remove     (struct udp_pcb *pcb)
+538,"err_t            udp_bind       (struct udp_pcb *pcb, const ip_addr_t *ipaddr,
+                                 u16_t port)"
+539,"void             udp_bind_netif (struct udp_pcb *pcb, const struct netif* netif)"
+540,"err_t            udp_connect    (struct udp_pcb *pcb, const ip_addr_t *ipaddr,
+                                 u16_t port)"
+541,void             udp_disconnect (struct udp_pcb *pcb)
+542,"void             udp_recv       (struct udp_pcb *pcb, udp_recv_fn recv,
+                                 void *recv_arg)"
+543,"err_t            udp_sendto_if  (struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port,
+                                 struct netif *netif)"
+544,"err_t            udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port,
+                                 struct netif *netif, const ip_addr_t *src_ip)"
+545,"err_t            udp_sendto     (struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port)"
+546,"err_t            udp_send       (struct udp_pcb *pcb, struct pbuf *p)"
+547,"err_t            udp_sendto_if_chksum(struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port,
+                                 struct netif *netif, u8_t have_chksum,
+                                 u16_t chksum)"
+548,"err_t            udp_sendto_chksum(struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port,
+                                 u8_t have_chksum, u16_t chksum)"
+549,"err_t            udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
+                                 u8_t have_chksum, u16_t chksum)"
+550,"err_t            udp_sendto_if_src_chksum(struct udp_pcb *pcb, struct pbuf *p,
+                                 const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif,
+                                 u8_t have_chksum, u16_t chksum, const ip_addr_t *src_ip)"
+551,define          udp_flags(pcb)
+552,"define          udp_setflags(pcb, f)"
+553,"define          udp_set_flags(pcb, set_flags)"
+554,"define          udp_clear_flags(pcb, clr_flags)"
+555,"define          udp_is_flag_set(pcb, flag)"
+556,"void             udp_input      (struct pbuf *p, struct netif *inp)"
+557,void             udp_init       (void)
+558,define udp_new_ip6()
+559,"define udp_set_multicast_netif_addr(pcb, ip4addr)"
+560,define udp_get_multicast_netif_addr(pcb)
+561,"define udp_set_multicast_netif_index(pcb, idx)"
+562,define udp_get_multicast_netif_index(pcb)
+563,"define udp_set_multicast_ttl(pcb, value)"
+564,define udp_get_multicast_ttl(pcb)
+565,void udp_debug_print(struct udp_hdr *udphdr)
+566,define udp_debug_print(udphdr)
+567,"void udp_netif_ip_addr_changed(const ip_addr_t* old_addr, const ip_addr_t* new_addr)"
+568,#include lwip/opt.h
+569,#include lwip/pbuf.h
+570,#include lwip/netif.h
+571,#include lwip/ip_addr.h
+572,#include lwip/ip.h
+573,#include lwip/ip6_addr.h
+574,#include lwip/prot/udp.h
+575,Espressif Systems (Shanghai)
+576,"nvs_flash_read_security_cfg API (when ""NVS_ENCRYPTION"" is enabled)"
+577,"nvs_flash_generate_keys API (when ""NVS_ENCRYPTION"" is enabled)"
+578,"nvs_flash_secure_init_partition API (when ""NVS_ENCRYPTION"" is enabled)"
+579,esp_err_t nvs_flash_init(void)
+580,esp_err_t nvs_flash_init_partition(const char *partition_label)
+581,esp_err_t nvs_flash_init_partition_ptr(const esp_partition_t *partition)
+582,on success (storage was deinitialized)
+583,esp_err_t nvs_flash_deinit(void)
+584,esp_err_t nvs_flash_deinit_partition(const char* partition_label)
+585,"NVS partition (one with label ""nvs"")"
+586,initialization fails (shouldn't happen)
+587,esp_err_t nvs_flash_erase(void)
+588,part_name    Name (label)
+589,initialization fails (shouldn't happen)
+590,esp_err_t nvs_flash_erase_partition(const char *part_name)
+591,esp_err_t nvs_flash_erase_partition_ptr(const esp_partition_t *partition)
+592,Security configuration (keys)
+593,esp_err_t nvs_flash_secure_init(nvs_sec_cfg_t* cfg)
+594,Security configuration (keys)
+595,"esp_err_t nvs_flash_secure_init_partition(const char *partition_label, nvs_sec_cfg_t* cfg)"
+596,"esp_err_t nvs_flash_generate_keys(const esp_partition_t* partition, nvs_sec_cfg_t* cfg)"
+597,"esp_err_t nvs_flash_read_security_cfg(const esp_partition_t* partition, nvs_sec_cfg_t* cfg)"
+598,#include nvs.h
+599,#include esp_partition.h
+600,"int dht_init(dht_t *dev, const dht_params_t *params)"
+601,device type (DHT11_2022)
+602,"int dht_read(dht_t *dev, int16_t *temp, int16_t *hum)"
+603,#include errno.h
+604,#include stdint.h
+605,#include periph/gpio.h
+606,define INADDRSZ            (4)
+607,define IN6ADDRSZ           (16)
+608,"int inet_pton(int af, const char *src, void *dst)"
+609,#include net/af.h
+610,#include sys/bytes.h
+611,#include netinet/in.h
+612,configuration and (auto)
+613,define NIMBLE_CONTROLLER_PRIO      (0)
+614,define NIMBLE_CONTROLLER_STACKSIZE (THREAD_STACKSIZE_DEFAULT)
+615,if IS_USED(MODULE_NIMBLE_NETIF)
+616,define NIMBLE_HOST_PRIO            (NIMBLE_CONTROLLER_PRIO + 1)
+617,define NIMBLE_HOST_PRIO            (THREAD_PRIORITY_MAIN - 2)
+618,define NIMBLE_HOST_STACKSIZE       (THREAD_STACKSIZE_DEFAULT)
+619,PHY mode (always supported)
+620,if IS_USED(MODULE_NIMBLE_PHY_2MBIT)
+621,if IS_USED(MODULE_NIMBLE_PHY_CODED)
+622,void nimble_riot_init(void)
+623,int nimble_riot_get_phy_hci(uint8_t mode)
+624,#include stdint.h
+625,#include kernel_defines.h
+626,discoverable mode (BLE_GAP_DISC_MODE_GEN)
+627,connectable mode (BLE_GAP_CONN_MODE_UND)
+628,No expiration (BLE_HS_FOREVER)
+629,define NIMBLE_AUTOADV_FLAG_LEGACY          (1 << 0)
+630,define NIMBLE_AUTOADV_FLAG_HD_MODE         (1 << 1)
+631,define NIMBLE_AUTOADV_FLAG_CONNECTABLE     (1 << 2)
+632,define NIMBLE_AUTOADV_FLAG_SCANNABLE       (1 << 3)
+633,define NIMBLE_AUTOADV_FLAG_ANONYMOUS       (1 << 4)
+634,define NIMBLE_AUTOADV_FLAG_SCAN_REQ_NOTIF  (1 << 5)
+635,accepting connections (advertising)
+636,void nimble_autoadv_init(const nimble_autoadv_cfg_t *cfg)
+637,void nimble_autoadv_cfg_update(nimble_autoadv_cfg_t *cfg)
+638,void nimble_autoadv_get_cfg(nimble_autoadv_cfg_t *cfg)
+639,"int nimble_autoadv_add_field(uint8_t type, const void *data, size_t data_len)"
+640,"void nimble_autoadv_set_gap_cb(ble_gap_event_fn *cb, void *cb_arg)"
+641,of nimble_autoadv_stop()
+642,void nimble_autoadv_start(ble_addr_t *addr)
+643,call nimble_autoadv_start(NULL)
+644,void nimble_autoadv_stop(void)
+645,void nimble_autoadv_reset(nimble_autoadv_cfg_t *cfg)
+646,int nimble_autoadv_get_adv_instance(void)
+647,#include host/ble_gap.h
+648,if IS_USED(MODULE_NIMBLE_PHY_CODED)
+649,typedef void(*nimble_scanner_cb)
+650,"int nimble_scanner_init(const nimble_scanner_cfg_t *params,
+                        nimble_scanner_cb disc_cb)"
+651,int nimble_scanner_start(void)
+652,void nimble_scanner_stop(void)
+653,bool nimble_scanner_is_active(void)
+654,return ble_gap_disc_active()
+655,void nimble_scanner_set_scan_duration(int32_t duration_ms)
+656,#include errno.h
+657,#include stdint.h
+658,#include stdbool.h
+659,#include host/ble_hs.h
+660,define NIMBLE_SCANLIST_SIZE               (20U)
+661,void nimble_scanlist_init(void)
+662,"void nimble_scanlist_update(uint8_t type, const ble_addr_t *addr,
+                            const nimble_scanner_info_t *info,
+                            const uint8_t *ad, size_t len)"
+663,void nimble_scanlist_clear(void)
+664,using nimble_scanlist_print_entry()
+665,void nimble_scanlist_print(void)
+666,void nimble_scanlist_print_entry(nimble_scanlist_entry_t *e)
+667,#include clist.h
+668,#include net/ble.h
+669,#include nimble/ble.h
+670,#include nimble_scanner.h
+673,clock device (or virtual timer device)
+676,void callback(void *arg)
+677,int main()
+680,handles multiplexing (allowing multiple timers to be set)
+681,the timer (T[n])
+682,"each entry (as B +
+ * sum(T[0-n])"
+683,alarm at (now()
+684,"timer object (for ""next"" element)"
+685,active timers (<50)
+686,constant get_min()
+687,"some cases (e.g., a hardware timer only allowing getting/setting smaller
+ * values or a conversion which would overflow uint32_t for large intervals)"
+692,callbacks every (max_value / 2)
+693,"avoid underflows (setting a backend timer
+ * to a value at or behind the current time, causing the timer interrupt to
+ * trigger one whole timer period too late)"
+704,Relative target (e.g. fire at value `now()
+705,for _is_set()
+706,every set()
+707,every sleep()
+708,every set()
+709,last now()
+710,last now()
+716,timer target (relative ticks from now)
+"                    msg_t *msg"," kernel_pid_t target_pid)"""
+723,"a message (blocking, with timeout)"
+724,to msg_receive()
+725,be handled (ignored)
+730,"each other (in the wrapping fashion
+ *   implied by the use of unsigned integers in C)"
+731,"is started (even if the thread does not
+ *   block between these events)"
+732,two values (calculated in the usual wrapping way)
+733,elapsed time (not just modulo 2³²)
+734,"are taken (which in particular means that the clock was
+ *   continuously active)"
+735,still locked (indicating that the timer has not been processed)
+736,"additional knowledge (eg. of a
+ *   maximum time difference between them)"
+737,then compare (T2 - T0)
+767,#include stdint.h
+768,#include sched.h
+769,#include msg.h
+770,#include mutex.h
+771,#include rmutex.h
+772,Software Foundation (ASF)
+773,define BLE_HS_ATT_ERR(x)
+774,define BLE_HS_HCI_ERR(x)
+775,define BLE_HS_L2C_ERR(x)
+776,define BLE_HS_SM_US_ERR(x)
+777,for remote (peer)
+778,to remote (peer)
+779,define BLE_HS_SM_PEER_ERR(x)
+780,define BLE_HS_HW_ERR(x)
+781,void ble_hs_reset_fn(int reason)
+782,void ble_hs_sync_fn(void)
+783,Security Manager (sm_ members)
+784,store API (not yet implemented)
+785,int ble_hs_is_enabled(void)
+786,int ble_hs_synced(void)
+787,"the controller (if the controller is
+ * not fully booted, for example)"
+788,int ble_hs_start(void)
+789,of main()
+790,void ble_hs_sched_start(void)
+791,void ble_hs_sched_reset(int reason)
+792,void ble_hs_evq_set(struct ble_npl_eventq *evq)
+793,void ble_hs_init(void)
+794,int ble_hs_shutdown(int reason)
+795,#include inttypes.h
+796,#include nimble/hci_common.h
+797,#include host/ble_att.h
+798,#include host/ble_eddystone.h
+799,#include host/ble_gap.h
+800,#include host/ble_gatt.h
+801,#include host/ble_hs_adv.h
+802,#include host/ble_hs_id.h
+803,#include host/ble_hs_hci.h
+804,#include host/ble_hs_log.h
+805,#include host/ble_hs_mbuf.h
+806,#include host/ble_hs_stop.h
+807,#include host/ble_ibeacon.h
+808,#include host/ble_l2cap.h
+809,#include host/ble_sm.h
+810,#include host/ble_store.h
+811,#include host/ble_uuid.h
+812,#include nimble/nimble_npl.h
+813,Software Foundation (ASF)
+814,Attribute Profile (GATT)
+815,Attribute Profile (GATT)
+816,"int ble_gatt_mtu_fn(uint16_t conn_handle,
+                            const struct ble_gatt_error *error,
+                            uint16_t mtu, void *arg)"
+817,"int ble_gatt_disc_svc_fn(uint16_t conn_handle,
+                                 const struct ble_gatt_error *error,
+                                 const struct ble_gatt_svc *service,
+                                 void *arg)"
+818,"int ble_gatt_attr_fn(uint16_t conn_handle,
+                             const struct ble_gatt_error *error,
+                             struct ble_gatt_attr *attr,
+                             void *arg)"
+819,"int ble_gatt_reliable_attr_fn(uint16_t conn_handle,
+                                      const struct ble_gatt_error *error,
+                                      struct ble_gatt_attr *attrs,
+                                      uint8_t num_attrs, void *arg)"
+820,"int ble_gatt_chr_fn(uint16_t conn_handle,
+                            const struct ble_gatt_error *error,
+                            const struct ble_gatt_chr *chr, void *arg)"
+821,"int ble_gatt_dsc_fn(uint16_t conn_handle,
+                            const struct ble_gatt_error *error,
+                            uint16_t chr_val_handle,
+                            const struct ble_gatt_dsc *dsc,
+                            void *arg)"
+822,"int ble_gattc_exchange_mtu(uint16_t conn_handle,
+                           ble_gatt_mtu_fn *cb, void *cb_arg)"
+823,"int ble_gattc_disc_all_svcs(uint16_t conn_handle,
+                            ble_gatt_disc_svc_fn *cb, void *cb_arg)"
+824,"int ble_gattc_disc_svc_by_uuid(uint16_t conn_handle, const ble_uuid_t *uuid,
+                               ble_gatt_disc_svc_fn *cb, void *cb_arg)"
+825,"search at (generally
+ *                                  the service definition handle)"
+826,"search at (generally the
+ *                                  last handle in the service)"
+827,"int ble_gattc_find_inc_svcs(uint16_t conn_handle, uint16_t start_handle,
+                            uint16_t end_handle,
+                            ble_gatt_disc_svc_fn *cb, void *cb_arg)"
+828,"search at (generally
+ *                                  the service definition handle)"
+829,"search at (generally the
+ *                                  last handle in the service)"
+830,"int ble_gattc_disc_all_chrs(uint16_t conn_handle, uint16_t start_handle,
+                            uint16_t end_handle, ble_gatt_chr_fn *cb,
+                            void *cb_arg)"
+831,"search at (generally
+ *                                  the service definition handle)"
+832,"search at (generally the
+ *                                  last handle in the service)"
+833,"int ble_gattc_disc_chrs_by_uuid(uint16_t conn_handle, uint16_t start_handle,
+                               uint16_t end_handle, const ble_uuid_t *uuid,
+                               ble_gatt_chr_fn *cb, void *cb_arg)"
+834,"int ble_gattc_disc_all_dscs(uint16_t conn_handle, uint16_t start_handle,
+                            uint16_t end_handle,
+                            ble_gatt_dsc_fn *cb, void *cb_arg)"
+835,"int ble_gattc_read(uint16_t conn_handle, uint16_t attr_handle,
+                   ble_gatt_attr_fn *cb, void *cb_arg)"
+836,"to search (generally the
+ *                                  handle of the service definition)"
+837,"to search (generally the
+ *                                  last handle in the service definition)"
+838,"int ble_gattc_read_by_uuid(uint16_t conn_handle, uint16_t start_handle,
+                           uint16_t end_handle, const ble_uuid_t *uuid,
+                           ble_gatt_attr_fn *cb, void *cb_arg)"
+839,"int ble_gattc_read_long(uint16_t conn_handle, uint16_t handle, uint16_t offset,
+                        ble_gatt_attr_fn *cb, void *cb_arg)"
+840,"int ble_gattc_read_mult(uint16_t conn_handle, const uint16_t *handles,
+                        uint8_t num_handles, ble_gatt_attr_fn *cb,
+                        void *cb_arg)"
+841,"int ble_gattc_write_no_rsp(uint16_t conn_handle, uint16_t attr_handle,
+                           struct os_mbuf *om)"
+842,"int ble_gattc_write_no_rsp_flat(uint16_t conn_handle, uint16_t attr_handle,
+                                const void *data, uint16_t data_len)"
+843,"int ble_gattc_write(uint16_t conn_handle, uint16_t attr_handle,
+                    struct os_mbuf *om,
+                    ble_gatt_attr_fn *cb, void *cb_arg)"
+844,Characteristic Value (flat buffer version)
+845,"int ble_gattc_write_flat(uint16_t conn_handle, uint16_t attr_handle,
+                         const void *data, uint16_t data_len,
+                         ble_gatt_attr_fn *cb, void *cb_arg)"
+846,"int ble_gattc_write_long(uint16_t conn_handle, uint16_t attr_handle,
+                         uint16_t offset, struct os_mbuf *om,
+                         ble_gatt_attr_fn *cb, void *cb_arg)"
+847,"int ble_gattc_write_reliable(uint16_t conn_handle,
+                             struct ble_gatt_attr *attrs,
+                             int num_attrs, ble_gatt_reliable_attr_fn *cb,
+                             void *cb_arg)"
+848,"int ble_gatts_notify_custom(uint16_t conn_handle, uint16_t att_handle,
+                            struct os_mbuf *om)"
+849,"int ble_gattc_notify_custom(uint16_t conn_handle, uint16_t att_handle,
+                            struct os_mbuf *om)"
+850,"int ble_gatts_notify(uint16_t conn_handle, uint16_t chr_val_handle)"
+851,"int ble_gattc_notify(uint16_t conn_handle, uint16_t chr_val_handle)"
+852,"int ble_gatts_indicate_custom(uint16_t conn_handle, uint16_t chr_val_handle,
+                              struct os_mbuf *txom)"
+853,"int ble_gattc_indicate_custom(uint16_t conn_handle, uint16_t chr_val_handle,
+                              struct os_mbuf *txom)"
+854,"int ble_gatts_indicate(uint16_t conn_handle, uint16_t chr_val_handle)"
+855,"int ble_gattc_indicate(uint16_t conn_handle, uint16_t chr_val_handle)"
+856,int ble_gattc_init(void)
+857,"int ble_gatt_access_fn(uint16_t conn_handle, uint16_t attr_handle,
+                               struct ble_gatt_access_ctxt *ctxt, void *arg)"
+858,"void ble_gatt_register_fn(struct ble_gatt_register_ctxt *ctxt,
+                                  void *arg)"
+859,when ble_gatts_start()
+860,int ble_gatts_add_svcs(const struct ble_gatt_svc_def *svcs)
+861,"int ble_gatts_svc_set_visibility(uint16_t handle, int visible)"
+862,int ble_gatts_count_cfg(const struct ble_gatt_svc_def *defs)
+863,Send notification (or indication)
+864,for notification (or indication)
+865,void ble_gatts_chr_updated(uint16_t chr_val_handle)
+866,"int ble_gatts_find_svc(const ble_uuid_t *uuid, uint16_t *out_handle)"
+867,"int ble_gatts_find_chr(const ble_uuid_t *svc_uuid, const ble_uuid_t *chr_uuid,
+                       uint16_t *out_def_handle, uint16_t *out_val_handle)"
+868,"int ble_gatts_find_dsc(const ble_uuid_t *svc_uuid, const ble_uuid_t *chr_uuid,
+                       const ble_uuid_t *dsc_uuid, uint16_t *out_dsc_handle)"
+869,typedef void (*ble_gatt_svc_foreach_fn)
+870,void ble_gatts_show_local(void)
+871,"are active (advertise, discover, or connect)"
+872,int ble_gatts_reset(void)
+873,"are active (advertise, discover, or connect)"
+874,int ble_gatts_start(void)
+875,"struct ble_gatt_register_ctxt {
+    /**
+     * Indicates the gatt registration operation just performed.  This is
+     * equal to one of the following values:
+     *     o BLE_GATT_REGISTER_OP_SVC
+     *     o BLE_GATT_REGISTER_OP_CHR
+     *     o BLE_GATT_REGISTER_OP_DSC
+     */
+    uint8_t op;
+
+    /**
+     * The value of the op field determines which field in this union is valid.
+     */
+    union {
+        /** Service; valid if op == BLE_GATT_REGISTER_OP_SVC. */
+        struct {
+            /** The ATT handle of the service definition attribute. */
+            uint16_t handle;
+
+            /**
+             * The service definition representing the service being
+             * registered.
+             */
+            const struct ble_gatt_svc_def *svc_def;
+        } svc;"
+876,#include inttypes.h
+877,#include host/ble_att.h
+878,#include host/ble_uuid.h
+879,Software Foundation (ASF)
+880,typedef void (ble_svc_gap_chr_changed_fn)
+881,void ble_svc_gap_set_chr_changed_cb(ble_svc_gap_chr_changed_fn *cb)
+882,int ble_svc_gap_device_name_set(const char *name)
+883,uint16_t ble_svc_gap_device_appearance(void)
+884,int ble_svc_gap_device_appearance_set(uint16_t appearance)
+885,void ble_svc_gap_init(void)
+886,#include inttypes.h
+887,Software Foundation (ASF)
+888,"void ble_svc_gatt_changed(uint16_t start_handle, uint16_t end_handle)"
+889,void ble_svc_gatt_init(void)
+890,#include inttypes.h
+891,low resources (static memory: a timer and an uint8)
+892,define SCHED_RR_MASK (1 << 0)
+893,void sched_round_robin_init(void)
+894,"of threads (or more precisely
+ *    their `thread_t` structures)"
+895,was unlocked (value of `NULL`)
+896,"as blocked (waiting
+ * for a mutex)"
+897,already unlocked (value of `NULL`)
+898,without waiters (value of `MUTEX_LOCKED`)
+899,program counter (PC)
+900,if defined(DOXYGEN)
+901,if defined(DOXYGEN)
+902,if defined(DOXYGEN)
+903,not obtained (only possible if @p block is `false`)
+904,"bool mutex_lock_internal(mutex_t *mutex, bool block)"
+905,to mutex_init()
+906,define MUTEX_LOCKED ((list_node_t *)
+907,void mutex_init(mutex_t *mutex)
+908,mutex_cancel_t mutex_cancel_init(mutex_t *mutex)
+909,int mutex_trylock(mutex_t *mutex)
+910,"return mutex_lock_internal(mutex, false)"
+911,void mutex_lock(mutex_t *mutex)
+912,is released (e.g. by interrupt)
+913,int mutex_lock_cancelable(mutex_cancel_t *mc)
+914,void mutex_unlock(mutex_t *mutex)
+915,void mutex_unlock(mutex_t *mutex)
+916,void mutex_unlock_and_sleep(mutex_t *mutex)
+917,"p mc (not counting
+ *          the call to @ref mutex_lock_cancelable @p mc was used in)"
+918,still valid (see the warning above)
+919,currently running (or pending)
+920,void timeout_cb(void *arg)
+922,void mutex_cancel(mutex_cancel_t *mc)
+923,#include stddef.h
+924,#include stdint.h
+925,#include stdbool.h
+926,#include architecture.h
+927,#include kernel_defines.h
+928,#include list.h
+929,#include thread.h
+930,SN Client (Asymcute)
+931,of data (QoS 0 and QoS 1)
+932,net_asymcute_conf Asymcute (MQTT-SN Client)
+933,define CONFIG_ASYMCUTE_DEFAULT_PORT    (1883U)
+934,define CONFIG_ASYMCUTE_BUFSIZE         (128U)
+935,less than (256 - 8)
+936,less than ( @ref CONFIG_ASYMCUTE_BUFSIZE - 8)
+937,define CONFIG_ASYMCUTE_TOPIC_MAXLEN    (32U)
+938,define CONFIG_ASYMCUTE_KEEPALIVE       (360)
+939,define CONFIG_ASYMCUTE_KEEPALIVE_PING  ((CONFIG_ASYMCUTE_KEEPALIVE / 4)
+940,define CONFIG_ASYMCUTE_T_RETRY         (10U)
+941,define CONFIG_ASYMCUTE_N_RETRY         (3U)
+942,define ASYMCUTE_HANDLER_PRIO           (THREAD_PRIORITY_MAIN - 2)
+943,define ASYMCUTE_HANDLER_STACKSIZE      (THREAD_STACKSIZE_DEFAULT)
+944,typedef void(*asymcute_evt_cb_t)
+945,typedef void(*asymcute_sub_cb_t)
+946,typedef unsigned(*asymcute_to_cb_t)
+947,topic string (ASCII only)
+948,bool asymcute_req_in_use(const asymcute_req_t *req)
+949,bool asymcute_sub_active(const asymcute_sub_t *sub)
+950,void asymcute_topic_reset(asymcute_topic_t *topic)
+951,bool asymcute_topic_is_reg(const asymcute_topic_t *topic)
+952,bool asymcute_topic_is_short(const asymcute_topic_t *topic)
+953,bool asymcute_topic_is_predef(const asymcute_topic_t *topic)
+954,bool asymcute_topic_is_init(const asymcute_topic_t *topic)
+955,"bool asymcute_topic_equal(const asymcute_topic_t *a,
+                                        const asymcute_topic_t *b)"
+956,topic name (ASCII)
+957,"int asymcute_topic_init(asymcute_topic_t *topic, const char *topic_name,
+                        uint16_t topic_id)"
+958,void asymcute_handler_run(void)
+959,bool asymcute_is_connected(const asymcute_con_t *con)
+960,last will (currently not implemented)
+961,was given (temporary until implemented)
+962,"int asymcute_connect(asymcute_con_t *con, asymcute_req_t *req,
+                     sock_udp_ep_t *server, const char *cli_id, bool clean,
+                     asymcute_will_t *will, asymcute_evt_cb_t callback)"
+963,"int asymcute_disconnect(asymcute_con_t *con, asymcute_req_t *req)"
+964,"int asymcute_register(asymcute_con_t *con, asymcute_req_t *req,
+                      asymcute_topic_t *topic)"
+965,"additional flags (QoS level, DUP, and RETAIN)"
+966,"int asymcute_publish(asymcute_con_t *con, asymcute_req_t *req,
+                     const asymcute_topic_t *topic,
+                     const void *data, size_t data_len, uint8_t flags)"
+967,"be initialized (see
+ *                      asymcute_topic_init()"
+968,additional flags (QoS level and DUP)
+969,"int asymcute_subscribe(asymcute_con_t *con, asymcute_req_t *req,
+                       asymcute_sub_t *sub, asymcute_topic_t *topic,
+                       asymcute_sub_cb_t callback, void *arg, uint8_t flags)"
+970,"int asymcute_unsubscribe(asymcute_con_t *con, asymcute_req_t *req,
+                         asymcute_sub_t *sub)"
+971,#include stdint.h
+972,#include stddef.h
+973,#include stdbool.h
+974,#include assert.h
+975,#include event/timeout.h
+976,#include event/callback.h
+977,#include net/mqttsn.h
+978,#include net/sock/udp.h
+979,#include net/sock/util.h
+980,"basic functionality (i.e. no support
+ * for external interrupt pins)"
+981,in datasheet (MMA8451Q/MMA8452Q/MMA8453Q)
+982,"int mma8x5x_init(mma8x5x_t *dev, const mma8x5x_params_t *params)"
+983,"void mma8x5x_set_user_offset(const mma8x5x_t *dev, int8_t x, int8_t y, int8_t z)"
+984,void mma8x5x_set_active(const mma8x5x_t *dev)
+985,void mma8x5x_set_standby(const mma8x5x_t *dev)
+986,int mma8x5x_is_ready(const mma8x5x_t *dev)
+987,"void mma8x5x_read(const mma8x5x_t *dev, mma8x5x_data_t *data)"
+988,p mma8x5x_ack_int()
+989,int pin (1 or 2)
+990,detection threshold (see datasheet)
+991,"void mma8x5x_set_motiondetect(const mma8x5x_t *dev, uint8_t int_pin, uint8_t threshold)"
+992,ref mma8x5x_set_motiondetect()
+993,void mma8x5x_ack_int(const mma8x5x_t *dev)
+994,#include stdint.h
+995,#include periph/i2c.h
+996,"RESTART condition (CAUTION:
+ * this example does not check any return values...)"
+997,the bus (this is normally done during boot time)
+998,section   sec_i2c_pm (Low-)
+999,an i2c_acquire()
+1000,"powered off (e.g.
+ * through peripheral clock gating)"
+1001,the i2c_acquire()
+1002,the i2c_release()
+1003,define I2C_DEV(x)
+1004,define I2C_UNDEF           (UINT_FAST8_MAX)
+1005,define I2C_READ            (0x0001)
+1006,define I2C_10BIT_MAGIC     (0xF0u)
+1007,void i2c_init(i2c_t dev)
+1008,"be initialized (i.e. spi_init is
+ * calling this function internally)"
+1009,some devices (e.g. ATECC608A)
+1010,void i2c_init_pins(i2c_t dev)
+1011,calling i2c_init_pins()
+1012,call gpio_init()
+1013,to i2c_acquire()
+1014,until i2c_init_pins()
+1015,void i2c_deinit_pins(i2c_t dev)
+1016,gpio_t i2c_pin_sda(i2c_t dev)
+1017,gpio_t i2c_pin_scl(i2c_t dev)
+1018,void i2c_acquire(i2c_t dev)
+1019,void i2c_release(i2c_t dev)
+1020,"read from (8- or 16-bit,
+ *                          right-aligned)"
+1021,device address (right-aligned)
+1022,optional flags (see @ref i2c_flags_t)
+1023,"int i2c_read_reg(i2c_t dev, uint16_t addr, uint16_t reg,
+                 void *data, uint8_t flags)"
+1024,"read from (8- or 16-bit,
+ *                          right-aligned)"
+1025,device address (right-aligned)
+1026,optional flags (see @ref i2c_flags_t)
+1028,device address (right-aligned)
+1029,optional flags (see @ref i2c_flags_t)
+1030,"int i2c_read_byte(i2c_t dev, uint16_t addr, void *data, uint8_t flags)"
+1031,device address (right-aligned)
+1032,optional flags (see @ref i2c_flags_t)
+1034,device address (right-aligned)
+1035,optional flags (see @ref i2c_flags_t)
+1036,"int i2c_write_byte(i2c_t dev, uint16_t addr, uint8_t data, uint8_t flags)"
+1037,device address (right-aligned)
+1038,optional flags (see @ref i2c_flags_t)
+1040,"read from (8- or 16-bit,
+ *                          right-aligned)"
+1041,device address (right-aligned)
+1042,optional flags (see @ref i2c_flags_t)
+1043,"int i2c_write_reg(i2c_t dev, uint16_t addr, uint16_t reg,
+                  uint8_t data, uint8_t flags)"
+1044,"read from (8- or 16-bit,
+ *                          right-aligned)"
+1045,device address (right-aligned)
+1046,optional flags (see @ref i2c_flags_t)
+1048,#include stdint.h
+1049,#include stddef.h
+1050,#include limits.h
+1051,#include periph_conf.h
+1052,#include periph_cpu.h
+1053,void busy_wait(unsigned loops)
+1054,"__asm__ __volatile__ (
+            """"
+            : /* no outputs */
+            : /* no inputs */
+            : /* no clobbers */
+        )"
+1055,void busy_wait_us(unsigned usec)
+1056,#include stdint.h
+1057,#include periph_conf.h
+1058,#include time_units.h
+1066,define CONFIG_ENTROPY_SOURCE_ZERO_HMIN         (58982)
+1067,int entropy_source_zero_init(void)
+1068,"int entropy_source_zero_get(uint8_t *buf, size_t len)"
+1069,#include inttypes.h
+1070,#include stddef.h
+1071,"void event_thread_init_multi(event_queue_t *queues, size_t queues_numof,
+                             char *stack, size_t stack_size,
+                             unsigned priority)"
+1072,"void event_thread_init(event_queue_t *queue,
+                                     char *stack, size_t stack_size,
+                                     unsigned priority)"
+1073,define EVENT_PRIO_HIGHEST  (&event_thread_queues[EVENT_QUEUE_PRIO_HIGHEST])
+1074,define EVENT_PRIO_MEDIUM   (&event_thread_queues[EVENT_QUEUE_PRIO_MEDIUM])
+1075,define EVENT_PRIO_LOWEST   (&event_thread_queues[EVENT_QUEUE_PRIO_LOWEST])
+1076,#include stddef.h
+1077,#include event.h
+1078,"void evtimer_add_mbox(evtimer_t *evtimer, evtimer_mbox_event_t *event, mbox_t *mbox)"
+1079,void _evtimer_mbox_handler(evtimer_event_t *event)
+1080,void evtimer_init_mbox(evtimer_t *evtimer)
+1081,#include assert.h
+1082,#include msg.h
+1083,#include mbox.h
+1084,#include evtimer.h
+1085,"void evtimer_add_msg(evtimer_msg_t *evtimer,
+                                   evtimer_msg_event_t *event,
+                                   kernel_pid_t target_pid)"
+1086,void _evtimer_msg_handler(evtimer_event_t *event)
+1087,void evtimer_init_msg(evtimer_t *evtimer)
+1088,#include msg.h
+1089,#include evtimer.h
+1096,#include assert.h
+1097,#include stdint.h
+1098,#include stddef.h
+1099,#include string.h
+1100,#include architecture.h
+1101,inline __attribute__((always_inline)
+1102,for irq_restore()
+1103,unsigned irq_disable(void)
+1104,for irq_restore()
+1105,"Arduino environment (which lacks the
+MAYBE_INLINE unsigned irq_enable(void)"
+1106,void irq_restore(unsigned state)
+1107,bool irq_is_enabled(void)
+1108,bool irq_is_in(void)
+1109,#include stdbool.h
+1110,#include cpu_conf.h
+1111,#include irq_arch.h
+1112,implement log_write()
+1113,"define LOG(level, ...)"
+1114,"define LOG(level, ...)"
+1115,define LOG_ERROR(...)
+1116,define LOG_WARNING(...)
+1117,define LOG_INFO(...)
+1118,define LOG_DEBUG(...)
+1119,"define log_write(level, ...)"
+1120,#include log_module.h
+1121,#include stdio.h
+1122,define OUTPUT_XML       (1)
+1123,define OUTPUT_TEXT      (2)
+1124,define OUTPUT_COMPILER  (4)
+1125,define OUTPUT_COLORTEXT (8)
+1126,define OUTPUT_COLOR     (16)
+1127,define OUTPUTTER   (XMLOutputter_outputter()
+1128,define OUTPUTTER   (TextOutputter_outputter()
+1129,define OUTPUTTER   (CompilerOutputter_outputter()
+1130,define OUTPUTTER   (ColorTextOutputter_outputter()
+1131,define OUTPUTTER   (ColorOutputter_outputter()
+1132,define TESTS_START()
+1133,define TESTS_RUN(t)
+1134,define TESTS_END()
+1135,define TESTS_START()
+1136,define TESTS_RUN(t)
+1137,define TESTS_END()
+1138,#include embUnit/embUnit.h
+1139,"void memarray_init(memarray_t *mem, void *data, size_t size, size_t num)"
+1140,"void memarray_free(memarray_t *mem, void *ptr)"
+1141,"void memarray_extend(memarray_t *mem, void *data, size_t num)"
+1142,"int memarray_reduce(memarray_t *mem, void *data, size_t num)"
+1143,size_t memarray_available(memarray_t *mem)
+1144,"struct memarray_element {
+    struct memarray_element *next;  /**< Pointer to the next element */
+} memarray_element_t;"
+1145,#include assert.h
+1146,#include stdint.h
+1147,#include stddef.h
+1148,#include string.h
+1149,define ARCHITECTURE_BREAKPOINT(value)
+1150,define ARCHITECTURE_WORD_BYTES     (1U)
+1151,define SWORD_MAX   (INT8_MAX)
+1152,define SWORD_MIN   (INT8_MIN)
+1153,define UWORD_MAX   (UINT8_MAX)
+1154,define ARCHITECTURE_WORD_BYTES     (2U)
+1155,define SWORD_MAX   (INT16_MAX)
+1156,define SWORD_MIN   (INT16_MIN)
+1157,define UWORD_MAX   (UINT16_MAX)
+1158,define ARCHITECTURE_WORD_BYTES     (4U)
+1159,define SWORD_MAX   (INT32_MAX)
+1160,define SWORD_MIN   (INT32_MIN)
+1161,define UWORD_MAX   (UINT32_MAX)
+1162,define ARCHITECTURE_WORD_BYTES     (8U)
+1163,define SWORD_MAX   (INT64_MAX)
+1164,define SWORD_MIN   (INT64_MIN)
+1165,define UWORD_MAX   (UINT64_MAX)
+1166,word size (check ARCHITECTURE_WORD_BITS in architecture_arch.h)
+1167,define UWORD_MIN   (0U)
+1168,for input (e.g. in `scanf()
+1169,WORD_ALIGNED __attribute__((aligned(ARCHITECTURE_WORD_BYTES)
+1170,"define HAS_ALIGNMENT_OF(addr, alignment)"
+1171,define IS_WORD_ALIGNED(addr)
+1172,#include stdint.h
+1173,#include inttypes.h
+1174,#include limits.h
+1175,#include architecture_arch.h
+1176,void ps(void)
+1177,is supported (32)
+1178,detailed guide (Appendix A.2.2)
+1179,"void pbkdf2_sha256(const void *password, size_t password_len,
+                   const void *salt, size_t salt_len,
+                   int iterations,
+                   uint8_t *output)"
+1180,#include hashes/sha256.h
+1181,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+1182,define SHA256_INTERNAL_BLOCK_SIZE (64)
+1183,void sha256_init(sha256_context_t *ctx)
+1184,"void sha256_update(sha256_context_t *ctx, const void *data, size_t len)"
+1185,"void sha256_final(sha256_context_t *ctx, void *digest)"
+1186,"void sha256(const void *data, size_t len, void *digest)"
+1187,"void hmac_sha256_init(hmac_context_t *ctx, const void *key, size_t key_length)"
+1188,"void hmac_sha256_update(hmac_context_t *ctx, const void *data, size_t len)"
+1189,"void hmac_sha256_final(hmac_context_t *ctx, void *digest)"
+1190,"void hmac_sha256(const void *key, size_t key_length,
+                        const void *data, size_t len, void *digest)"
+1191,element is (elements-1)
+1192,with sha256_chain()
+1193,element is (elements-1)
+1194,That is (elements - 1)
+1195,"int sha256_chain_verify_element(void *element,
+                                size_t element_index,
+                                void *tail_element,
+                                size_t chain_length)"
+1196,#include inttypes.h
+1197,#include stddef.h
+1198,#include hashes/sha2xx_common.h
+1199,"void event_thread_init_multi(event_queue_t *queues, size_t queues_numof,
+                             char *stack, size_t stack_size,
+                             unsigned priority)"
+1200,"void event_thread_init(event_queue_t *queue,
+                                     char *stack, size_t stack_size,
+                                     unsigned priority)"
+1201,define EVENT_PRIO_HIGHEST  (&event_thread_queues[EVENT_QUEUE_PRIO_HIGHEST])
+1202,define EVENT_PRIO_MEDIUM   (&event_thread_queues[EVENT_QUEUE_PRIO_MEDIUM])
+1203,define EVENT_PRIO_LOWEST   (&event_thread_queues[EVENT_QUEUE_PRIO_LOWEST])
+1204,#include stddef.h
+1205,#include event.h
+1214,#include event/callback.h
+1215,#include event/periodic.h
+1216,level RTC (Real Time Clock)
+1217,been initialized (i.e. after calling rtc_init()
+1218,the rtc_poweroff()
+1219,the rtc_poweron()
+1220,in rtc_init()
+1221,define RIOT_EPOCH (2020)
+1222,typedef void(*rtc_alarm_cb_t)
+1223,void rtc_init(void)
+1224,int rtc_set_time(struct tm *time)
+1225,int rtc_get_time(struct tm *time)
+1226,"int rtc_get_time_ms(struct tm *time, uint16_t *ms)"
+1227,"was invalid (e.g. in the past, out of range)"
+1228,other error (negative errno code to indicate cause)
+1229,"int rtc_set_alarm(struct tm *time, rtc_alarm_cb_t cb, void *arg)"
+1230,int rtc_get_alarm(struct tm *time)
+1231,void rtc_clear_alarm(void)
+1232,void rtc_poweron(void)
+1233,void rtc_poweroff(void)
+1234,#include stdbool.h
+1235,#include stdint.h
+1236,#include time.h
+1237,#include rtc_utils.h
+1238,#include periph_conf.h
+1239,#include modules.h
+1240,#include riot_version.h
+1241,#include compiler_hints.h
+1242,#include container.h
+1243,Number Generator (PRNG)
+1244,Mersenne Twister (default)
+1245,Number Generator (non-seedable)
+1246,as zero (the constant may even be the same across devices)
+1247,define RANDOM_SEED_DEFAULT (1)
+1248,define PRNG_FLOAT (0)
+1249,void random_init(uint32_t s)
+1250,of keys (seeds)
+1251,"void random_init_by_array(uint32_t init_key[], int key_length)"
+1252,uint32_t random_uint32(void)
+1253,"void random_bytes(void *buf, size_t size)"
+1254,"uint32_t random_uint32_range(uint32_t a, uint32_t b)"
+1255,double random_real(void)
+1256,double random_real_inclusive(void)
+1257,"number on (0,1)"
+1258,"number on (0,1)"
+1259,double random_real_exclusive(void)
+1260,double random_res53(void)
+1261,#include inttypes.h
+1262,#include stddef.h
+1263,define KiB(x)
+1264,define MiB(x)
+1265,define GiB(x)
+1266,define KHZ(x)
+1267,define MHZ(x)
+1268,define GHZ(x)
+1269,as head (leftmost node)
+1270,return head (leftmost node)
+1271,as tail (rightmost node)
+1272,return tail (rightmost node)
+1273,sort list (stable)
+1274,a queue (FIFO)
+1275,a stack (LIFO)
+1276,fast O(1)
+1277,void clist_traverse(clist_node_t *list)
+1278,the clist_foreach()
+1279,int _print_node(clist_node_t *node)
+1280,use clist_rpush()
+1281,and clist_lpop()
+1282,Using clist_lpush()
+1283,and clist_rpop()
+1284,s O(n)
+1285,use clist_lpush()
+1286,the container_of()
+1287,ref thread_add_to_list()
+1288,bool clist_is_empty(const clist_node_t *list)
+1289,"void clist_rpush(clist_node_t *list, clist_node_t *new_node)"
+1290,"void clist_lpush(clist_node_t *list, clist_node_t *new_node)"
+1291,void clist_lpoprpush(clist_node_t *list)
+1292,returns     first (leftmost)
+1293,returns     last (rightmost)
+1294,return clist_lpop(list)
+1295,return clist_lpop(list)
+1296,"p func(node, arg)"
+1297,ref clist_sort()
+1298,typedef int (*clist_cmp_func_t)
+1299,in O(N log N)
+1300,"int _cmp(clist_node_t *a, clist_node_t *b)"
+1301,else if (a_val > b_val)
+1302,"void clist_sort(clist_node_t *list, clist_cmp_func_t cmp)"
+1303,size_t clist_count(clist_node_t *list)
+1304,bool clist_exactly_one(clist_node_t *list)
+1305,bool clist_more_than_one(clist_node_t *list)
+1306,#include stdbool.h
+1307,#include stddef.h
+1308,#include list.h
+1309,calling timer_init()
+1310,"powered down (e.g. by
+ * peripheral clock gating)"
+1311,"started again (by calling
+ * timer_start()"
+1312,define TIMER_DEV(x)
+1313,define TIMER_UNDEF         (UINT_FAST8_MAX)
+1314,the set()
+1315,the timer_set_periodic()
+1316,define TIM_FLAG_RESET_ON_SET   (0x01)
+1317,define TIM_FLAG_RESET_ON_MATCH (0x02)
+1318,a timer_set_periodic()
+1319,with timer_start()
+1320,define TIM_FLAG_SET_STOPPED    (0x04)
+1321,typedef void (*timer_cb_t)
+1322,"int timer_init(tim_t dev, uint32_t freq, timer_cb_t cb, void *arg)"
+1323,"int timer_set(tim_t dev, int channel, unsigned int timeout)"
+1324,"int timer_set_absolute(tim_t dev, int channel, unsigned int value)"
+1325,Some platforms (Atmel)
+1326,"int timer_set_periodic(tim_t dev, int channel, unsigned int value, uint8_t flags)"
+1327,"int timer_clear(tim_t dev, int channel)"
+1328,int timer_read(tim_t dev)
+1329,void timer_start(tim_t dev)
+1330,void timer_stop(tim_t dev)
+1331,a frequency (and not zero)
+1332,uword_t timer_query_freqs_numof(tim_t dev)
+1333,uword_t timer_query_channel_numof(tim_t dev)
+1334,"uint32_t timer_query_freqs(tim_t dev, uword_t index)"
+1335,if defined(DOXYGEN)
+1336,"bool timer_poll_channel(tim_t dev, int channel)"
+1337,if defined(MODULE_PERIPH_TIMER_POLL)
+1338,#include limits.h
+1339,#include stdint.h
+1340,#include stdbool.h
+1341,#include architecture.h
+1342,#include periph_cpu.h
+1343,#include periph_conf.h
+1344,#include timer_arch.h
+1345,basic UART (Universal Asynchronous Receiver Transmitter)
+1346,p UART_DEV(0)
+1347,the uart_poweron()
+1348,and uart_poweroff()
+1349,define UART_UNDEF          (UINT_FAST8_MAX)
+1350,define UART_DEV(x)
+1351,the callback (optional)
+1352,typedef void(*uart_rx_cb_t)
+1353,the callback (optional)
+1354,typedef void(*uart_rxstart_cb_t)
+1355,is given (rx_cb := NULL)
+1356,is received (RX buffer filled)
+1357,"int uart_init(uart_t uart, uint32_t baud, uart_rx_cb_t rx_cb, void *arg)"
+1358,if defined(MODULE_PERIPH_UART_RECONFIGURE)
+1359,void uart_deinit_pins(uart_t uart)
+1360,"be initialized (i.e. uart_init is
+ * calling this function internally)"
+1362,gpio_t uart_pin_rx(uart_t uart)
+1363,gpio_t uart_pin_tx(uart_t uart)
+1364,gpio_t uart_pin_cts(uart_t uart)
+1365,gpio_t uart_pin_rts(uart_t uart)
+1366,if defined(MODULE_PERIPH_UART_RXSTART_IRQ)
+1367,"void uart_rxstart_irq_configure(uart_t uart, uart_rxstart_cb_t cb, void *arg)"
+1368,void uart_rxstart_irq_enable(uart_t uart)
+1369,void uart_rxstart_irq_disable(uart_t uart)
+1370,if defined(MODULE_PERIPH_UART_COLLISION)
+1371,void uart_collision_detect_enable(uart_t uart)
+1372,void uart_collision_detect_disable(uart_t uart)
+1373,bool uart_collision_detected(uart_t uart)
+1374,"int uart_mode(uart_t uart, uart_data_bits_t data_bits, uart_parity_t parity,
+              uart_stop_bits_t stop_bits)"
+1375,"void uart_write(uart_t uart, const uint8_t *data, size_t len)"
+1376,void uart_poweron(uart_t uart)
+1377,void uart_poweroff(uart_t uart)
+1378,void uart_enable_tx(uart_t uart)
+1379,void uart_disable_tx(uart_t uart)
+1380,#include errno.h
+1381,#include limits.h
+1382,#include stddef.h
+1383,#include stdint.h
+1384,#include periph_cpu.h
+1385,#include periph_conf.h
+1386,def          RINGBUFFER_INIT(BUF)
+1387,define RINGBUFFER_INIT(BUF)
+1388,"void ringbuffer_init(ringbuffer_t *__restrict rb, char *buffer,
+                                   unsigned bufsize)"
+1389,Test ringbuffer_full()
+1390,"int ringbuffer_add_one(ringbuffer_t *__restrict rb, char c)"
+1391,use ringbuffer_add_one()
+1392,"unsigned ringbuffer_add(ringbuffer_t *__restrict rb, const char *buf,
+                        unsigned n)"
+1393,int ringbuffer_get_one(ringbuffer_t *__restrict rb)
+1394,"unsigned ringbuffer_get(ringbuffer_t *__restrict rb, char *buf, unsigned n)"
+1395,"unsigned ringbuffer_remove(ringbuffer_t *__restrict rb, unsigned n)"
+1396,int ringbuffer_empty(const ringbuffer_t *__restrict rb)
+1397,int ringbuffer_full(const ringbuffer_t *__restrict rb)
+1398,"int ringbuffer_get_free(
+    const ringbuffer_t *__restrict rb)"
+1399,as ringbuffer_get_one()
+1400,int ringbuffer_peek_one(const ringbuffer_t *__restrict rb)
+1401,as ringbuffer_get()
+1402,"unsigned ringbuffer_peek(const ringbuffer_t *__restrict rb, char *buf,
+                         unsigned n)"
+1403,"result = inet_pton(AF_INET, EMQX_SERVER_IP, &remote.addr.ipv4);"
+1404,"static void _resp_handler(const gcoap_request_memo_t *memo, coap_pkt_t *pdu, const sock_udp_ep_t *remote)"
+1405,uint8_t buf[CONFIG_GCOAP_PDU_BUF_SIZE];
+1406,"gcoap_req_init(&pdu, buf, CONFIG_GCOAP_PDU_BUF_SIZE, COAP_METHOD_POST, EMQX_URI_PATH);"
+1407,"gcoap_req_send(&buf[0], len, &remote, _resp_handler, NULL, GCOAP_SOCKET_TYPE_UDP);"
+1408,"memcpy(pdu.payload, PAYLOAD, strlen(PAYLOAD));"
+1409,"enum {
+    EMCUTE_DUP        = 0x80,   /**< duplicate flag */
+    EMCUTE_QOS_MASK   = 0x60,   /**< QoS level mask */
+    EMCUTE_QOS_2      = 0x40,   /**< QoS level 2 */
+    EMCUTE_QOS_1      = 0x20,   /**< QoS level 1 */
+    EMCUTE_QOS_0      = 0x00,   /**< QoS level 0 */
+    EMCUTE_RETAIN     = 0x10,   /**< retain flag */
+    EMCUTE_WILL       = 0x08,   /**< will flag, used during CONNECT */
+    EMCUTE_CS         = 0x04,   /**< clean session flag */
+    EMCUTE_TIT_MASK   = 0x03,   /**< topic ID type mask */
+    EMCUTE_TIT_SHORT  = 0x02,   /**< topic ID: short */
+    EMCUTE_TIT_PREDEF = 0x01,   /**< topic ID: pre-defined */
+    EMCUTE_TIT_NORMAL = 0x00    /**< topic ID: normal */
+};"
+1410,"enum {
+    EMCUTE_OK       =  0,       /**< everything went as expect */
+    EMCUTE_NOGW     = -1,       /**< error: not connected to a gateway */
+    EMCUTE_REJECT   = -2,       /**< error: operation was rejected by broker */
+    EMCUTE_OVERFLOW = -3,       /**< error: ran out of buffer space */
+    EMCUTE_TIMEOUT  = -4,       /**< error: timeout */
+    EMCUTE_NOTSUP   = -5        /**< error: feature not supported */
+};"
+1411,"/**
+ * @brief   MQTT-SN topic
+ */
+typedef struct {
+    const char *name;           /**< topic string (currently ASCII only) */
+    uint16_t id;                /**< topic id, as assigned by the gateway */
+} emcute_topic_t;"
+1422,"
+typedef void(*emcute_cb_t)(const emcute_topic_t *topic, void *data, size_t len);
+"
+1423,"
+typedef struct emcute_sub {
+    struct emcute_sub *next;    /**< next subscription (saved in a list) */
+    emcute_topic_t topic;       /**< topic we subscribe to */
+    emcute_cb_t cb;             /**< function called when receiving messages */
+    void *arg;                  /**< optional custom argument */
+} emcute_sub_t;"
+1424,"int emcute_con(sock_udp_ep_t *remote, bool clean, const char *will_topic,
+               const void *will_msg, size_t will_msg_len, unsigned flags);
+"
+1425,"int emcute_discon(void);"
+1426,"int emcute_reg(emcute_topic_t *topic);"
+1427,"int emcute_pub(emcute_topic_t *topic, const void *buf, size_t len,
+               unsigned flags);
+"
+1428,"int emcute_sub(emcute_sub_t *sub, unsigned flags);"
+1429,"int emcute_unsub(emcute_sub_t *sub);"
+1430,"int emcute_willupd_topic(const char *topic, unsigned flags);
+"
+1431,"int emcute_willupd_msg(const void *data, size_t len);
+"
+1432,"void emcute_run(uint16_t port, const char *id);
+"
+1433,"const char *emcute_type_str(uint8_t type);"
+1434,"static inline void mbox_init(mbox_t *mbox, msg_t *queue,
+                             unsigned int queue_size)
+{
+    mbox_t m = MBOX_INIT(queue, queue_size);
+
+    *mbox = m;
+}"
+1435,"static inline void evtimer_init_mbox(evtimer_t *evtimer)
+{
+    assert(evtimer);
+    evtimer_init(evtimer, _evtimer_mbox_handler);
+}"
+1436,"static inline void evtimer_init_msg(evtimer_t *evtimer)
+{
+    evtimer_init(evtimer, _evtimer_msg_handler);
+}"
+1437,"static inline void evtimer_add_mbox(evtimer_t *evtimer, evtimer_mbox_event_t *event, mbox_t *mbox)
+{
+    assert(evtimer);
+    assert(event);
+    assert(mbox);
+    event->mbox = mbox;
+    evtimer_add(evtimer, &(event->event));
+}"
+1438,"static inline void evtimer_add_msg(evtimer_msg_t *evtimer,
+                                   evtimer_msg_event_t *event,
+                                   kernel_pid_t target_pid)
+{
+    /* use sender_pid field to get target_pid into callback function */
+    event->msg.sender_pid = target_pid;
+    evtimer_add(evtimer, &event->event);
+}"
+1439,"int msg_receive(msg_t *m);"
+1440,"int _mbox_get(mbox_t *mbox, msg_t *msg, int blocking);"
+1441,"typedef struct {
+    ztimer_t timer;                 /**< Timer */
+    uint32_t base;                  /**< Absolute time the first event is built on */
+    evtimer_callback_t callback;    /**< Handler function for this evtimer's
+                                         event type */
+    evtimer_event_t *events;        /**< Event queue */
+} evtimer_t;"
+1442,"typedef struct {
+    evtimer_event_t event;      /**< base class */
+    msg_t msg;                  /**< the IPC message to generate on event */
+} evtimer_msg_event_t;"
+1443,"int inet_pton(int af, const char *src, void *dst);
+"
+1445,"void msg_init_queue(msg_t *array, int num);
+"
+1451,multi_heap_info_t hinfo
+1452,"heap_caps_get_info(&hinfo,  MALLOC_CAP_DEFAULT);"
+1453,esp_get_free_heap_size()
+1454,esp_get_minimum_free_heap_size()
+1455,"ssize_t sendto(int socket, const void *buffer, size_t length, int flags,
+               const struct sockaddr *address, socklen_t address_len);"
+1456,"socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)"
+1457,"int msg_send_receive(msg_t *m, msg_t *reply, kernel_pid_t target_pid);"
+1458,"int msg_receive(msg_t *m);"
+1459,"int msg_reply(msg_t *m, msg_t *reply);"
+1460,"typedef struct {
+    kernel_pid_t sender_pid;    /**< PID of sending thread. Will be filled in
+                                     by msg_send. */
+    uint16_t type;              /**< Type field. */
+    union {
+        void *ptr;              /**< Pointer content field. */
+        uint32_t value;         /**< Value content field. */
+    } content;                  /**< Content of the message. */
+} msg_t;"
+1461,nvs_flash_init()
+1462,"nvs_handle_t my_handle;
+    err = nvs_open(""storage"", NVS_READWRITE, &my_handle);"
+1463,"nvs_set_i32(my_handle, ""temperature"", temp);"
+1464,nvs_commit(my_handle);
+1465,nvs_close(my_handle);
+1466,"void sched_change_priority(thread_get_active(), uint8_t priority);"
+1468,mma8x5x_data_t data
+1469,"typedef struct {
+    i2c_t i2c;                  /**< I2C bus the device is connected to */
+    uint8_t addr;               /**< I2C bus address of the device */
+    uint8_t rate;               /**< sampling rate to use */
+    uint8_t range;              /**< scale range to use */
+    uint8_t offset[3];          /**< data offset in X, Y, and Z direction */
+} mma8x5x_params_t;"
+1470,"void mma8x5x_read(const mma8x5x_t *dev, mma8x5x_data_t *data);"
+1471,"int mma8x5x_init(mma8x5x_t *dev, const mma8x5x_params_t *params);
+static mma8x5x_t dev;
+mma8x5x_data_t data；
+    mma8x5x_params_t params = {
+        .i2c = I2C_DEV(0),
+        .addr = MMA8X5X_I2C_ADDRESS,
+        .rate = MMA8X5X_RATE_50HZ,
+        .range = MMA8X5X_RANGE_2G
+    };"
+1481,"typedef struct {
+    mma8x5x_params_t params;    /**< device configuration parameters */
+} mma8x5x_t;"
+1482,"    mma8x5x_params_t params = {
+        .i2c = i2c,
+        .addr = 0x1D  // Assuming this is the default I2C address for MMA8653
+    };"
+1483,"    mma8x5x_params_t params = {
+        .i2c = I2C_DEV(0),
+        .addr = MMA8X5X_I2C_ADDRESS,
+        .rate = MMA8X5X_RATE_50HZ,
+        .range = MMA8X5X_RANGE_2G
+    };"
+1484,"xtimer_set(&timer, TIMER_INTERVAL);"
+1485,"timer.callback = timer_callback;
+    timer.arg = NULL;
+"
+1486,"static inline void evtimer_add_msg(evtimer_msg_t *evtimer,
+                                   evtimer_msg_event_t *event,
+                                   kernel_pid_t target_pid)"
+1487,"thread_get(kernel_pid_t pid)
+sched_change_priority(thread_get(pid), THREAD_PRIORITY_MAIN);"
+1488,"static inline thread_t *thread_get(kernel_pid_t pid)"

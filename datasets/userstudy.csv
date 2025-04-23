@@ -1,0 +1,11 @@
+username,prompt
+hjm,"Create a RIOT program for ESP32 to read DHT11 sensor data (temperature/humidity) and publish readings via MQTT to 47.102.103.1:1883."
+jlw,"Develop a RIOT program to read temperature and humidity through dht11 on ESP32, and send the read temperature and humidity to the cloud via MQTT protocol. The cloud IP address is 47.102.103.1 and the port number is 1883."
+lrj,"开发一个RIOT程序，在esp32上通过dht11读取温湿度，将读取到的温湿度通过MQTT协议发送到云端，云端ip地址为47.102.103.1，端口号为1883。"
+pyq,"开发一个RIOT程序，在esp32上通过dht11读取温湿度，将读取到的温湿度通过MQTT协议发送到云端，云端ip地址为47.102.103.1，端口号为1883。"
+st,"开发一个RIOT程序，在esp32上通过dht11读取温湿度，将读取到的温湿度通过MQTT协议发送到云端，云端ip地址为47.102.103.1，端口号为1883 。给出详细的MQTT周期性发送数据的逻辑。"
+tyx,"开发一个RIOT程序，在esp32上通过dht11读取温湿度，将读取到的温湿度通过MQTT协议发送到云端，云端ip地址为47.102.103.1，端口号为1883 。其他未确定的参数可以设为默认值，或是自行发挥，只需实现主体功能便可。"
+wh,"I need to develop a RIOT program that reads temperature and humidity via dht11 on esp32, sends the read temperature and humidity to the cloud via MQTT protocol, cloud ip address is 47.102.103.1, port number is 1883"
+wj,"编写一个esp32程序，读取DHT11温湿度传感器的数据，并通过mqtt上传到云平台，云平台的IP地址以及端口为：47.102.103.1，1883"
+xkj,"请你根据我给出的要求，编写一段正确的程序。我没有给出的参数将其设置为默认值。要求: 开发一个RIOT程序, 在esp32上通过dht11读取温湿度, 将读取到的温湿度通过MQTT协议发送到云端, 云端ip地址为47.102.103.1,端口号为1883。"
+hym,"Please write the code that can read dht11 and upload to the cloud by mqtt. It should be based on RIOT OS run on esp32.Please write the code that can read dht11 and upload to the cloud by mqtt. It should be based on RIOT OS run on esp32."

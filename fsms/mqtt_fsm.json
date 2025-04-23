@@ -1,0 +1,88 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "ztimer_sleep_complete",
+                    "target": "NETWORK_INIT"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_INIT",
+            "transitions": [
+                {
+                    "condition": "NetworkInit_OK",
+                    "target": "MQTT_INIT"
+                },
+                {
+                    "condition": "NetworkInit_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_INIT",
+            "transitions": [
+                {
+                    "condition": "MQTTClientInit_OK",
+                    "target": "NETWORK_CONNECT"
+                },
+                {
+                    "condition": "MQTTClientInit_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_CONNECT",
+            "transitions": [
+                {
+                    "condition": "NetworkConnect_OK",
+                    "target": "MQTT_CONNECT"
+                },
+                {
+                    "condition": "NetworkConnect_FAIL",
+                    "target": "NETWORK_CONNECT",
+                    "description": "Retries after 1 second sleep"
+                }
+            ]
+        },
+        {
+            "name": "MQTT_CONNECT",
+            "transitions": [
+                {
+                    "condition": "MQTTConnect_OK",
+                    "target": "PUBLISH"
+                },
+                {
+                    "condition": "MQTTConnect_FAIL",
+                    "target": "NETWORK_CONNECT",
+                    "description": "Back to Network Connect on failure"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH",
+            "transitions": [
+                {
+                    "condition": "Publish_Interval",
+                    "target": "PUBLISH",
+                    "description": "Loop to publish at intervals"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "Error_Handler",
+                    "target": "INIT",
+                    "description": "Restart after handling Error"
+                }
+            ]
+        }
+    ]
+}

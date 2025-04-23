@@ -1,0 +1,66 @@
+{
+  "states": [
+    {
+      "name": "START",
+      "transitions": [
+        {
+          "condition": "pid1 > KERNEL_PID_UNDEF && pid2 > KERNEL_PID_UNDEF",
+          "target": "THREAD_RUNNING"
+        },
+        {
+          "condition": "pid1 <= KERNEL_PID_UNDEF || pid2 <= KERNEL_PID_UNDEF",
+          "target": "ERROR"
+        }
+      ]
+    },
+    {
+      "name": "THREAD_RUNNING",
+      "transitions": [
+        {
+          "condition": "timer triggers every 5 sec",
+          "target": "CHECK_PRIORITIES"
+        }
+      ]
+    },
+    {
+      "name": "CHECK_PRIORITIES",
+      "transitions": [
+        {
+          "condition": "priority1 != PRIORITY_LOW",
+          "target": "SWAP_PRIORITIES"
+        },
+        {
+          "condition": "priority1 == PRIORITY_LOW",
+          "target": "NO_ACTION"
+        }
+      ]
+    },
+    {
+      "name": "SWAP_PRIORITIES",
+      "transitions": [
+        {
+          "condition": "swapping priorities",
+          "target": "THREAD_RUNNING"
+        }
+      ]
+    },
+    {
+      "name": "NO_ACTION",
+      "transitions": [
+        {
+          "condition": "no priority change needed",
+          "target": "THREAD_RUNNING"
+        }
+      ]
+    },
+    {
+      "name": "ERROR",
+      "transitions": [
+        {
+          "condition": "reInitialize attempt",
+          "target": "START"
+        }
+      ]
+    }
+  ]
+}

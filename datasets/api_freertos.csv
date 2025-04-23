@@ -1,0 +1,1231 @@
+id,code
+0,Espressif Systems (Shanghai)
+1,API esp_wifi_init()
+2,application task (code)
+3,define ESP_ERR_WIFI_NOT_INIT    (ESP_ERR_WIFI_BASE + 1)
+4,define ESP_ERR_WIFI_NOT_STARTED (ESP_ERR_WIFI_BASE + 2)
+5,define ESP_ERR_WIFI_NOT_STOPPED (ESP_ERR_WIFI_BASE + 3)
+6,define ESP_ERR_WIFI_IF          (ESP_ERR_WIFI_BASE + 4)
+7,define ESP_ERR_WIFI_MODE        (ESP_ERR_WIFI_BASE + 5)
+8,define ESP_ERR_WIFI_STATE       (ESP_ERR_WIFI_BASE + 6)
+9,define ESP_ERR_WIFI_CONN        (ESP_ERR_WIFI_BASE + 7)
+10,define ESP_ERR_WIFI_NVS         (ESP_ERR_WIFI_BASE + 8)
+11,define ESP_ERR_WIFI_MAC         (ESP_ERR_WIFI_BASE + 9)
+12,define ESP_ERR_WIFI_SSID        (ESP_ERR_WIFI_BASE + 10)
+13,define ESP_ERR_WIFI_PASSWORD    (ESP_ERR_WIFI_BASE + 11)
+14,define ESP_ERR_WIFI_TIMEOUT     (ESP_ERR_WIFI_BASE + 12)
+15,define ESP_ERR_WIFI_WAKE_FAIL   (ESP_ERR_WIFI_BASE + 13)
+16,sleep state(RF closed)
+17,define ESP_ERR_WIFI_WOULD_BLOCK (ESP_ERR_WIFI_BASE + 14)
+18,define ESP_ERR_WIFI_NOT_CONNECT (ESP_ERR_WIFI_BASE + 15)
+19,define ESP_ERR_WIFI_POST        (ESP_ERR_WIFI_BASE + 18)
+20,define ESP_ERR_WIFI_INIT_STATE  (ESP_ERR_WIFI_BASE + 19)
+21,define ESP_ERR_WIFI_STOP_STATE  (ESP_ERR_WIFI_BASE + 20)
+22,define ESP_ERR_WIFI_NOT_ASSOC   (ESP_ERR_WIFI_BASE + 21)
+23,define ESP_ERR_WIFI_TX_DISALLOW (ESP_ERR_WIFI_BASE + 22)
+24,define ESP_ERR_WIFI_TWT_FULL    (ESP_ERR_WIFI_BASE + 23)
+25,define CONFIG_FEATURE_WPA3_SAE_BIT     (1<<0)
+26,define CONFIG_FEATURE_CACHE_TX_BUF_BIT (1<<1)
+27,define CONFIG_FEATURE_FTM_INITIATOR_BIT (1<<2)
+28,define CONFIG_FEATURE_FTM_RESPONDER_BIT (1<<3)
+29,define WIFI_INIT_CONFIG_DEFAULT()
+30,esp_err_t esp_wifi_init(const wifi_init_config_t *config)
+31,esp_err_t esp_wifi_deinit(void)
+32,esp_err_t esp_wifi_set_mode(wifi_mode_t mode)
+33,esp_err_t esp_wifi_get_mode(wifi_mode_t *mode)
+34,esp_err_t esp_wifi_start(void)
+35,esp_err_t esp_wifi_stop(void)
+36,esp_err_t esp_wifi_restore(void)
+37,by esp_wifi_scan_start()
+38,esp_err_t esp_wifi_connect(void)
+39,esp_err_t esp_wifi_disconnect(void)
+40,esp_err_t esp_wifi_clear_fast_connect(void)
+41,esp_err_t esp_wifi_deauth_sta(uint16_t aid)
+42,"esp_err_t esp_wifi_scan_start(const wifi_scan_config_t *config, bool block)"
+43,esp_err_t esp_wifi_scan_stop(void)
+44,esp_err_t esp_wifi_scan_get_ap_num(uint16_t *number)
+45,"esp_err_t esp_wifi_scan_get_ap_records(uint16_t *number, wifi_ap_record_t *ap_records)"
+46,esp_err_t esp_wifi_clear_ap_list(void)
+47,esp_err_t esp_wifi_sta_get_ap_info(wifi_ap_record_t *ap_info)
+48,esp_err_t esp_wifi_set_ps(wifi_ps_type_t type)
+49,esp_err_t esp_wifi_get_ps(wifi_ps_type_t *type)
+50,protocol is (WIFI_PROTOCOL_11B|WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11N)
+51,protocol is (WIFI_PROTOCOL_11B|WIFI_PROTOCOL_11G|WIFI_PROTOCOL_11N|WIFI_PROTOCOL_11AX)
+52,"esp_err_t esp_wifi_set_protocol(wifi_interface_t ifx, uint8_t protocol_bitmap)"
+53,"esp_err_t esp_wifi_get_protocol(wifi_interface_t ifx, uint8_t *protocol_bitmap)"
+54,"esp_err_t esp_wifi_set_bandwidth(wifi_interface_t ifx, wifi_bandwidth_t bw)"
+55,"esp_err_t esp_wifi_get_bandwidth(wifi_interface_t ifx, wifi_bandwidth_t *bw)"
+56,after esp_wifi_start()
+57,"esp_err_t esp_wifi_set_channel(uint8_t primary, wifi_second_chan_t second)"
+58,"esp_err_t esp_wifi_get_channel(uint8_t *primary, wifi_second_chan_t *second)"
+59,esp_err_t esp_wifi_set_country(const wifi_country_t *country)
+60,esp_err_t esp_wifi_get_country(wifi_country_t *country)
+61,"esp_err_t esp_wifi_set_mac(wifi_interface_t ifx, const uint8_t mac[6])"
+62,"esp_err_t esp_wifi_get_mac(wifi_interface_t ifx, uint8_t mac[6])"
+63,in buffer (wifi_promiscuous_pkt_t or wifi_pkt_rx_ctrl_t)
+64,typedef void (* wifi_promiscuous_cb_t)
+65,esp_err_t esp_wifi_set_promiscuous_rx_cb(wifi_promiscuous_cb_t cb)
+66,esp_err_t esp_wifi_set_promiscuous(bool en)
+67,esp_err_t esp_wifi_get_promiscuous(bool *en)
+68,esp_err_t esp_wifi_set_promiscuous_filter(const wifi_promiscuous_filter_t *filter)
+69,esp_err_t esp_wifi_get_promiscuous_filter(wifi_promiscuous_filter_t *filter)
+70,esp_err_t esp_wifi_set_promiscuous_ctrl_filter(const wifi_promiscuous_filter_t *filter)
+71,esp_err_t esp_wifi_get_promiscuous_ctrl_filter(wifi_promiscuous_filter_t *filter)
+72,"esp_err_t esp_wifi_set_config(wifi_interface_t interface, wifi_config_t *conf)"
+73,"esp_err_t esp_wifi_get_config(wifi_interface_t interface, wifi_config_t *conf)"
+74,esp_err_t esp_wifi_ap_get_sta_list(wifi_sta_list_t *sta)
+75,"esp_err_t esp_wifi_ap_get_sta_aid(const uint8_t mac[6], uint16_t *aid)"
+76,esp_err_t esp_wifi_set_storage(wifi_storage_t storage)
+77,to esp_wifi_set_vendor_ie_cb()
+78,typedef void (*esp_vendor_ie_cb_t)
+79,two elements (indices 0 & 1)
+80,by esp_wifi_init()
+81,not WIFI_VENDOR_IE_ELEMENT_ID (0xDD)
+82,"esp_err_t esp_wifi_set_vendor_ie(bool enable, wifi_vendor_ie_type_t type, wifi_vendor_ie_id_t idx, const void *vnd_ie)"
+83,"esp_err_t esp_wifi_set_vendor_ie_cb(esp_vendor_ie_cb_t cb, void *ctx)"
+84,esp_err_t esp_wifi_set_max_tx_power(int8_t power)
+85,esp_err_t esp_wifi_get_max_tx_power(int8_t *power)
+86,esp_err_t esp_wifi_set_event_mask(uint32_t mask)
+87,esp_err_t esp_wifi_get_event_mask(uint32_t *mask)
+88,"esp_err_t esp_wifi_80211_tx(wifi_interface_t ifx, const void *buffer, int len, bool en_sys_seq)"
+89,State Information(CSI)
+90,to esp_wifi_set_csi_rx_cb()
+91,typedef void (* wifi_csi_cb_t)
+92,"esp_err_t esp_wifi_set_csi_rx_cb(wifi_csi_cb_t cb, void *ctx)"
+93,esp_err_t esp_wifi_set_csi_config(const wifi_csi_config_t *config)
+94,esp_err_t esp_wifi_set_csi(bool en)
+95,esp_err_t esp_wifi_set_ant_gpio(const wifi_ant_gpio_config_t *config)
+96,esp_err_t esp_wifi_get_ant_gpio(wifi_ant_gpio_config_t *config)
+97,esp_err_t esp_wifi_set_ant(const wifi_ant_config_t *config)
+98,esp_err_t esp_wifi_get_ant(wifi_ant_config_t *config)
+99,int64_t esp_wifi_get_tsf_time(wifi_interface_t interface)
+100,"esp_err_t esp_wifi_set_inactive_time(wifi_interface_t ifx, uint16_t sec)"
+101,"esp_err_t esp_wifi_get_inactive_time(wifi_interface_t ifx, uint16_t *sec)"
+102,esp_err_t esp_wifi_statis_dump(uint32_t modules)
+103,esp_err_t esp_wifi_set_rssi_threshold(int32_t rssi)
+104,esp_err_t esp_wifi_ftm_initiate_session(wifi_ftm_initiator_cfg_t *cfg)
+105,esp_err_t esp_wifi_ftm_end_session(void)
+106,Measurement frame (T1)
+107,esp_err_t esp_wifi_ftm_resp_set_offset(int16_t offset_cm)
+108,after esp_wifi_init()
+109,before esp_wifi_start()
+110,"esp_err_t esp_wifi_config_11b_rate(wifi_interface_t ifx, bool disable)"
+111,esp_err_t esp_wifi_connectionless_module_set_wake_interval(uint16_t wake_interval)
+112,"esp_err_t esp_wifi_set_country_code(const char *country, bool ieee80211d_enabled)"
+113,esp_err_t esp_wifi_get_country_code(char *country)
+114,after esp_wifi_init()
+115,before esp_wifi_start()
+116,"esp_err_t esp_wifi_config_80211_tx_rate(wifi_interface_t ifx, wifi_phy_rate_t rate)"
+117,after esp_wifi_set_config()
+118,before esp_wifi_start()
+119,esp_err_t esp_wifi_disable_pmf_config(wifi_interface_t ifx)
+120,esp_err_t esp_wifi_sta_get_aid(uint16_t *aid)
+121,esp_err_t esp_wifi_sta_get_negotiated_phymode(wifi_phy_mode_t *phymode)
+122,#include stdint.h
+123,#include stdbool.h
+124,#include esp_err.h
+125,#include esp_wifi_types.h
+126,#include esp_event.h
+127,#include esp_private/esp_wifi_private.h
+128,#include esp_wifi_default.h
+129,from esp_tls (if supported)
+130,"with it (so might be down-casted and treated as
+ * `esp_tls_last_error` error, but recommended to update applications if used
+ * this way previously)"
+131,"the data (longer data are supplied
+                         with multiple events)"
+132,typedef esp_err_t (*mqtt_event_callback_t)
+133,"PSK
+                                             authentication (as alternative to certificate verification)"
+134,"not
+                          disabled (defaults to 10s)"
+135,"in milliseconds
+                (defaults to 10s)"
+136,this value (in milliseconds)
+137,to server (when errors/disconnect)
+138,"esp_mqtt_client_handle_t
+esp_mqtt_client_init(const esp_mqtt_client_config_t *config)"
+139,"esp_err_t esp_mqtt_client_set_uri(esp_mqtt_client_handle_t client,
+                                  const char *uri)"
+140,esp_err_t esp_mqtt_client_start(esp_mqtt_client_handle_t client)
+141,esp_err_t esp_mqtt_client_reconnect(esp_mqtt_client_handle_t client)
+142,esp_err_t esp_mqtt_client_disconnect(esp_mqtt_client_handle_t client)
+143,esp_err_t esp_mqtt_client_stop(esp_mqtt_client_handle_t client)
+144,"int esp_mqtt_client_subscribe(esp_mqtt_client_handle_t client,
+                              const char *topic, int qos)"
+145,"int esp_mqtt_client_unsubscribe(esp_mqtt_client_handle_t client,
+                                const char *topic)"
+146,"internal buffer (due to message
+ *   fragmentation)"
+147,"payload string (set to NULL, sending empty payload message)"
+148,"publish message (for QoS 0 message_id will always
+ * be zero)"
+149,"int esp_mqtt_client_publish(esp_mqtt_client_handle_t client, const char *topic,
+                            const char *data, int len, int qos, int retain)"
+150,the esp_mqtt_client_publish()
+151,of esp_mqtt_client_publish()
+152,"payload string (set to NULL, sending empty payload message)"
+153,"int esp_mqtt_client_enqueue(esp_mqtt_client_handle_t client, const char *topic,
+                            const char *data, int len, int qos, int retain,
+                            bool store)"
+154,esp_err_t esp_mqtt_client_destroy(esp_mqtt_client_handle_t client)
+155,"esp_err_t esp_mqtt_set_config(esp_mqtt_client_handle_t client,
+                              const esp_mqtt_client_config_t *config)"
+156,"esp_err_t esp_mqtt_client_register_event(esp_mqtt_client_handle_t client,
+        esp_mqtt_event_id_t event,
+        esp_event_handler_t event_handler,
+        void *event_handler_arg)"
+157,"esp_err_t esp_mqtt_client_unregister_event(esp_mqtt_client_handle_t client, esp_mqtt_event_id_t event, esp_event_handler_t event_handler)"
+158,int esp_mqtt_client_get_outbox_size(esp_mqtt_client_handle_t client)
+159,be queued (ref also CONFIG_MQTT_EVENT_QUEUE_SIZE)
+160,"esp_err_t esp_mqtt_dispatch_custom_event(esp_mqtt_client_handle_t client, esp_mqtt_event_t *event)"
+161,"struct esp_mqtt_error_codes {
+    /* compatible portion of the struct corresponding to struct esp_tls_last_error
+     */
+    esp_err_t esp_tls_last_esp_err; /*!< last esp_err code reported from esp-tls
+                                     component */
+    int esp_tls_stack_err; /*!< tls specific error code reported from underlying
+                            tls stack */
+    int esp_tls_cert_verify_flags; /*!< tls flags reported from underlying tls
+                                    stack during certificate verification */
+    /* esp-mqtt specific structure extension */
+    esp_mqtt_error_type_t
+    error_type; /*!< error type referring to the source of the error */
+    esp_mqtt_connect_return_code_t
+    connect_return_code; /*!< connection refused error code reported from
+                              *MQTT* broker on connection */
+    /* tcp_transport extension */
+    int esp_transport_sock_errno; /*!< errno from the underlying socket */
+
+} esp_mqtt_error_codes_t;"
+162,"struct esp_mqtt_event_t {
+    esp_mqtt_event_id_t event_id;    /*!< *MQTT* event type */
+    esp_mqtt_client_handle_t client; /*!< *MQTT* client handle for this event */
+    char *data;                      /*!< Data associated with this event */
+    int data_len;                    /*!< Length of the data for this event */
+    int total_data_len; /*!< Total length of the data (longer data are supplied
+                         with multiple events) */
+    int current_data_offset; /*!< Actual offset for the data associated with this
+                              event */
+    char *topic;             /*!< Topic associated with this event */
+    int topic_len; /*!< Length of the topic for this event associated with this
+                    event */
+    int msg_id;    /*!< *MQTT* messaged id of message */
+    int session_present; /*!< *MQTT* session_present flag for connection event */
+    esp_mqtt_error_codes_t
+    *error_handle; /*!< esp-mqtt error handle including esp-tls errors as well
+                        as internal *MQTT* errors */
+    bool retain; /*!< Retained flag of the message associated with this event */
+    int qos;     /*!< QoS of the messages associated with this event */
+    bool dup;    /*!< dup flag of the message associated with this event */
+    esp_mqtt_protocol_ver_t protocol_ver;   /*!< MQTT protocol version used for connection, defaults to value from menuconfig*/
+#ifdef CONFIG_MQTT_PROTOCOL_5
+    esp_mqtt5_event_property_t *property; /*!< MQTT 5 property associated with this event */
+#endif
+
+} esp_mqtt_event_t;"
+163,"struct esp_mqtt_client_config_t {
+  /**
+   *   Broker related configuration
+   */
+  struct broker_t {
+      /**
+       * Broker address
+       *
+       *  - uri have precedence over other fields
+       *  - If uri isn't set at least hostname, transport and port should.
+       */
+      struct address_t {
+          const char *uri; /*!< Complete *MQTT* broker URI */
+          const char *hostname; /*!< Hostname, to set ipv4 pass it as string) */
+          esp_mqtt_transport_t transport; /*!< Selects transport*/
+          const char *path;               /*!< Path in the URI*/
+          uint32_t port;                  /*!< *MQTT* server port */
+      } address;"
+164,"struct verification_t {
+          bool use_global_ca_store; /*!< Use a global ca_store, look esp-tls
+                         documentation for details. */
+          esp_err_t (*crt_bundle_attach)(void *conf); /*!< Pointer to ESP x509 Certificate Bundle attach function for
+                                                the usage of certificate bundles. */
+          const char *certificate; /*!< Certificate data, default is NULL, not required to verify the server. */
+          size_t certificate_len; /*!< Length of the buffer pointed to by certificate. */
+          const struct psk_key_hint *psk_hint_key; /*!< Pointer to PSK struct defined in esp_tls.h to enable PSK
+                                             authentication (as alternative to certificate verification).
+                                             PSK is enabled only if there are no other ways to
+                                             verify broker.*/
+          bool skip_cert_common_name_check; /*!< Skip any validation of server certificate CN field, this reduces the
+                                      security of TLS and makes the *MQTT* client susceptible to MITM attacks  */
+          const char **alpn_protos;        /*!< NULL-terminated list of supported application protocols to be used for ALPN */
+      } verification;"
+165,"struct credentials_t {
+      const char *username;    /*!< *MQTT* username */
+      const char *client_id;   /*!< Set *MQTT* client identifier. Ignored if set_null_client_id == true If NULL set
+                         the default client id. Default client id is ``ESP32_%CHIPID%`` where `%CHIPID%` are
+                         last 3 bytes of MAC address in hex format */
+      bool set_null_client_id; /*!< Selects a NULL client id */
+      /**
+       * Client authentication
+       *
+       * Fields related to client authentication by broker
+       *
+       * For mutual authentication using TLS, user could select certificate and key,
+       * secure element or digital signature peripheral if available.
+       *
+       */
+      struct authentication_t {
+          const char *password;    /*!< *MQTT* password */
+          const char *certificate; /*!< Certificate for ssl mutual authentication, not required if mutual
+                             authentication is not needed. Must be provided with `key`.*/
+          size_t certificate_len;  /*!< Length of the buffer pointed to by certificate.*/
+          const char *key;       /*!< Private key for SSL mutual authentication, not required if mutual authentication
+                           is not needed. If it is not NULL, also `certificate` has to be provided.*/
+          size_t key_len; /*!< Length of the buffer pointed to by key.*/
+          const char *key_password; /*!< Client key decryption password, not PEM nor DER, if provided
+                               `key_password_len` must be correctly set. */
+          int key_password_len;    /*!< Length of the password pointed to by `key_password` */
+          bool use_secure_element; /*!< Enable secure element, available in ESP32-ROOM-32SE, for SSL connection */
+          void *ds_data; /*!< Carrier of handle for digital signature parameters, digital signature peripheral is
+                   available in some Espressif devices. */
+      } authentication;"
+166,"struct session_t {
+      /**
+       * Last Will and Testament message configuration.
+       */
+      struct last_will_t {
+          const char *topic; /*!< LWT (Last Will and Testament) message topic */
+          const char *msg; /*!< LWT message, may be NULL terminated*/
+          int msg_len; /*!< LWT message length, if msg isn't NULL terminated must have the correct length */
+          int qos;     /*!< LWT message QoS */
+          int retain;  /*!< LWT retained message flag */
+      } last_will;"
+167,"struct network_t {
+      int reconnect_timeout_ms; /*!< Reconnect to the broker after this value in miliseconds if auto reconnect is not
+                          disabled (defaults to 10s) */
+      int timeout_ms; /*!< Abort network operation if it is not completed after this value, in milliseconds
+                (defaults to 10s). */
+      int refresh_connection_after_ms; /*!< Refresh connection after this value (in milliseconds) */
+      bool disable_auto_reconnect;     /*!< Client will reconnect to server (when errors/disconnect). Set
+                                 `disable_auto_reconnect=true` to disable */
+  } network;"
+168,"struct task_t {
+      int priority;   /*!< *MQTT* task priority*/
+      int stack_size; /*!< *MQTT* task stack size*/
+  } task;"
+169,"struct buffer_t {
+      int size;     /*!< size of *MQTT* send/receive buffer*/
+      int out_size; /*!< size of *MQTT* output buffer. If not defined, defaults to the size defined by
+              ``buffer_size`` */
+  } buffer;"
+170,#include stdint.h
+171,#include stdbool.h
+172,#include string.h
+173,#include esp_err.h
+174,#include esp_event.h
+175,#include mqtt5_client.h
+176,Espressif Systems (Shanghai)
+177,"documentation files (the ""Software"")"
+178,define tskMPU_REGION_READ_ONLY        ( 1UL << 0UL )
+179,define tskMPU_REGION_READ_WRITE       ( 1UL << 1UL )
+180,define tskMPU_REGION_EXECUTE_NEVER    ( 1UL << 2UL )
+181,define tskMPU_REGION_NORMAL_MEMORY    ( 1UL << 3UL )
+182,define tskMPU_REGION_DEVICE_MEMORY    ( 1UL << 4UL )
+183,define tskDEFAULT_INDEX_TO_NOTIFY     ( 0 )
+184,define tskNO_AFFINITY  ( 0x7FFFFFFF )
+185,typedef BaseType_t (* TaskHookFunction_t)
+186,when vTaskNotify()
+187,the uxTaskGetSystemState()
+188,was running (may be inherited)
+189,"pinned to (0, 1, or -1 for tskNO_AFFINITY)"
+190,for eTaskConfirmSleepModeStatus()
+191,since portSUPPORESS_TICKS_AND_SLEEP()
+192,define tskIDLE_PRIORITY    ( ( UBaseType_t )
+193,define taskYIELD()
+194,the stack (depending on the portable implementation)
+195,define taskENTER_CRITICAL( x )
+196,define taskENTER_CRITICAL_FROM_ISR()
+197,define taskENTER_CRITICAL_ISR( x )
+198,the stack (depending on the portable implementation)
+199,define taskEXIT_CRITICAL( x )
+200,define taskEXIT_CRITICAL_FROM_ISR( x )
+201,define taskEXIT_CRITICAL_ISR( x )
+202,define taskDISABLE_INTERRUPTS()
+203,define taskENABLE_INTERRUPTS()
+204,by xTaskGetSchedulerState()
+205,when configASSERT()
+206,in assert()
+207,define taskSCHEDULER_SUSPENDED      ( ( BaseType_t )
+208,define taskSCHEDULER_NOT_STARTED    ( ( BaseType_t )
+209,define taskSCHEDULER_RUNNING        ( ( BaseType_t )
+210,never return (i.e. continuous loop)
+211,a privileged (system)
+212,set to ( 2 | portPRIVILEGE_BIT )
+213,larger than (configNUM_CORES - 1)
+214,"local variables (ones specified with ""__thread"" keyword)"
+215,void vTaskCode( void * pvParameters )
+216,void vOtherFunction( void )
+217,"BaseType_t xTaskCreatePinnedToCore( TaskFunction_t pxTaskCode,
+                                        const char * const pcName,
+                                        const configSTACK_DEPTH_TYPE usStackDepth,
+                                        void * const pvParameters,
+                                        UBaseType_t uxPriority,
+                                        TaskHandle_t * const pvCreatedTask,
+                                        const BaseType_t xCoreID )"
+218,never return (i.e. continuous loop)
+219,larger than (configNUM_CORES - 1)
+220,void vTaskCode( void * pvParameters )
+221,to xTaskCreateStaticPinnedToCore()
+222,void vOtherFunction( void )
+223,"TaskHandle_t xTaskCreateStaticPinnedToCore( TaskFunction_t pxTaskCode,
+                                                const char * const pcName,
+                                                const uint32_t ulStackDepth,
+                                                void * const pvParameters,
+                                                UBaseType_t uxPriority,
+                                                StackType_t * const pxStackBuffer,
+                                                StaticTask_t * const pxTaskBuffer,
+                                                const BaseType_t xCoreID )"
+224,"BaseType_t xTaskCreate(
+ *                            TaskFunction_t pvTaskCode,
+ *                            const char * const pcName,
+ *                            configSTACK_DEPTH_TYPE usStackDepth,
+ *                            void *pvParameters,
+ *                            UBaseType_t uxPriority,
+ *                            TaskHandle_t *pvCreatedTask
+ *                        )"
+225,the xTaskCreate()
+226,See xTaskCreateStatic()
+227,never return (i.e. continuous loop)
+228,a privileged (system)
+229,set to ( 2 | portPRIVILEGE_BIT )
+230,"local variables (ones specified with ""__thread"" keyword)"
+231,void vTaskCode( void * pvParameters )
+232,void vOtherFunction( void )
+233,inline __attribute__( ( always_inline )
+234,"BaseType_t xTaskCreate( TaskFunction_t pxTaskCode,
+                            const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+                            const configSTACK_DEPTH_TYPE usStackDepth,
+                            void * const pvParameters,
+                            UBaseType_t uxPriority,
+                            TaskHandle_t * const pxCreatedTask )"
+235,"return xTaskCreatePinnedToCore( pxTaskCode, pcName, usStackDepth, pvParameters, uxPriority, pxCreatedTask, tskNO_AFFINITY )"
+236,"TaskHandle_t xTaskCreateStatic( TaskFunction_t pvTaskCode,
+ *                               const char * const pcName,
+ *                               uint32_t ulStackDepth,
+ *                               void *pvParameters,
+ *                               UBaseType_t uxPriority,
+ *                               StackType_t *pxStackBuffer,
+ *                               StaticTask_t *pxTaskBuffer )"
+237,the xTaskCreate()
+238,never return (i.e. continuous loop)
+239,"local variables (ones specified with ""__thread"" keyword)"
+240,void vTaskCode( void * pvParameters )
+241,to xTaskCreateStatic()
+242,void vOtherFunction( void )
+243,inline __attribute__( ( always_inline )
+244,"TaskHandle_t xTaskCreateStatic( TaskFunction_t pxTaskCode,
+                                    const char * const pcName, /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+                                    const uint32_t ulStackDepth,
+                                    void * const pvParameters,
+                                    UBaseType_t uxPriority,
+                                    StackType_t * const puxStackBuffer,
+                                    StaticTask_t * const pxTaskBuffer )"
+245,"return xTaskCreateStaticPinnedToCore( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, puxStackBuffer, pxTaskBuffer, tskNO_AFFINITY )"
+246,"BaseType_t xTaskCreateRestricted( TaskParameters_t *pxTaskDefinition, TaskHandle_t *pxCreatedTask )"
+247,See xTaskCreateRestrictedStatic()
+248,normal xTaskCreate()
+249,the xTaskCreate()
+250,int main( void )
+251,is requested (the second parameter is not NULL)
+252,"BaseType_t xTaskCreateRestricted( const TaskParameters_t * const pxTaskDefinition,
+                                      TaskHandle_t * pxCreatedTask )"
+253,"BaseType_t xTaskCreateRestrictedStatic( TaskParameters_t *pxTaskDefinition, TaskHandle_t *pxCreatedTask )"
+254,the xTaskCreateRestricted()
+255,using xTaskCreateRestrictedStatic()
+256,normal xTaskCreate()
+257,the xTaskCreate()
+258,int main( void )
+259,is requested (the second parameter is not NULL)
+260,"BaseType_t xTaskCreateRestrictedStatic( const TaskParameters_t * const pxTaskDefinition,
+                                            TaskHandle_t * pxCreatedTask )"
+261,"void vTaskAllocateMPURegions( TaskHandle_t xTask, const MemoryRegion_t * const pxRegions )"
+262,to xTaskCreateRestricted()
+263,void vATask( void *pvParameters )
+264,to vTaskAllocateMPURegions()
+265,"ucOneKByte array (unless any other statically
+ *  // defined or shared regions have been declared elsewhere)"
+266,"void vTaskAllocateMPURegions( TaskHandle_t xTask,
+                              const MemoryRegion_t * const pxRegions )"
+267,void vTaskDelete( TaskHandle_t xTask )
+268,to vTaskDelete ()
+269,void vOtherFunction( void )
+270,void vTaskDelete( TaskHandle_t xTaskToDelete )
+271,void vTaskDelay( const TickType_t xTicksToDelay )
+272,which vTaskDelay()
+273,which vTaskDelay()
+274,See xTaskDelayUntil()
+275,absolute time (rather than a relative time)
+276,void vTaskFunction( void * pvParameters )
+277,void vTaskDelay( const TickType_t xTicksToDelay )
+278,"BaseType_t xTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_t xTimeIncrement )"
+279,from vTaskDelay ()
+280,time vTaskDelay ()
+281,use vTaskDelay ()
+282,calling vTaskDelay ()
+283,Whereas vTaskDelay ()
+284,the absolute (exact)
+285,macro pdMS_TO_TICKS()
+286,first use (see the example below)
+287,within xTaskDelayUntil ()
+288,void vTaskFunction( void * pvParameters )
+289,"BaseType_t xTaskDelayUntil( TickType_t * const pxPreviousWakeTime,
+                            const TickType_t xTimeIncrement )"
+290,of xTaskDelayUntil()
+291,"define vTaskDelayUntil( pxPreviousWakeTime, xTimeIncrement )"
+292,BaseType_t xTaskAbortDelay( TaskHandle_t xTask )
+293,temporal event (waiting for a time)
+294,when vTaskDelay()
+295,or ulTaskNotifyTake()
+296,to xTaskAbortDelay()
+297,BaseType_t xTaskAbortDelay( TaskHandle_t xTask )
+298,UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask )
+299,void vAFunction( void )
+300,Our priority (obtained using NULL handle)
+301,UBaseType_t uxTaskPriorityGet( const TaskHandle_t xTask )
+302,UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask )
+303,of uxTaskPriorityGet()
+304,UBaseType_t uxTaskPriorityGetFromISR( const TaskHandle_t xTask )
+305,eTaskState eTaskGetState( TaskHandle_t xTask )
+306,eTaskState eTaskGetState( TaskHandle_t xTask )
+307,"void vTaskGetInfo( TaskHandle_t xTask, TaskStatus_t *pxTaskStatus, BaseType_t xGetFreeStackSpace, eTaskState eState )"
+308,void vAFunction( void )
+309,"void vTaskGetInfo( TaskHandle_t xTask,
+                   TaskStatus_t * pxTaskStatus,
+                   BaseType_t xGetFreeStackSpace,
+                   eTaskState eState )"
+310,"void vTaskPrioritySet( TaskHandle_t xTask, UBaseType_t uxNewPriority )"
+311,void vAFunction( void )
+312,"void vTaskPrioritySet( TaskHandle_t xTask,
+                       UBaseType_t uxNewPriority )"
+313,void vTaskSuspend( TaskHandle_t xTaskToSuspend )
+314,calling vTaskSuspend ()
+315,to vTaskResume ()
+316,void vAFunction( void )
+317,calls vTaskResume( xHandle )
+318,void vTaskSuspend( TaskHandle_t xTaskToSuspend )
+319,void vTaskResume( TaskHandle_t xTaskToResume )
+320,to vTaskSuspend ()
+321,void vAFunction( void )
+322,calls vTaskResume( xHandle )
+323,void vTaskResume( TaskHandle_t xTaskToResume )
+324,void xTaskResumeFromISR( TaskHandle_t xTaskToResume )
+325,of vTaskResume()
+326,to vTaskSuspend ()
+327,BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume )
+328,void vTaskStartScheduler( void )
+329,void vAFunction( void )
+330,calls vTaskEndScheduler ()
+331,void vTaskStartScheduler( void )
+332,void vTaskEndScheduler( void )
+333,and multitasking (either preemptive or cooperative)
+334,where vTaskStartScheduler ()
+335,if vTaskStartScheduler ()
+336,uses vTaskEndScheduler ()
+337,portable layer (see vPortEndScheduler ()
+338,void vTaskCode( void * pvParameters )
+339,void vAFunction( void )
+340,the vTaskCode ()
+341,void vTaskEndScheduler( void )
+342,void vTaskSuspendAll( void )
+343,calling vTaskSuspendAll ()
+344,to xTaskResumeAll ()
+345,"context switch (for example,
+ * vTaskDelayUntil()"
+346,void vTask1( void * pvParameters )
+347,void vTaskSuspendAll( void )
+348,BaseType_t xTaskResumeAll( void )
+349,to vTaskSuspend()
+350,void vTask1( void * pvParameters )
+351,BaseType_t xTaskResumeAll( void )
+352,TickType_t xTaskGetTickCount( void )
+353,TickType_t xTaskGetTickCount( void )
+354,TickType_t xTaskGetTickCountFromISR( void )
+355,of xTaskGetTickCount()
+356,TickType_t xTaskGetTickCountFromISR( void )
+357,uint16_t uxTaskGetNumberOfTasks( void )
+358,UBaseType_t uxTaskGetNumberOfTasks( void )
+359,The text (human readable)
+360,TaskHandle_t xTaskGetHandle( const char *pcNameToQuery )
+361,for pcTaskGetHandle()
+362,TaskHandle_t xTaskGetHandle( const char * pcNameToQuery )
+363,UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask )
+364,"has been (in bytes not words, unlike
+ * vanilla FreeRTOS)"
+365,and uxTaskGetStackHighWaterMark2()
+366,"has been (in bytes not
+ * words, unlike vanilla FreeRTOS)"
+367,UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask )
+368,configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask )
+369,"has been (in bytes not words, unlike
+ * vanilla FreeRTOS)"
+370,and uxTaskGetStackHighWaterMark2()
+371,"has been (in bytes not
+ * words, unlike vanilla FreeRTOS)"
+372,configSTACK_DEPTH_TYPE uxTaskGetStackHighWaterMark2( TaskHandle_t xTask )
+373,"void vTaskSetApplicationTaskTag( TaskHandle_t xTask, TaskHookFunction_t pxHookFunction )"
+374,"void vTaskSetApplicationTaskTag( TaskHandle_t xTask,
+                                         TaskHookFunction_t pxHookFunction )"
+375,void xTaskGetApplicationTaskTag( TaskHandle_t xTask )
+376,TaskHookFunction_t xTaskGetApplicationTaskTag( TaskHandle_t xTask )
+377,void xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask )
+378,TaskHookFunction_t xTaskGetApplicationTaskTagFromISR( TaskHandle_t xTask )
+379,"void vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet,
+                                            BaseType_t xIndex,
+                                            void * pvValue )"
+380,typedef void (*TlsDeleteCallbackFunction_t)
+381,"void vTaskSetThreadLocalStoragePointerAndDelCallback( TaskHandle_t xTaskToSet, BaseType_t xIndex, void *pvValue, TlsDeleteCallbackFunction_t pvDelCallback)"
+382,void vApplicationStackOverflowHook( TaskHandle_t xTask char *pcTaskName)
+383,"void vApplicationStackOverflowHook( TaskHandle_t xTask,
+                                        char * pcTaskName )"
+384,void vApplicationTickHook( void )
+385,void vApplicationTickHook( void )
+386,"void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer, StackType_t ** ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize )"
+387,"void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                        StackType_t ** ppxIdleTaskStackBuffer,
+                                        uint32_t * pulIdleTaskStackSize )"
+388,"BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter )"
+389,Running tasks (the calling task)
+390,"BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask,
+                                         void * pvParameter )"
+391,TaskHandle_t xTaskGetIdleTaskHandle( void )
+392,the uxTaskGetNumberOfTasks()
+393,by uxTaskGetSystemState()
+394,"run time (as defined by the run time stats clock, see
+ * https://www.FreeRTOS.org/rtos-run-time-stats.html)"
+395,by uxTaskGetSystemState()
+396,void vTaskGetRunTimeStats( char *pcWriteBuffer )
+397,"UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray,
+                                  const UBaseType_t uxArraySize,
+                                  uint32_t * const pulTotalRunTime )"
+398,void vTaskList( char *pcWriteBuffer )
+399,as blocked ('B')
+400,calls uxTaskGetSystemState()
+401,the sprintf()
+402,of sprintf()
+403,full snprintf()
+404,call uxTaskGetSystemState()
+405,to vTaskList()
+406,void vTaskList( char * pcWriteBuffer )
+407,void vTaskGetRunTimeStats( char *pcWriteBuffer )
+408,and portGET_RUN_TIME_COUNTER_VALUE()
+409,the portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+410,Calling vTaskGetRunTimeStats()
+411,calls uxTaskGetSystemState()
+412,the sprintf()
+413,of sprintf()
+414,full snprintf()
+415,call uxTaskGetSystemState()
+416,void vTaskGetRunTimeStats( char * pcWriteBuffer )
+417,uint32_t ulTaskGetIdleRunTimeCounter( void )
+418,and portGET_RUN_TIME_COUNTER_VALUE()
+419,the portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+420,While uxTaskGetSystemState()
+421,and vTaskGetRunTimeStats()
+422,the portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+423,uint32_t ulTaskGetIdleRunTimeCounter( void )
+424,"BaseType_t xTaskNotifyIndexed( TaskHandle_t xTaskToNotify, UBaseType_t uxIndexToNotify, uint32_t ulValue, eNotifyAction eAction )"
+425,"BaseType_t xTaskNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction )"
+426,unsigned integer (uint32_t)
+427,use xTaskNotifyWaitIndexed()
+428,or ulTaskNotifyTakeIndexed()
+429,calling xTaskNotifyWaitIndexed()
+430,or ulTaskNotifyTakeIndexed()
+431,Blocked state (unblocked)
+432,Calling xTaskNotify()
+433,calling xTaskNotifyIndexed()
+434,the xTaskCreate()
+435,array index (the task already had a notification pending at that index)
+436,"BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify,
+                               UBaseType_t uxIndexToNotify,
+                               uint32_t ulValue,
+                               eNotifyAction eAction,
+                               uint32_t * pulPreviousNotificationValue )"
+437,"define xTaskNotify( xTaskToNotify, ulValue, eAction )"
+438,"define xTaskNotifyIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction )"
+439,"BaseType_t xTaskNotifyAndQueryIndexed( TaskHandle_t xTaskToNotify, UBaseType_t uxIndexToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotifyValue )"
+440,"BaseType_t xTaskNotifyAndQuery( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotifyValue )"
+441,"notification value (the notification value at the time the
+ * function is called rather than when the function returns)"
+442,as xTaskNotify()
+443,"define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue )"
+444,"define xTaskNotifyAndQueryIndexed( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotifyValue )"
+445,"BaseType_t xTaskNotifyIndexedFromISR( TaskHandle_t xTaskToNotify, UBaseType_t uxIndexToNotify, uint32_t ulValue, eNotifyAction eAction, BaseType_t *pxHigherPriorityTaskWoken )"
+446,"BaseType_t xTaskNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, BaseType_t *pxHigherPriorityTaskWoken )"
+447,of xTaskNotifyIndexed()
+448,unsigned integer (uint32_t)
+449,use xTaskNotifyWaitIndexed()
+450,or ulTaskNotifyTakeIndexed()
+451,calling xTaskNotifyWaitIndexed()
+452,or ulTaskNotifyTakeIndexed()
+453,Blocked state (unblocked)
+454,Calling xTaskNotifyFromISR()
+455,the xTaskCreate()
+456,"previous notification (the
+ * task already had a notification pending)"
+457,and xTaskNotify()
+458,and xTaskNotify()
+459,pxHigherPriorityTaskWoken  xTaskNotifyFromISR()
+460,"BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify,
+                                      UBaseType_t uxIndexToNotify,
+                                      uint32_t ulValue,
+                                      eNotifyAction eAction,
+                                      uint32_t * pulPreviousNotificationValue,
+                                      BaseType_t * pxHigherPriorityTaskWoken )"
+461,"define xTaskNotifyFromISR( xTaskToNotify, ulValue, eAction, pxHigherPriorityTaskWoken )"
+462,"define xTaskNotifyIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pxHigherPriorityTaskWoken )"
+463,"BaseType_t xTaskNotifyAndQueryIndexedFromISR( TaskHandle_t xTaskToNotify, UBaseType_t uxIndexToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken )"
+464,"BaseType_t xTaskNotifyAndQueryFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken )"
+465,"notification value (the notification value at the time
+ * the function is called rather than at the time the function returns)"
+466,"notification value (the notification value at the time the
+ * function is called rather than at the time the function returns)"
+467,"define xTaskNotifyAndQueryIndexedFromISR( xTaskToNotify, uxIndexToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken )"
+468,"define xTaskNotifyAndQueryFromISR( xTaskToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken )"
+469,"BaseType_t xTaskNotifyWaitIndexed( UBaseType_t uxIndexToWaitOn, uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait )"
+470,"BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait )"
+471,unsigned integer (uint32_t)
+472,calling xTaskNotifyWaitIndexed()
+473,or ulTaskNotifyTakeIndexed()
+474,Blocked state (unblocked)
+475,use xTaskNotifyWaitIndexed()
+476,or ulTaskNotifyTakeIndexed()
+477,Calling xTaskNotifyWait()
+478,"new notification (provided a notification is not
+ * already pending)"
+479,to ULONG_MAX (if limits.h is included)
+480,the xTaskNotifyWait()
+481,notification value (see the xTaskNotify()
+482,"notification value (note
+ * *pulNotificationValue is set before any bits are cleared)"
+483,to ULONG_MAX (if limits.h is included)
+484,"function exits (in which case the value passed out in
+ * pulNotificationValue will match the task's notification value)"
+485,when xTaskNotifyWait()
+486,macro pdMS_TO_TICKS( value_in_ms )
+487,"was received (including notifications that were
+ * already pending when xTaskNotifyWait was called)"
+488,"BaseType_t xTaskGenericNotifyWait( UBaseType_t uxIndexToWaitOn,
+                                   uint32_t ulBitsToClearOnEntry,
+                                   uint32_t ulBitsToClearOnExit,
+                                   uint32_t * pulNotificationValue,
+                                   TickType_t xTicksToWait )"
+489,"define xTaskNotifyWait( ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait )"
+490,"define xTaskNotifyWaitIndexed( uxIndexToWaitOn, ulBitsToClearOnEntry, ulBitsToClearOnExit, pulNotificationValue, xTicksToWait )"
+491,"BaseType_t xTaskNotifyGiveIndexed( TaskHandle_t xTaskToNotify, UBaseType_t uxIndexToNotify )"
+492,BaseType_t xTaskNotifyGive( TaskHandle_t xTaskToNotify )
+493,unsigned integer (uint32_t)
+494,is xTaskNotifyGiveIndexed()
+495,the ulTaskNotificationTakeIndexed()
+496,Calling xTaskNotifyGive()
+497,the xTaskCreate()
+498,return xTaskNotifyGive()
+499,calls xTaskNotify()
+500,"define xTaskNotifyGiveIndexed( xTaskToNotify, uxIndexToNotify )"
+501,define xTaskNotifyGive( xTaskToNotify )
+502,"void vTaskNotifyGiveIndexedFromISR( TaskHandle_t xTaskHandle, UBaseType_t uxIndexToNotify, BaseType_t *pxHigherPriorityTaskWoken )"
+503,"void vTaskNotifyGiveFromISR( TaskHandle_t xTaskHandle, BaseType_t *pxHigherPriorityTaskWoken )"
+504,of xTaskNotifyGiveIndexed()
+505,service routine (ISR)
+506,unsigned integer (uint32_t)
+507,is vTaskNotifyGiveIndexedFromISR()
+508,the ulTaskNotificationTakeIndexed()
+509,Calling xTaskNotifyGiveFromISR()
+510,the xTaskCreate()
+511,pxHigherPriorityTaskWoken  vTaskNotifyGiveFromISR()
+512,"void vTaskGenericNotifyGiveFromISR( TaskHandle_t xTaskToNotify,
+                                    UBaseType_t uxIndexToNotify,
+                                    BaseType_t * pxHigherPriorityTaskWoken )"
+513,"define vTaskNotifyGiveFromISR( xTaskToNotify, pxHigherPriorityTaskWoken )"
+514,"define vTaskNotifyGiveIndexedFromISR( xTaskToNotify, uxIndexToNotify, pxHigherPriorityTaskWoken )"
+515,"uint32_t ulTaskNotifyTakeIndexed( UBaseType_t uxIndexToWaitOn, BaseType_t xClearCountOnExit, TickType_t xTicksToWait )"
+516,"uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait )"
+517,unsigned integer (uint32_t)
+518,the xSemaphoreTake()
+519,the xTaskNotifyGiveIndexed()
+520,or xTaskNotifyIndex()
+521,use ulTaskNotifyTakeIndexed()
+522,as xTaskNotifyWaitIndexed()
+523,Calling ulTaskNotifyTake()
+524,macro pdMS_TO_TICKS( value_in_ms )
+525,"uint32_t ulTaskGenericNotifyTake( UBaseType_t uxIndexToWaitOn,
+                                  BaseType_t xClearCountOnExit,
+                                  TickType_t xTicksToWait )"
+526,"define ulTaskNotifyTake( xClearCountOnExit, xTicksToWait )"
+527,"define ulTaskNotifyTakeIndexed( uxIndexToWaitOn, xClearCountOnExit, xTicksToWait )"
+528,"BaseType_t xTaskNotifyStateClearIndexed( TaskHandle_t xTask, UBaseType_t uxIndexToCLear )"
+529,BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask )
+530,unsigned integer (uint32_t)
+531,Calling xTaskNotifyStateClear()
+532,using xTaskCreate()
+533,to xTaskGetHandle()
+534,"BaseType_t xTaskGenericNotifyStateClear( TaskHandle_t xTask,
+                                         UBaseType_t uxIndexToClear )"
+535,define xTaskNotifyStateClear( xTask )
+536,"define xTaskNotifyStateClearIndexed( xTask, uxIndexToClear )"
+537,"uint32_t ulTaskNotifyValueClearIndexed( TaskHandle_t xTask, UBaseType_t uxIndexToClear, uint32_t ulBitsToClear )"
+538,"uint32_t ulTaskNotifyValueClear( TaskHandle_t xTask, uint32_t ulBitsToClear )"
+539,unsigned integer (uint32_t)
+540,Calling ulTaskNotifyValueClear()
+541,using xTaskCreate()
+542,using xTaskCreateStatic()
+543,to xTaskGetHandle()
+544,"uint32_t ulTaskGenericNotifyValueClear( TaskHandle_t xTask,
+                                        UBaseType_t uxIndexToClear,
+                                        uint32_t ulBitsToClear )"
+545,"define ulTaskNotifyValueClear( xTask, ulBitsToClear )"
+546,"define ulTaskNotifyValueClearIndexed( xTask, uxIndexToClear, ulBitsToClear )"
+547,void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut )
+548,with xTaskCheckForTimeOut()
+549,void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut )
+550,"BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, TickType_t * const pxTicksToWait )"
+551,to vTaskSetTimeOutState()
+552,"last updated (either by
+ * vTaskSetTimeOutState()"
+553,or xTaskCheckForTimeOut()
+554,and xTaskCheckForTimeOut()
+555,"size_t xUART_Receive( uint8_t *pucBuffer, size_t uxWantedBytes )"
+556,"bytes read (which might be less than
+ *      // uxWantedBytes)"
+557,"BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut,
+                                 TickType_t * const pxTicksToWait )"
+558,BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp )
+559,to vTaskStepTick()
+560,BaseType_t xTaskCatchUpTicks( TickType_t xTicksToCatchUp )
+561,define prvENTER_CRITICAL_OR_SUSPEND_ALL( x )
+562,define prvEXIT_CRITICAL_OR_RESUME_ALL( x )
+563,"define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxInterruptStatus )"
+564,"define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxInterruptStatus )"
+565,define prvENTER_CRITICAL_OR_SUSPEND_ALL( x )
+566,define prvEXIT_CRITICAL_OR_RESUME_ALL( x )
+567,"define prvENTER_CRITICAL_OR_MASK_ISR( pxLock, uxInterruptStatus )"
+568,"define prvEXIT_CRITICAL_OR_UNMASK_ISR( pxLock, uxInterruptStatus )"
+569,TaskHandle_t xTaskGetCurrentTaskHandleForCPU( BaseType_t cpuid )
+570,TaskHandle_t xTaskGetIdleTaskHandleForCPU( UBaseType_t cpuid )
+571,BaseType_t xTaskGetAffinity( TaskHandle_t xTask )
+572,kernel tick (either preemptive or cooperative)
+573,call xTaskIncrementTickOtherCores()
+574,BaseType_t xTaskIncrementTick( void )
+575,BaseType_t xTaskIncrementTickOtherCores( void )
+576,"event occur (and
+ * there be no higher priority tasks waiting on the same event)"
+577,"item value (which is the
+ * owning task's priority)"
+578,"void vTaskPlaceOnEventList( List_t * const pxEventList,
+                            const TickType_t xTicksToWait )"
+579,"void vTaskPlaceOnUnorderedEventList( List_t * pxEventList,
+                                     const TickType_t xItemValue,
+                                     const TickType_t xTicksToWait )"
+580,as vTaskPlaceOnEventList()
+581,whereas vTaskPlaceOnEventList()
+582,"void vTaskPlaceOnEventListRestricted( List_t * const pxEventList,
+                                      TickType_t xTicksToWait,
+                                      const BaseType_t xWaitIndefinitely )"
+583,by xEventGroupSetBits()
+584,"event lists (instead
+ * of delegating the entire responsibility to one of vTask...EventList()"
+585,void vTaskTakeKernelLock( void )
+586,void vTaskReleaseKernelLock( void )
+587,BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList )
+588,"void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
+                                        const TickType_t xItemValue )"
+589,void vTaskSwitchContext( void )
+590,TickType_t uxTaskResetEventItemValue( void )
+591,TaskHandle_t xTaskGetCurrentTaskHandle( void )
+592,void vTaskMissedYield( void )
+593,BaseType_t xTaskGetSchedulerState( void )
+594,BaseType_t xTaskPriorityInherit( TaskHandle_t const pxMutexHolder )
+595,BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder )
+596,"the mutex (if there were
+ * more than one task waiting for the mutex)"
+597,"void vTaskPriorityDisinheritAfterTimeout( TaskHandle_t const pxMutexHolder,
+                                          UBaseType_t uxHighestPriorityWaitingTask )"
+598,UBaseType_t uxTaskGetTaskNumber( TaskHandle_t xTask )
+599,"void vTaskSetTaskNumber( TaskHandle_t xTask,
+                         const UBaseType_t uxHandle )"
+600,void vTaskStepTick( const TickType_t xTicksToJump )
+601,within portSUPPRESS_TICKS_AND_SLEEP()
+602,because portSUPPRESS_TICKS_AND_SLEEP()
+603,eSleepModeStatus eTaskConfirmSleepModeStatus( void )
+604,TaskHandle_t pvTaskIncrementMutexHeldCount( void )
+605,as vTaskSetTimeOutState()
+606,void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut )
+607,"struct xTIME_OUT
+{
+    BaseType_t xOverflowCount;
+    TickType_t xTimeOnEntering;
+} TimeOut_t;"
+608,"struct xMEMORY_REGION
+{
+    void * pvBaseAddress;
+    uint32_t ulLengthInBytes;
+    uint32_t ulParameters;
+} MemoryRegion_t;"
+609,"struct xTASK_PARAMETERS
+{
+    TaskFunction_t pvTaskCode;
+    const char * const pcName; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+    configSTACK_DEPTH_TYPE usStackDepth;
+    void * pvParameters;
+    UBaseType_t uxPriority;
+    StackType_t * puxStackBuffer;
+    MemoryRegion_t xRegions[ portNUM_CONFIGURABLE_REGIONS ];
+    #if ( ( portUSING_MPU_WRAPPERS == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
+        StaticTask_t * const pxTaskBuffer;
+    #endif
+} TaskParameters_t;"
+610,"struct xTASK_STATUS
+{
+    TaskHandle_t xHandle;                            /* The handle of the task to which the rest of the information in the structure relates. */
+    const char * pcTaskName;                         /* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */ /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+    UBaseType_t xTaskNumber;                         /* A number unique to the task. */
+    eTaskState eCurrentState;                        /* The state in which the task existed when the structure was populated. */
+    UBaseType_t uxCurrentPriority;                   /* The priority at which the task was running (may be inherited) when the structure was populated. */
+    UBaseType_t uxBasePriority;                      /* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
+    uint32_t ulRunTimeCounter;                       /* The total run time allocated to the task so far, as defined by the run time stats clock.  See https://www.FreeRTOS.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
+    StackType_t * pxStackBase;                       /* Points to the lowest address of the task's stack area. */
+    configSTACK_DEPTH_TYPE usStackHighWaterMark;     /* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
+    #if ( configTASKLIST_INCLUDE_COREID == 1 )
+        BaseType_t xCoreID;                          /*!< Core this task is pinned to (0, 1, or -1 for tskNO_AFFINITY). This field is present if CONFIG_FREERTOS_VTASKLIST_INCLUDE_COREID is set. */
+    #endif
+} TaskStatus_t;"
+611,#include list.h
+612,Espressif Systems (Shanghai)
+613,"int accept(int s,struct sockaddr *addr,socklen_t *addrlen)"
+614,"return lwip_accept(s,addr,addrlen)"
+615,"int bind(int s,const struct sockaddr *name, socklen_t namelen)"
+616,"return lwip_bind(s,name,namelen)"
+617,"int shutdown(int s,int how)"
+618,"return lwip_shutdown(s,how)"
+619,"int getpeername(int s,struct sockaddr *name,socklen_t *namelen)"
+620,"return lwip_getpeername(s,name,namelen)"
+621,"int getsockname(int s,struct sockaddr *name,socklen_t *namelen)"
+622,"return lwip_getsockname(s,name,namelen)"
+623,"int setsockopt(int s,int level,int optname,const void *opval,socklen_t optlen)"
+624,"return lwip_setsockopt(s,level,optname,opval,optlen)"
+625,"int getsockopt(int s,int level,int optname,void *opval,socklen_t *optlen)"
+626,"return lwip_getsockopt(s,level,optname,opval,optlen)"
+627,int closesocket(int s)
+628,return lwip_close(s)
+629,"int connect(int s,const struct sockaddr *name,socklen_t namelen)"
+630,"return lwip_connect(s,name,namelen)"
+631,"int listen(int s,int backlog)"
+632,"return lwip_listen(s,backlog)"
+633,"ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)"
+634,"return lwip_recvmsg(sockfd, msg, flags)"
+635,"ssize_t recv(int s,void *mem,size_t len,int flags)"
+636,"return lwip_recv(s,mem,len,flags)"
+637,"ssize_t recvfrom(int s,void *mem,size_t len,int flags,struct sockaddr *from,socklen_t *fromlen)"
+638,"return lwip_recvfrom(s,mem,len,flags,from,fromlen)"
+639,"ssize_t send(int s,const void *dataptr,size_t size,int flags)"
+640,"return lwip_send(s,dataptr,size,flags)"
+641,"ssize_t sendmsg(int s,const struct msghdr *message,int flags)"
+642,"return lwip_sendmsg(s,message,flags)"
+643,"ssize_t sendto(int s,const void *dataptr,size_t size,int flags,const struct sockaddr *to,socklen_t tolen)"
+644,"return lwip_sendto(s,dataptr,size,flags,to,tolen)"
+645,"int socket(int domain,int type,int protocol)"
+646,"return lwip_socket(domain,type,protocol)"
+647,"return lwip_inet_ntop(af, src, dst, size)"
+648,"int inet_pton(int af, const char *src, void *dst)"
+649,"return lwip_inet_pton(af, src, dst)"
+650,#include sdkconfig.h
+651,Espressif Systems (Shanghai)
+652,"nvs_flash_read_security_cfg API (when ""NVS_ENCRYPTION"" is enabled)"
+653,"nvs_flash_generate_keys API (when ""NVS_ENCRYPTION"" is enabled)"
+654,"nvs_flash_secure_init_partition API (when ""NVS_ENCRYPTION"" is enabled)"
+655,esp_err_t nvs_flash_init(void)
+656,esp_err_t nvs_flash_init_partition(const char *partition_label)
+657,esp_err_t nvs_flash_init_partition_ptr(const esp_partition_t *partition)
+658,on success (storage was deinitialized)
+659,esp_err_t nvs_flash_deinit(void)
+660,esp_err_t nvs_flash_deinit_partition(const char* partition_label)
+661,"NVS partition (one with label ""nvs"")"
+662,initialization fails (shouldn't happen)
+663,esp_err_t nvs_flash_erase(void)
+664,part_name    Name (label)
+665,initialization fails (shouldn't happen)
+666,esp_err_t nvs_flash_erase_partition(const char *part_name)
+667,esp_err_t nvs_flash_erase_partition_ptr(const esp_partition_t *partition)
+668,Security configuration (keys)
+669,esp_err_t nvs_flash_secure_init(nvs_sec_cfg_t* cfg)
+670,Security configuration (keys)
+671,"esp_err_t nvs_flash_secure_init_partition(const char *partition_label, nvs_sec_cfg_t* cfg)"
+672,"esp_err_t nvs_flash_generate_keys(const esp_partition_t* partition, nvs_sec_cfg_t* cfg)"
+673,"esp_err_t nvs_flash_read_security_cfg(const esp_partition_t* partition, nvs_sec_cfg_t* cfg)"
+674,#include nvs.h
+675,#include esp_partition.h
+676,Espressif Systems (Shanghai)
+677,"nvs_handle IDF_DEPRECATED(""Replace with nvs_handle_t"")"
+678,define ESP_ERR_NVS_NOT_INITIALIZED         (ESP_ERR_NVS_BASE + 0x01)
+679,define ESP_ERR_NVS_NOT_FOUND               (ESP_ERR_NVS_BASE + 0x02)
+680,define ESP_ERR_NVS_TYPE_MISMATCH           (ESP_ERR_NVS_BASE + 0x03)
+681,define ESP_ERR_NVS_READ_ONLY               (ESP_ERR_NVS_BASE + 0x04)
+682,define ESP_ERR_NVS_NOT_ENOUGH_SPACE        (ESP_ERR_NVS_BASE + 0x05)
+683,define ESP_ERR_NVS_INVALID_NAME            (ESP_ERR_NVS_BASE + 0x06)
+684,define ESP_ERR_NVS_INVALID_HANDLE          (ESP_ERR_NVS_BASE + 0x07)
+685,define ESP_ERR_NVS_REMOVE_FAILED           (ESP_ERR_NVS_BASE + 0x08)
+686,define ESP_ERR_NVS_KEY_TOO_LONG            (ESP_ERR_NVS_BASE + 0x09)
+687,define ESP_ERR_NVS_PAGE_FULL               (ESP_ERR_NVS_BASE + 0x0a)
+688,define ESP_ERR_NVS_INVALID_STATE           (ESP_ERR_NVS_BASE + 0x0b)
+689,define ESP_ERR_NVS_INVALID_LENGTH          (ESP_ERR_NVS_BASE + 0x0c)
+690,define ESP_ERR_NVS_NO_FREE_PAGES           (ESP_ERR_NVS_BASE + 0x0d)
+691,define ESP_ERR_NVS_VALUE_TOO_LONG          (ESP_ERR_NVS_BASE + 0x0e)
+692,define ESP_ERR_NVS_PART_NOT_FOUND          (ESP_ERR_NVS_BASE + 0x0f)
+693,define ESP_ERR_NVS_NEW_VERSION_FOUND       (ESP_ERR_NVS_BASE + 0x10)
+694,define ESP_ERR_NVS_XTS_ENCR_FAILED         (ESP_ERR_NVS_BASE + 0x11)
+695,define ESP_ERR_NVS_XTS_DECR_FAILED         (ESP_ERR_NVS_BASE + 0x12)
+696,define ESP_ERR_NVS_XTS_CFG_FAILED          (ESP_ERR_NVS_BASE + 0x13)
+697,define ESP_ERR_NVS_XTS_CFG_NOT_FOUND       (ESP_ERR_NVS_BASE + 0x14)
+698,define ESP_ERR_NVS_ENCR_NOT_SUPPORTED      (ESP_ERR_NVS_BASE + 0x15)
+699,define ESP_ERR_NVS_KEYS_NOT_INITIALIZED    (ESP_ERR_NVS_BASE + 0x16)
+700,define ESP_ERR_NVS_CORRUPT_KEY_PART        (ESP_ERR_NVS_BASE + 0x17)
+701,define ESP_ERR_NVS_WRONG_ENCRYPTION        (ESP_ERR_NVS_BASE + 0x19)
+702,define ESP_ERR_NVS_CONTENT_DIFFERS         (ESP_ERR_NVS_BASE + 0x18)
+703,partition name (excluding null terminator)
+704,key name (including null terminator)
+705,namespace name (including null terminator)
+706,"nvs_open_mode IDF_DEPRECATED(""Replace with nvs_open_mode_t"")"
+707,length is (NVS_KEY_NAME_MAX_SIZE-1)
+708,If successful (return code is zero)
+709,NVS partition (only if NVS assertion checks are disabled)
+710,"esp_err_t nvs_open(const char* namespace_name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)"
+711,as nvs_open()
+712,using nvs_flash_init_partition()
+713,part_name        Label (name)
+714,length is (NVS_KEY_NAME_MAX_SIZE-1)
+715,If successful (return code is zero)
+716,NVS partition (only if NVS assertion checks are disabled)
+717,"esp_err_t nvs_open_from_partition(const char *part_name, const char* namespace_name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle)"
+718,length is (NVS_KEY_NAME_MAX_SIZE-1)
+719,NVS partition (only if NVS assertion checks are disabled)
+720,"esp_err_t nvs_set_i8 (nvs_handle_t handle, const char* key, int8_t value)"
+721,"esp_err_t nvs_set_u8 (nvs_handle_t handle, const char* key, uint8_t value)"
+722,"esp_err_t nvs_set_i16 (nvs_handle_t handle, const char* key, int16_t value)"
+723,"esp_err_t nvs_set_u16 (nvs_handle_t handle, const char* key, uint16_t value)"
+724,"esp_err_t nvs_set_i32 (nvs_handle_t handle, const char* key, int32_t value)"
+725,"esp_err_t nvs_set_u32 (nvs_handle_t handle, const char* key, uint32_t value)"
+726,"esp_err_t nvs_set_i64 (nvs_handle_t handle, const char* key, int64_t value)"
+727,"esp_err_t nvs_set_u64 (nvs_handle_t handle, const char* key, uint64_t value)"
+728,length is (NVS_KEY_NAME_MAX_SIZE-1)
+729,maximum length (including null character)
+730,"esp_err_t nvs_set_str (nvs_handle_t handle, const char* key, const char* value)"
+731,length is (NVS_KEY_NAME_MAX_SIZE-1)
+732,bytes or (97.6% of the partition size - 4000)
+733,NVS partition (only if NVS assertion checks are disabled)
+734,"esp_err_t nvs_set_blob(nvs_handle_t handle, const char* key, const void* value, size_t length)"
+735,length is (NVS_KEY_NAME_MAX_SIZE-1)
+736,NVS partition (only if NVS assertion checks are disabled)
+737,"esp_err_t nvs_get_i8 (nvs_handle_t handle, const char* key, int8_t* out_value)"
+738,"esp_err_t nvs_get_u8 (nvs_handle_t handle, const char* key, uint8_t* out_value)"
+739,"esp_err_t nvs_get_i16 (nvs_handle_t handle, const char* key, int16_t* out_value)"
+740,"esp_err_t nvs_get_u16 (nvs_handle_t handle, const char* key, uint16_t* out_value)"
+741,"esp_err_t nvs_get_i32 (nvs_handle_t handle, const char* key, int32_t* out_value)"
+742,"esp_err_t nvs_get_u32 (nvs_handle_t handle, const char* key, uint32_t* out_value)"
+743,"esp_err_t nvs_get_i64 (nvs_handle_t handle, const char* key, int64_t* out_value)"
+744,"esp_err_t nvs_get_u64 (nvs_handle_t handle, const char* key, uint64_t* out_value)"
+745,length is (NVS_KEY_NAME_MAX_SIZE-1)
+746,NVS partition (only if NVS assertion checks are disabled)
+747,"esp_err_t nvs_get_str (nvs_handle_t handle, const char* key, char* out_value, size_t* length)"
+748,"esp_err_t nvs_get_blob(nvs_handle_t handle, const char* key, void* out_value, size_t* length)"
+749,length is (NVS_KEY_NAME_MAX_SIZE-1)
+750,NVS partition (only if NVS assertion checks are disabled)
+751,"esp_err_t nvs_erase_key(nvs_handle_t handle, const char* key)"
+752,NVS partition (only if NVS assertion checks are disabled)
+753,esp_err_t nvs_erase_all(nvs_handle_t handle)
+754,esp_err_t nvs_commit(nvs_handle_t handle)
+755,void nvs_close(nvs_handle_t handle)
+756,of nvs_get_stats()
+757,"use NVS_DEFAULT_PART_NAME (""nvs"")"
+758,"esp_err_t nvs_get_stats(const char *part_name, nvs_stats_t *nvs_stats)"
+759,value used_entries (if err is equal to ESP_OK)
+760,of nvs_get_used_entry_count()
+761,"esp_err_t nvs_get_used_entry_count(nvs_handle_t handle, size_t* used_entries)"
+762,"esp_err_t nvs_entry_find(const char *part_name,
+        const char *namespace_name,
+        nvs_type_t type,
+        nvs_iterator_t *output_iterator)"
+763,esp_err_t nvs_entry_next(nvs_iterator_t *iterator)
+764,"esp_err_t nvs_entry_info(const nvs_iterator_t iterator, nvs_entry_info_t *out_info)"
+765,void nvs_release_iterator(nvs_iterator_t iterator)
+766,#include stdint.h
+767,#include stddef.h
+768,#include stdbool.h
+769,#include esp_attr.h
+770,#include esp_err.h
+771,Espressif Systems (Shanghai)
+772,"esp_err_t esp_event_loop_create(const esp_event_loop_args_t *event_loop_args, esp_event_loop_handle_t *event_loop)"
+773,esp_err_t esp_event_loop_delete(esp_event_loop_handle_t event_loop)
+774,esp_err_t esp_event_loop_create_default(void)
+775,esp_err_t esp_event_loop_delete_default(void)
+776,time expires (or some time afterwards)
+777,expiry as (1)
+778,"esp_err_t esp_event_loop_run(esp_event_loop_handle_t event_loop, TickType_t ticks_to_run)"
+779,event loop (legacy)
+780,"esp_err_t esp_event_handler_register(esp_event_base_t event_base,
+                                     int32_t event_id,
+                                     esp_event_handler_t event_handler,
+                                     void *event_handler_arg)"
+781,specific loop (legacy)
+782,"esp_err_t esp_event_handler_register_with(esp_event_loop_handle_t event_loop,
+                                          esp_event_base_t event_base,
+                                          int32_t event_id,
+                                          esp_event_handler_t event_handler,
+                                          void *event_handler_arg)"
+783,to remove (unregister)
+784,"esp_err_t esp_event_handler_instance_register_with(esp_event_loop_handle_t event_loop,
+                                                  esp_event_base_t event_base,
+                                                  int32_t event_id,
+                                                  esp_event_handler_t event_handler,
+                                                  void *event_handler_arg,
+                                                  esp_event_handler_instance_t *instance)"
+785,"esp_err_t esp_event_handler_instance_register(esp_event_base_t event_base,
+                                             int32_t event_id,
+                                             esp_event_handler_t event_handler,
+                                             void *event_handler_arg,
+                                             esp_event_handler_instance_t *instance)"
+786,event loop (legacy)
+787,"esp_err_t esp_event_handler_unregister(esp_event_base_t event_base,
+                                       int32_t event_id,
+                                       esp_event_handler_t event_handler)"
+788,event loop (legacy)
+789,"esp_err_t esp_event_handler_unregister_with(esp_event_loop_handle_t event_loop,
+                                            esp_event_base_t event_base,
+                                            int32_t event_id,
+                                            esp_event_handler_t event_handler)"
+790,to esp_event_handler_instance_register()
+791,"esp_err_t esp_event_handler_instance_unregister_with(esp_event_loop_handle_t event_loop,
+                                                     esp_event_base_t event_base,
+                                                     int32_t event_id,
+                                                     esp_event_handler_instance_t instance)"
+792,"esp_err_t esp_event_handler_instance_unregister(esp_event_base_t event_base,
+                                                int32_t event_id,
+                                                esp_event_handler_instance_t instance)"
+793,lifetime automatically (allocation + deletion)
+794,"esp_err_t esp_event_post(esp_event_base_t event_base,
+                         int32_t event_id,
+                         const void *event_data,
+                         size_t event_data_size,
+                         TickType_t ticks_to_wait)"
+795,lifetime automatically (allocation + deletion)
+796,"esp_err_t esp_event_post_to(esp_event_loop_handle_t event_loop,
+                            esp_event_base_t event_base,
+                            int32_t event_id,
+                            const void *event_data,
+                            size_t event_data_size,
+                            TickType_t ticks_to_wait)"
+797,optional parameter (can be NULL)
+798,"esp_err_t esp_event_isr_post(esp_event_base_t event_base,
+                             int32_t event_id,
+                             const void *event_data,
+                             size_t event_data_size,
+                             BaseType_t *task_unblocked)"
+799,optional parameter (can be NULL)
+800,"esp_err_t esp_event_isr_post_to(esp_event_loop_handle_t event_loop,
+                                esp_event_base_t event_base,
+                                int32_t event_id,
+                                const void *event_data,
+                                size_t event_data_size,
+                                BaseType_t *task_unblocked)"
+801,esp_err_t esp_event_dump(FILE *file)
+802,#include esp_err.h
+803,#include freertos/FreeRTOS.h
+804,#include freertos/task.h
+805,#include freertos/queue.h
+806,#include freertos/semphr.h
+807,#include esp_event_base.h
+419,kernel_pid_t gcoap_init(void)
+420,"single listener (that is,
+ *      `listener->next == NULL`)"
+421,void gcoap_register_listener(gcoap_listener_t *listener)
+424,for cache (re-)
+425,ref coap_opt_remove()
+429,for cache (re-)
+430,ref coap_opt_remove()
+431,"int gcoap_req_init(coap_pkt_t *pdu, uint8_t *buf, size_t len,
+                                 unsigned code, const char *path)"
+434,"return coap_opt_finish(pdu, COAP_OPT_FINISH_NONE)"
+435,highest supported (by value)
+436,"ssize_t gcoap_req_send(const uint8_t *buf, size_t len,
+                       const sock_udp_ep_t *remote,
+                       gcoap_resp_handler_t resp_handler, void *context,
+                       gcoap_socket_type_t tl_type)"
+441,"ssize_t gcoap_response(coap_pkt_t *pdu, uint8_t *buf,
+                                     size_t len, unsigned code)"
+442,"int gcoap_obs_init(coap_pkt_t *pdu, uint8_t *buf, size_t len,
+                   const coap_resource_t *resource)"
+443,"size_t gcoap_obs_send(const uint8_t *buf, size_t len,
+                      const coap_resource_t *resource)"
+444,brief   Forgets (invalidates)
+445,the internal (local)
+446,"deregister request (i.e., a GET request with the token
+ * of the registration and the observe option set to COAP_OBS_DEREGISTER)"
+447,"int gcoap_obs_req_forget(const sock_udp_ep_t *remote, const uint8_t *token,
+                         size_t tokenlen)"
+448,uint8_t gcoap_op_state(void)
+449,"int gcoap_get_resource_list(void *buf, size_t maxlen, uint8_t cf,
+                               gcoap_socket_type_t tl_type)"
+450,p buf (or writable if @p buf is null)
+451,"ssize_t gcoap_encode_link(const coap_resource_t *resource, char *buf,
+                          size_t maxlen, coap_link_encoder_ctx_t *context)"
+452,if IS_USED(MODULE_GCOAP_DTLS)
+453,"struct gcoap_request_memo {
+    unsigned state;                     /**< State of this memo, a GCOAP_MEMO... */
+    int send_limit;                     /**< Remaining resends, 0 if none;
+                                             GCOAP_SEND_LIMIT_NON if non-confirmable */
+    union {
+        uint8_t hdr_buf[GCOAP_HEADER_MAXLEN];
+                                        /**< Copy of PDU header, if no resends */
+        gcoap_resend_t data;            /**< Endpoint and PDU buffer, for resend */
+    } msg;"
+456,"    esp_mqtt_client_config_t mqtt_cfg = {
+        .broker.address.uri = MQTT_URI,
+        .broker.address.port = MQTT_PORT
+    };"
+457,"    wifi_config_t wifi_config = {
+        .sta = {
+            .ssid = WIFI_SSID,
+            .password = WIFI_PASS,
+            .threshold.authmode = WIFI_AUTH_WPA2_PSK,
+        },
+    };"
+2,"esp_err_t i2c_new_master_bus(const i2c_master_bus_config_t *bus_config, i2c_master_bus_handle_t *ret_bus_handle)"
+3,"esp_err_t i2c_master_bus_add_device(i2c_master_bus_handle_t bus_handle, const i2c_device_config_t *dev_config, i2c_master_dev_handle_t *ret_handle)"
+4,esp_err_t i2c_del_master_bus(i2c_master_bus_handle_t bus_handle)
+5,esp_err_t i2c_master_bus_rm_device(i2c_master_dev_handle_t handle)
+6,Operation timeout(larger than xfer_timeout_ms)
+7,"esp_err_t i2c_master_transmit(i2c_master_dev_handle_t i2c_dev, const uint8_t *write_buffer, size_t write_size, int xfer_timeout_ms)"
+8,Operation timeout(larger than xfer_timeout_ms)
+9,"esp_err_t i2c_master_multi_buffer_transmit(i2c_master_dev_handle_t i2c_dev, i2c_master_transmit_multi_buffer_info_t *buffer_info_array, size_t array_size, int xfer_timeout_ms)"
+10,Operation timeout(larger than xfer_timeout_ms)
+11,"esp_err_t i2c_master_transmit_receive(i2c_master_dev_handle_t i2c_dev, const uint8_t *write_buffer, size_t write_size, uint8_t *read_buffer, size_t read_size, int xfer_timeout_ms)"
+12,Operation timeout(larger than xfer_timeout_ms)
+13,"esp_err_t i2c_master_receive(i2c_master_dev_handle_t i2c_dev, uint8_t *read_buffer, size_t read_size, int xfer_timeout_ms)"
+14,wait forever (Not recommended in this function)
+15,Operation timeout(larger than xfer_timeout_ms)
+16,"esp_err_t i2c_master_probe(i2c_master_bus_handle_t bus_handle, uint16_t address, int xfer_timeout_ms)"
+17,"esp_err_t i2c_master_register_event_callbacks(i2c_master_dev_handle_t i2c_dev, const i2c_master_event_callbacks_t *cbs, void *user_data)"
+18,esp_err_t i2c_master_bus_reset(i2c_master_bus_handle_t bus_handle)
+19,"esp_err_t i2c_master_bus_wait_all_done(i2c_master_bus_handle_t bus_handle, int timeout_ms)"
+20,"esp_err_t i2c_master_get_bus_handle(i2c_port_num_t port_num, i2c_master_bus_handle_t *ret_handle)"
+2,freertos/FreeRTOS.h
+3,freertos/task.h
+4,esp_wifi.h
+5,esp_event.h
+6,nvs_flash.h
+7,esp_log.h
+8,netdb.h
+9,esp_netif.h
+10,mqtt_client.h
+11,sys/socket.h
+12,netdb.h
+13,coap3/coap.h
+14,nvs.h
+14,lwip/sockets.h
+15,driver/i2c_master.h

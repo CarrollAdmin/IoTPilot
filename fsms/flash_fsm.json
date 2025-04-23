@@ -1,0 +1,110 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "NVS_INIT_OK",
+                    "target": "NVS_OPEN"
+                },
+                {
+                    "condition": "NVS_ERR_NO_FREE_PAGES || NVS_NEW_VERSION_FOUND",
+                    "target": "NVS_ERASE"
+                }
+            ]
+        },
+        {
+            "name": "NVS_ERASE",
+            "transitions": [
+                {
+                    "condition": "NVS_ERASE_OK",
+                    "target": "NVS_REINIT"
+                },
+                {
+                    "condition": "NVS_ERASE_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NVS_REINIT",
+            "transitions": [
+                {
+                    "condition": "NVS_REINIT_OK",
+                    "target": "NVS_OPEN"
+                },
+                {
+                    "condition": "NVS_REINIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NVS_OPEN",
+            "transitions": [
+                {
+                    "condition": "NVS_OPEN_OK",
+                    "target": "NVS_WRITE"
+                },
+                {
+                    "condition": "NVS_OPEN_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NVS_WRITE",
+            "transitions": [
+                {
+                    "condition": "NVS_SET_OK",
+                    "target": "NVS_COMMIT"
+                },
+                {
+                    "condition": "NVS_SET_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NVS_COMMIT",
+            "transitions": [
+                {
+                    "condition": "NVS_COMMIT_OK",
+                    "target": "NVS_CLOSE_AND_REPEAT"
+                },
+                {
+                    "condition": "NVS_COMMIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NVS_CLOSE_AND_REPEAT",
+            "transitions": [
+                {
+                    "condition": "NVS_CLOSE_OK",
+                    "target": "DELAY_AND_RETRY"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "HANDLE_ERROR",
+                    "target": "INIT"
+                }
+            ]
+        },
+        {
+            "name": "DELAY_AND_RETRY",
+            "transitions": [
+                {
+                    "condition": "XTIMER_SLEEP_COMPLETE",
+                    "target": "NVS_INIT"
+                }
+            ]
+        }
+    ]
+}

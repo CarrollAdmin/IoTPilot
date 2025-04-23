@@ -1,0 +1,2698 @@
+id,code
+0,define K_PRIO_COOP(x)
+1,define K_PRIO_PREEMPT(x)
+2,define K_HIGHEST_THREAD_PRIO (-CONFIG_NUM_COOP_PRIORITIES)
+3,define K_HIGHEST_APPLICATION_THREAD_PRIO (K_HIGHEST_THREAD_PRIO)
+4,define K_LOWEST_APPLICATION_THREAD_PRIO (K_LOWEST_THREAD_PRIO - 1)
+5,define Z_POLL_EVENT_OBJ_INIT(obj)
+6,define Z_POLL_EVENT_OBJ_INIT(obj)
+7,typedef int (*_poller_cb_t)
+8,typedef void (*k_thread_user_cb_t)
+9,"void k_thread_foreach(k_thread_user_cb_t user_cb, void *user_data)"
+10,"void k_thread_foreach_unlocked(
+	k_thread_user_cb_t user_cb, void *user_data)"
+11,define K_ESSENTIAL (BIT(0)
+12,define K_FP_REGS (BIT(K_FP_IDX)
+13,define K_USER (BIT(2)
+14,define K_INHERIT_PERMS (BIT(3)
+15,define K_CALLBACK_STATE (BIT(4)
+16,define K_DSP_REGS (BIT(K_DSP_IDX)
+17,define K_AGU_REGS (BIT(K_AGU_IDX)
+18,define K_SSE_REGS (BIT(7)
+19,userspace thread (requires `CONFIG_USERSPACE=y`)
+20,int k_thread_stack_free(k_thread_stack_t *stack)
+21,to K_THREAD_STACK_DEFINE()
+22,of K_THREAD_STACK_SIZEOF(stack)
+23,with K_THREAD_STACK_DEFINE()
+24,of K_KERNEL_STACK_SIZEOF(stack)
+25,with K_KERNEL_STACK_DEFINE()
+26,or sizeof(stack)
+27,or K_NO_WAIT (for no delay)
+28,"k_tid_t k_thread_create(struct k_thread *new_thread,
+				  k_thread_stack_t *stack,
+				  size_t stack_size,
+				  k_thread_entry_t entry,
+				  void *p1, void *p2, void *p3,
+				  int prio, uint32_t options, k_timeout_t delay)"
+29,"void k_thread_user_mode_enter(k_thread_entry_t entry,
+						   void *p1, void *p2,
+						   void *p3)"
+30,be initialized (i.e. running)
+31,"define k_thread_access_grant(thread, ...)"
+32,"void k_thread_heap_assign(struct k_thread *thread,
+					struct k_heap *heap)"
+33,if defined(CONFIG_INIT_STACKS)
+34,thread object (user mode only)
+35,thread object (user mode only)
+36,or exited (user mode only)
+37,for unused_ptr (user mode only)
+38,"int k_thread_stack_space_get(const struct k_thread *thread,
+				       size_t *unused_ptr)"
+39,to k_thread_heap_assign()
+40,void k_thread_system_pool_assign(struct k_thread *thread)
+41,"int k_thread_join(struct k_thread *thread, k_timeout_t timeout)"
+42,int32_t k_sleep(k_timeout_t timeout)
+43,int32_t k_msleep(int32_t ms)
+44,return k_sleep(Z_TIMEOUT_MS(ms)
+45,use k_usleep()
+46,int32_t k_usleep(int32_t us)
+47,example k_busy_wait(1000)
+48,than k_sleep(K_MSEC(1)
+49,void k_busy_wait(uint32_t usec_to_wait)
+50,bool k_can_yield(void)
+51,void k_yield(void)
+52,void k_wakeup(k_tid_t thread)
+53,Use k_current_get()
+54,local storage (TLS)
+55,as k_current_get()
+56,k_tid_t k_sched_current_thread_query(void)
+57,k_tid_t k_current_get(void)
+58,in z_thread_entry()
+59,return k_sched_current_thread_query()
+60,"part of (i.e. the ready queue, the timeout
+ * queue, or a kernel object wait queue)"
+61,currently own (such as mutexes or memory blocks)
+62,After k_thread_abort()
+63,"the caller (in the same manner as
+ * k_thread_join()"
+64,void k_thread_abort(k_tid_t thread)
+65,void k_thread_start(k_tid_t thread)
+66,k_ticks_t z_timeout_expires(const struct _timeout *timeout)
+67,k_ticks_t z_timeout_remaining(const struct _timeout *timeout)
+68,k_ticks_t k_thread_timeout_expires_ticks(const struct k_thread *thread)
+69,"k_ticks_t z_impl_k_thread_timeout_expires_ticks(
+						const struct k_thread *thread)"
+70,return z_timeout_expires(&thread->base.timeout)
+71,k_ticks_t k_thread_timeout_remaining_ticks(const struct k_thread *thread)
+72,"k_ticks_t z_impl_k_thread_timeout_remaining_ticks(
+						const struct k_thread *thread)"
+73,return z_timeout_remaining(&thread->base.timeout)
+74,define Z_THREAD_INIT_DELAY_INITIALIZER(ms)
+75,define Z_THREAD_INIT_DELAY(thread)
+76,define Z_THREAD_INIT_DELAY_INITIALIZER(ms)
+77,define Z_THREAD_INIT_DELAY(thread)
+78,"define Z_THREAD_INITIALIZER(thread, stack, stack_size,           \
+			    entry, p1, p2, p3,                   \
+			    prio, options, delay, tname)"
+79,to K_THREAD_DEFINE()
+80,and K_KERNEL_THREAD_DEFINE()
+81,"define Z_THREAD_COMMON_DEFINE(name, stack_size,			\
+			       entry, p1, p2, p3,			\
+			       prio, options, delay)"
+82,Scheduling delay (in milliseconds)
+83,"initialization handling (depending on the priority of the main
+ * thread)"
+84,a SYS_INIT()
+85,application main()
+86,"define K_THREAD_DEFINE(name, stack_size,                                \
+			entry, p1, p2, p3,                               \
+			prio, options, delay)"
+87,via k_thread_user_mode_enter()
+88,stack size (@p stack_size)
+89,of CONFIG_MMU_PAGE_SIZE (if MMU)
+90,two size (if MPU)
+91,Scheduling delay (in milliseconds)
+92,"define K_KERNEL_THREAD_DEFINE(name, stack_size,			\
+			       entry, p1, p2, p3,			\
+			       prio, options, delay)"
+93,int k_thread_priority_get(k_tid_t thread)
+94,"void k_thread_priority_set(k_tid_t thread, int prio)"
+95,by k_cycle_get_32()
+96,"extra metadata (like e.g. the ""runtime"" and ""period"" parameters in
+ * Linux sched_setattr()"
+97,"void k_thread_deadline_set(k_tid_t thread, int deadline)"
+98,int k_thread_cpu_mask_clear(k_tid_t thread)
+99,int k_thread_cpu_mask_enable_all(k_tid_t thread)
+100,"int k_thread_cpu_mask_enable(k_tid_t thread, int cpu)"
+101,"int k_thread_cpu_mask_disable(k_tid_t thread, int cpu)"
+102,"int k_thread_cpu_pin(k_tid_t thread, int cpu)"
+103,to k_sem_take()
+104,is halted (suspended or aborted)
+105,void k_thread_suspend(k_tid_t thread)
+106,void k_thread_resume(k_tid_t thread)
+107,slice length (in milliseconds)
+108,"void k_sched_time_slice_set(int32_t slice, int prio)"
+109,via k_sched_time_slice_set()
+110,tick time (c.f. k_uptime_get()
+111,like k_thread_runtime_stats_get()
+112,"void k_thread_time_slice_set(struct k_thread *th, int32_t slice_ticks,
+			     k_thread_timeslice_fn_t expired, void *data)"
+113,bool k_is_in_isr(void)
+114,int k_is_preempt_thread(void)
+115,bool k_is_pre_kernel(void)
+116,"userspace threads (just one byte
+ * inc/decrement in the thread struct)"
+117,void k_sched_lock(void)
+118,to k_sched_lock()
+119,called k_sched_lock()
+120,void k_sched_unlock(void)
+121,void k_thread_custom_data_set(void *value)
+122,"int k_thread_name_set(k_tid_t thread, const char *str)"
+123,"int k_thread_name_copy(k_tid_t thread, char *buf,
+				 size_t size)"
+124,define K_NSEC(t)
+125,define K_USEC(t)
+126,define K_CYC(t)
+127,define K_TICKS(t)
+128,define K_MSEC(ms)
+129,define K_SECONDS(s)
+130,define K_MINUTES(m)
+131,define K_HOURS(h)
+132,define K_TIMEOUT_ABS_TICKS(t)
+133,define K_TIMEOUT_ABS_MS(t)
+134,define K_TIMEOUT_ABS_US(t)
+135,define K_TIMEOUT_ABS_NS(t)
+136,define K_TIMEOUT_ABS_CYC(t)
+137,for the (single)
+138,calls k_timer_stop()
+139,"define Z_TIMER_INITIALIZER(obj, expiry, stop)"
+140,typedef void (*k_timer_expiry_t)
+141,interrupt context (isr-ok)
+142,typedef void (*k_timer_stop_t)
+143,"define K_TIMER_DEFINE(name, expiry_fn, stop_fn)"
+144,"void k_timer_init(struct k_timer *timer,
+			 k_timer_expiry_t expiry_fn,
+			 k_timer_stop_t stop_fn)"
+145,"void k_timer_start(struct k_timer *timer,
+			     k_timeout_t duration, k_timeout_t period)"
+146,void k_timer_stop(struct k_timer *timer)
+147,uint32_t k_timer_status_get(struct k_timer *timer)
+148,uint32_t k_timer_status_sync(struct k_timer *timer)
+149,k_ticks_t k_timer_expires_ticks(const struct k_timer *timer)
+150,"k_ticks_t z_impl_k_timer_expires_ticks(
+				       const struct k_timer *timer)"
+151,return z_timeout_expires(&timer->timeout)
+152,k_ticks_t k_timer_remaining_ticks(const struct k_timer *timer)
+153,"k_ticks_t z_impl_k_timer_remaining_ticks(
+				       const struct k_timer *timer)"
+154,return z_timeout_remaining(&timer->timeout)
+155,computes the (approximate)
+156,Remaining time (in milliseconds)
+157,uint32_t k_timer_remaining_get(struct k_timer *timer)
+158,return k_ticks_to_ms_floor32(k_timer_remaining_ticks(timer)
+159,"void k_timer_user_data_set(struct k_timer *timer, void *user_data)"
+160,"void z_impl_k_timer_user_data_set(struct k_timer *timer,
+					       void *user_data)"
+161,int64_t k_uptime_ticks(void)
+162,int64_t k_uptime_get(void)
+163,return k_ticks_to_ms_floor64(k_uptime_ticks()
+164,system uptime (32-bit version)
+165,over k_uptime_get()
+166,uint32_t k_uptime_get_32(void)
+167,uint32_t k_uptime_seconds(void)
+168,return k_ticks_to_sec_floor32(k_uptime_ticks()
+169,int64_t k_uptime_delta(int64_t *reftime)
+170,uint32_t k_cycle_get_32(void)
+171,return arch_k_cycle_get_32()
+172,uint64_t k_cycle_get_64(void)
+173,return arch_k_cycle_get_64()
+174,"Z_DECL_POLL_EVENT
+
+	SYS_PORT_TRACING_TRACKING_FIELD(k_queue)"
+175,define Z_QUEUE_INITIALIZER(obj)
+176,void k_queue_init(struct k_queue *queue)
+177,from k_queue_get()
+178,NULL value (as if timeout expired)
+179,by k_poll()
+180,"K_POLL_STATE_CANCELLED state (and per above, subsequent
+ * k_queue_get()"
+181,void k_queue_cancel_wait(struct k_queue *queue)
+182,"void k_queue_append(struct k_queue *queue, void *data)"
+183,"int32_t k_queue_alloc_append(struct k_queue *queue, void *data)"
+184,"void k_queue_prepend(struct k_queue *queue, void *data)"
+185,"int32_t k_queue_alloc_prepend(struct k_queue *queue, void *data)"
+186,"void k_queue_insert(struct k_queue *queue, void *prev, void *data)"
+187,"int k_queue_append_list(struct k_queue *queue, void *head, void *tail)"
+188,"int k_queue_merge_slist(struct k_queue *queue, sys_slist_t *list)"
+189,"bool k_queue_remove(struct k_queue *queue, void *data)"
+190,"bool k_queue_unique_append(struct k_queue *queue, void *data)"
+191,int k_queue_is_empty(struct k_queue *queue)
+192,int z_impl_k_queue_is_empty(struct k_queue *queue)
+193,return sys_sflist_is_empty(&queue->data_q)
+194,define K_QUEUE_DEFINE(name)
+195,define Z_FUTEX_DATA_INITIALIZER(obj)
+196,calls k_futex_wake()
+197,"int k_futex_wait(struct k_futex *futex, int expected,
+			   k_timeout_t timeout)"
+198,"int k_futex_wake(struct k_futex *futex, bool wake_all)"
+199,define Z_EVENT_INITIALIZER(obj)
+200,void k_event_init(struct k_event *event)
+201,"uint32_t k_event_post(struct k_event *event, uint32_t events)"
+202,"uint32_t k_event_set(struct k_event *event, uint32_t events)"
+203,"uint32_t k_event_set_masked(struct k_event *event, uint32_t events,
+				  uint32_t events_mask)"
+204,routine clears (resets)
+205,"uint32_t k_event_clear(struct k_event *event, uint32_t events)"
+206,"uint32_t k_event_wait(struct k_event *event, uint32_t events,
+				bool reset, k_timeout_t timeout)"
+207,"uint32_t k_event_wait_all(struct k_event *event, uint32_t events,
+				    bool reset, k_timeout_t timeout)"
+208,"uint32_t k_event_test(struct k_event *event, uint32_t events_mask)"
+209,"return k_event_wait(event, events_mask, false, K_NO_WAIT)"
+210,define K_EVENT_DEFINE(name)
+211,define Z_FIFO_INITIALIZER(obj)
+212,define k_fifo_init(fifo)
+213,from k_fifo_get()
+214,"NULL value (as if timeout
+ * expired)"
+215,define k_fifo_cancel_wait(fifo)
+216,"define k_fifo_put(fifo, data)"
+217,"define k_fifo_alloc_put(fifo, data)"
+218,"define k_fifo_put_list(fifo, head, tail)"
+219,via sys_slist_init()
+220,"define k_fifo_put_slist(fifo, list)"
+221,"define k_fifo_get(fifo, timeout)"
+222,define k_fifo_is_empty(fifo)
+223,define k_fifo_peek_head(fifo)
+224,FIFO queue (without removing it)
+225,define k_fifo_peek_tail(fifo)
+226,define K_FIFO_DEFINE(name)
+227,define Z_LIFO_INITIALIZER(obj)
+228,define k_lifo_init(lifo)
+229,"define k_lifo_put(lifo, data)"
+230,"define k_lifo_alloc_put(lifo, data)"
+231,"define k_lifo_get(lifo, timeout)"
+232,define K_LIFO_DEFINE(name)
+233,define K_STACK_FLAG_ALLOC	((uint8_t)
+234,"define Z_STACK_INITIALIZER(obj, stack_buffer, stack_num_entries)"
+235,"void k_stack_init(struct k_stack *stack,
+		  stack_data_t *buffer, uint32_t num_entries)"
+236,if k_stack_cleanup()
+237,"int32_t k_stack_alloc_init(struct k_stack *stack,
+				   uint32_t num_entries)"
+238,int k_stack_cleanup(struct k_stack *stack)
+239,"int k_stack_push(struct k_stack *stack, stack_data_t data)"
+240,"int k_stack_pop(struct k_stack *stack, stack_data_t *data,
+			  k_timeout_t timeout)"
+241,"define K_STACK_DEFINE(name, stack_num_entries)"
+242,define Z_MUTEX_INITIALIZER(obj)
+243,define K_MUTEX_DEFINE(name)
+244,int k_mutex_init(struct k_mutex *mutex)
+245,"int k_mutex_lock(struct k_mutex *mutex, k_timeout_t timeout)"
+246,int k_mutex_unlock(struct k_mutex *mutex)
+247,define Z_CONDVAR_INITIALIZER(obj)
+248,int k_condvar_init(struct k_condvar *condvar)
+249,int k_condvar_signal(struct k_condvar *condvar)
+250,int k_condvar_broadcast(struct k_condvar *condvar)
+251,"int k_condvar_wait(struct k_condvar *condvar, struct k_mutex *mutex,
+			     k_timeout_t timeout)"
+252,define K_CONDVAR_DEFINE(name)
+253,"Z_DECL_POLL_EVENT
+
+	SYS_PORT_TRACING_TRACKING_FIELD(k_sem)"
+254,"define Z_SEM_INITIALIZER(obj, initial_count, count_limit)"
+255,"int k_sem_init(struct k_sem *sem, unsigned int initial_count,
+			  unsigned int limit)"
+256,"int k_sem_take(struct k_sem *sem, k_timeout_t timeout)"
+257,void k_sem_give(struct k_sem *sem)
+258,void k_sem_reset(struct k_sem *sem)
+259,int k_sem_count_get(struct k_sem *sem)
+260,int z_impl_k_sem_count_get(struct k_sem *sem)
+261,"define K_SEM_DEFINE(name, initial_count, count_limit)"
+262,typedef void (*k_work_handler_t)
+263,Initialize a (non-delayable)
+264,"void k_work_init(struct k_work *work,
+		  k_work_handler_t handler)"
+265,int k_work_busy_get(const struct k_work *work)
+266,if k_work_busy_get()
+267,bool k_work_is_pending(const struct k_work *work)
+268,"int k_work_submit_to_queue(struct k_work_q *queue,
+			   struct k_work *work)"
+269,with k_work_submit_to_queue()
+270,int k_work_submit(struct k_work *work)
+271,"chained submissions (from
+ * within the handler)"
+272,"bool k_work_flush(struct k_work *work,
+		  struct k_work_sync *sync)"
+273,a pending (non-delayable)
+274,also k_work_cancel_sync()
+275,the k_work_busy_get()
+276,int k_work_cancel(struct k_work *work)
+277,as k_work_cancel()
+278,after k_work_cancel()
+279,"was pending (call had to wait for cancellation of a
+ * running handler to complete, or scheduled or submitted operations were
+ * cancelled)"
+280,"bool k_work_cancel_sync(struct k_work *work, struct k_work_sync *sync)"
+281,void k_work_queue_init(struct k_work_q *queue)
+282,"void k_work_queue_start(struct k_work_q *queue,
+			k_thread_stack_t *stack, size_t stack_size,
+			int prio, const struct k_work_queue_config *cfg)"
+283,k_tid_t k_work_queue_thread_get(struct k_work_q *queue)
+284,until k_work_queue_unplug()
+285,"int k_work_queue_drain(struct k_work_q *queue, bool plug)"
+286,when k_work_queue_drain()
+287,int k_work_queue_unplug(struct k_work_q *queue)
+288,"void k_work_init_delayable(struct k_work_delayable *dwork,
+			   k_work_handler_t handler)"
+289,int k_work_delayable_busy_get(const struct k_work_delayable *dwork)
+290,if k_work_delayable_busy_get()
+291,"bool k_work_delayable_is_pending(
+	const struct k_work_delayable *dwork)"
+292,"k_ticks_t k_work_delayable_expires_get(
+	const struct k_work_delayable *dwork)"
+293,"k_ticks_t k_work_delayable_remaining_get(
+	const struct k_work_delayable *dwork)"
+294,Unlike k_work_reschedule_for_queue()
+295,"int k_work_schedule_for_queue(struct k_work_q *queue,
+			       struct k_work_delayable *dwork,
+			       k_timeout_t delay)"
+296,around k_work_schedule_for_queue()
+297,to k_work_submit_to_queue()
+298,with k_work_schedule_for_queue()
+299,"int k_work_schedule(struct k_work_delayable *dwork,
+				   k_timeout_t delay)"
+300,Unlike k_work_schedule_for_queue()
+301,to k_work_submit_to_queue()
+302,"c K_NO_WAIT (""no delay"")"
+303,"int k_work_reschedule_for_queue(struct k_work_q *queue,
+				 struct k_work_delayable *dwork,
+				 k_timeout_t delay)"
+304,around k_work_reschedule_for_queue()
+305,with k_work_reschedule_for_queue()
+306,"int k_work_reschedule(struct k_work_delayable *dwork,
+				     k_timeout_t delay)"
+307,with k_work_flush()
+308,"bool k_work_flush_delayable(struct k_work_delayable *dwork,
+			    struct k_work_sync *sync)"
+309,to k_work_cancel()
+310,or k_work_cancel_delayable_sync()
+311,the k_work_delayable_busy_get()
+312,int k_work_cancel_delayable(struct k_work_delayable *dwork)
+313,Like k_work_cancel_delayable()
+314,"not idle (call had to wait for cancellation of a
+ * running handler to complete, or scheduled or submitted operations were
+ * cancelled)"
+315,"bool k_work_cancel_delayable_sync(struct k_work_delayable *dwork,
+				  struct k_work_sync *sync)"
+316,via k_work_busy_get()
+317,via k_work_busy_get()
+318,via k_work_busy_get()
+319,via k_work_busy_get()
+320,via k_work_busy_get()
+321,define Z_WORK_INITIALIZER(work_handler)
+322,define Z_WORK_DELAYABLE_INITIALIZER(work_handler)
+323,"static K_WORK_DELAYABLE_DEFINE(<dwork>, <work_handler>)"
+324,"define K_WORK_DELAYABLE_DEFINE(work, work_handler)"
+325,"will process (or is
+ * processing)"
+326,see arch_mem_coherent()
+327,bool k_work_is_pending(const struct k_work *work)
+328,return k_work_busy_get(work)
+329,"return CONTAINER_OF(work, struct k_work_delayable, work)"
+330,"bool k_work_delayable_is_pending(
+	const struct k_work_delayable *dwork)"
+331,return k_work_delayable_busy_get(dwork)
+332,"k_ticks_t k_work_delayable_expires_get(
+	const struct k_work_delayable *dwork)"
+333,return z_timeout_expires(&dwork->timeout)
+334,"k_ticks_t k_work_delayable_remaining_get(
+	const struct k_work_delayable *dwork)"
+335,return z_timeout_remaining(&dwork->timeout)
+336,k_tid_t k_work_queue_thread_get(struct k_work_q *queue)
+337,typedef void (*k_work_user_handler_t)
+338,if defined(__cplusplus)
+339,define Z_WORK_USER_INITIALIZER(work_handler)
+340,define Z_WORK_USER_INITIALIZER(work_handler)
+341,"static K_WORK_USER_DEFINE(<work>, <work_handler>)"
+342,"define K_WORK_USER_DEFINE(work, work_handler)"
+343,"void k_work_user_init(struct k_work_user *work,
+				    k_work_user_handler_t handler)"
+344,bool k_work_user_is_pending(struct k_work_user *work)
+345,"return atomic_test_bit(&work->flags, K_WORK_USER_STATE_PENDING)"
+346,"int k_work_user_submit_to_queue(struct k_work_user_q *work_q,
+					      struct k_work_user *work)"
+347,to k_work_queue_start()
+348,s stack (in bytes)
+349,of K_THREAD_STACK_SIZEOF()
+350,"void k_work_user_queue_start(struct k_work_user_q *work_q,
+				    k_thread_stack_t *stack,
+				    size_t stack_size, int prio,
+				    const char *name)"
+351,k_tid_t k_work_user_queue_thread_get(struct k_work_user_q *work_q)
+352,"static K_WORK_DEFINE(<work>, <work_handler>)"
+353,"define K_WORK_DEFINE(work, work_handler)"
+354,"void k_work_poll_init(struct k_work_poll *work,
+			     k_work_handler_t handler)"
+355,"persistent memory (valid until work handler execution or work
+ * cancellation)"
+356,"int k_work_poll_submit_to_queue(struct k_work_q *work_q,
+				       struct k_work_poll *work,
+				       struct k_poll_event *events,
+				       int num_events,
+				       k_timeout_t timeout)"
+357,"int k_work_poll_submit(struct k_work_poll *work,
+				     struct k_poll_event *events,
+				     int num_events,
+				     k_timeout_t timeout)"
+358,int k_work_poll_cancel(struct k_work_poll *work)
+359,"define Z_MSGQ_INITIALIZER(obj, q_buffer, q_msg_size, q_max_msgs)"
+360,K_MSGQ_FLAG_ALLOC	BIT(0)
+361,Message size (in bytes)
+362,ring buffer (power of 2)
+363,"define K_MSGQ_DEFINE(q_name, q_msg_size, q_max_msgs, q_align)"
+364,__noinit __aligned(q_align)
+365,Message size (in bytes)
+366,"void k_msgq_init(struct k_msgq *msgq, char *buffer, size_t msg_size,
+		 uint32_t max_msgs)"
+367,Message size (in bytes)
+368,"int k_msgq_alloc_init(struct k_msgq *msgq, size_t msg_size,
+				uint32_t max_msgs)"
+369,int k_msgq_cleanup(struct k_msgq *msgq)
+370,"int k_msgq_put(struct k_msgq *msgq, const void *data, k_timeout_t timeout)"
+371,"int k_msgq_get(struct k_msgq *msgq, void *data, k_timeout_t timeout)"
+372,"int k_msgq_peek(struct k_msgq *msgq, void *data)"
+373,"to k_msgq_peek(msgq, data)"
+374,"int k_msgq_peek_at(struct k_msgq *msgq, void *data, uint32_t idx)"
+375,void k_msgq_purge(struct k_msgq *msgq)
+376,uint32_t k_msgq_num_free_get(struct k_msgq *msgq)
+377,"void  k_msgq_get_attrs(struct k_msgq *msgq,
+				 struct k_msgq_attrs *attrs)"
+378,uint32_t z_impl_k_msgq_num_free_get(struct k_msgq *msgq)
+379,uint32_t k_msgq_num_used_get(struct k_msgq *msgq)
+380,uint32_t z_impl_k_msgq_num_used_get(struct k_msgq *msgq)
+381,of message (in bytes)
+382,on send (may be a dummy)
+383,define Z_MBOX_INITIALIZER(obj)
+384,define K_MBOX_DEFINE(name)
+385,void k_mbox_init(struct k_mbox *mbox)
+386,"int k_mbox_put(struct k_mbox *mbox, struct k_mbox_msg *tx_msg,
+		      k_timeout_t timeout)"
+387,"void k_mbox_async_put(struct k_mbox *mbox, struct k_mbox_msg *tx_msg,
+			     struct k_sem *sem)"
+388,"int k_mbox_get(struct k_mbox *mbox, struct k_mbox_msg *rx_msg,
+		      void *buffer, k_timeout_t timeout)"
+389,"void k_mbox_data_get(struct k_mbox_msg *rx_msg, void *buffer)"
+390,K_PIPE_FLAG_ALLOC	BIT(0)
+391,"define Z_PIPE_INITIALIZER(obj, pipe_buffer, pipe_buffer_size)"
+392,ring buffer (in bytes)
+393,ring buffer (power of 2)
+394,"define K_PIPE_DEFINE(name, pipe_buffer_size, pipe_align)"
+395,__noinit __aligned(pipe_align)
+396,ring buffer (in bytes)
+397,"void k_pipe_init(struct k_pipe *pipe, unsigned char *buffer, size_t size)"
+398,int k_pipe_cleanup(struct k_pipe *pipe)
+399,if k_pipe_cleanup()
+400,ring buffer (in bytes)
+401,"int k_pipe_alloc_init(struct k_pipe *pipe, size_t size)"
+402,of data (in bytes)
+403,"int k_pipe_put(struct k_pipe *pipe, const void *data,
+			 size_t bytes_to_write, size_t *bytes_written,
+			 size_t min_xfer, k_timeout_t timeout)"
+404,"int k_pipe_get(struct k_pipe *pipe, void *data,
+			 size_t bytes_to_read, size_t *bytes_read,
+			 size_t min_xfer, k_timeout_t timeout)"
+405,size_t k_pipe_read_avail(struct k_pipe *pipe)
+406,size_t k_pipe_write_avail(struct k_pipe *pipe)
+407,void k_pipe_flush(struct k_pipe *pipe)
+408,"the pipe (where N is the size of the pipe's
+ * buffer)"
+409,void k_pipe_buffer_flush(struct k_pipe *pipe)
+410,"define Z_MEM_SLAB_INITIALIZER(_slab, _slab_buffer, _slab_block_size, \
+			       _slab_num_blocks)"
+411,a public (non-static)
+412,memory block (in bytes)
+413,s buffer (power of 2)
+414,"define K_MEM_SLAB_DEFINE(name, slab_block_size, slab_num_blocks, slab_align)"
+415,char __noinit_named(k_mem_slab_buf_##name)
+416,a private (static)
+417,memory block (in bytes)
+418,s buffer (power of 2)
+419,"define K_MEM_SLAB_DEFINE_STATIC(name, slab_block_size, slab_num_blocks, slab_align)"
+420,char __noinit_named(k_mem_slab_buf_##name)
+421,"static STRUCT_SECTION_ITERABLE(k_mem_slab, name)"
+422,memory block (in bytes)
+423,"int k_mem_slab_init(struct k_mem_slab *slab, void *buffer,
+			   size_t block_size, uint32_t num_blocks)"
+424,"int k_mem_slab_alloc(struct k_mem_slab *slab, void **mem,
+			    k_timeout_t timeout)"
+425,memory block (as returned by k_mem_slab_alloc()
+426,"void k_mem_slab_free(struct k_mem_slab *slab, void *mem)"
+427,uint32_t k_mem_slab_num_used_get(struct k_mem_slab *slab)
+428,uint32_t k_mem_slab_max_used_get(struct k_mem_slab *slab)
+429,"else
+	ARG_UNUSED(slab)"
+430,uint32_t k_mem_slab_num_free_get(struct k_mem_slab *slab)
+431,"int k_mem_slab_runtime_stats_get(struct k_mem_slab *slab, struct sys_memory_stats *stats)"
+432,int k_mem_slab_runtime_stats_reset_max(struct k_mem_slab *slab)
+433,"void k_heap_init(struct k_heap *h, void *mem,
+		size_t bytes)"
+434,like k_heap_alloc()
+435,"specified timeout (constructed via the standard
+ * timeout API, or K_NO_WAIT or K_FOREVER)"
+436,"specified timeout (constructed via the standard
+ * timeout API, or K_NO_WAIT or K_FOREVER)"
+437,by k_heap_alloc()
+438,from k_heap_alloc()
+439,"void k_heap_free(struct k_heap *h, void *mem)"
+440,define Z_HEAP_MIN_SIZE ((sizeof(void *)
+441,if k_heap_init()
+442,in_section __attribute__((section(name)
+443,"define Z_HEAP_DEFINE_IN_SECT(name, bytes, in_section)"
+444,if k_heap_init()
+445,"define K_HEAP_DEFINE(name, bytes)"
+446,if k_heap_init()
+447,"define K_HEAP_DEFINE_NOCACHE(name, bytes)"
+448,to aligned_alloc()
+449,that k_aligned_alloc()
+450,whereas aligned_alloc()
+451,C11 standard (ISO/IEC 9899:2011)
+452,aligned_alloc function (p: 347-348)
+453,memory requested (in bytes)
+454,memory requested (in bytes)
+455,traditional malloc()
+456,memory requested (in bytes)
+457,traditional free()
+458,void k_free(void *ptr)
+459,traditional calloc()
+460,array element (in bytes)
+461,per sys_heap_free()
+462,memory requested (in bytes)
+463,define _INIT_OBJ_POLL_EVENT(obj)
+464,define _INIT_OBJ_POLL_EVENT(obj)
+465,by k_poll_signal_raise()
+466,define Z_POLL_TYPE_BIT(type)
+467,by k_poll_signal_raise()
+468,define Z_POLL_STATE_BIT(state)
+469,K_POLL_TYPE_SIGNAL Z_POLL_TYPE_BIT(_POLL_TYPE_SIGNAL)
+470,K_POLL_TYPE_SEM_AVAILABLE Z_POLL_TYPE_BIT(_POLL_TYPE_SEM_AVAILABLE)
+471,K_POLL_TYPE_DATA_AVAILABLE Z_POLL_TYPE_BIT(_POLL_TYPE_DATA_AVAILABLE)
+472,K_POLL_TYPE_MSGQ_DATA_AVAILABLE Z_POLL_TYPE_BIT(_POLL_TYPE_MSGQ_DATA_AVAILABLE)
+473,K_POLL_TYPE_PIPE_DATA_AVAILABLE Z_POLL_TYPE_BIT(_POLL_TYPE_PIPE_DATA_AVAILABLE)
+474,K_POLL_STATE_SIGNALED Z_POLL_STATE_BIT(_POLL_STATE_SIGNALED)
+475,K_POLL_STATE_SEM_AVAILABLE Z_POLL_STATE_BIT(_POLL_STATE_SEM_AVAILABLE)
+476,K_POLL_STATE_DATA_AVAILABLE Z_POLL_STATE_BIT(_POLL_STATE_DATA_AVAILABLE)
+477,K_POLL_STATE_MSGQ_DATA_AVAILABLE Z_POLL_STATE_BIT(_POLL_STATE_MSGQ_DATA_AVAILABLE)
+478,K_POLL_STATE_PIPE_DATA_AVAILABLE Z_POLL_STATE_BIT(_POLL_STATE_PIPE_DATA_AVAILABLE)
+479,K_POLL_STATE_CANCELLED Z_POLL_STATE_BIT(_POLL_STATE_CANCELLED)
+480,to k_poll_signal_raise()
+481,define K_POLL_SIGNAL_INITIALIZER(obj)
+482,event types (bitwise-ORed K_POLL_TYPE_xxx values)
+483,event states (bitwise-ORed K_POLL_STATE_xxx values)
+484,"define K_POLL_EVENT_INITIALIZER(_event_type, _event_mode, _event_obj)"
+485,"define K_POLL_EVENT_STATIC_INITIALIZER(_event_type, _event_mode, _event_obj, \
+					event_tag)"
+486,to k_poll()
+487,"void k_poll_event_init(struct k_poll_event *event, uint32_t type,
+			      int mode, void *obj)"
+488,calling k_poll()
+489,the k_poll()
+490,the k_poll()
+491,When k_poll()
+492,to k_poll()
+493,to k_poll()
+494,cancelled event(s)
+495,insufficient memory (user mode only)
+496,Bad parameters (user mode only)
+497,"int k_poll(struct k_poll_event *events, int num_events,
+		     k_timeout_t timeout)"
+498,via k_poll_signal_raise()
+499,void k_poll_signal_init(struct k_poll_signal *sig)
+500,void k_poll_signal_reset(struct k_poll_signal *sig)
+501,"void k_poll_signal_check(struct k_poll_signal *sig,
+				   unsigned int *signaled, int *result)"
+502,to k_poll()
+503,or k_poll()
+504,next k_poll()
+505,"int k_poll_signal_raise(struct k_poll_signal *sig, int result)"
+506,void k_cpu_idle(void)
+507,to k_cpu_idle()
+508,by irq_unlock(key)
+509,from irq_lock()
+510,void k_cpu_atomic_idle(unsigned int key)
+511,define z_except_reason(reason)
+512,define __EXCEPT_LOC()
+513,define __EXCEPT_LOC()
+514,define z_except_reason(reason)
+515,the _fatal_error_handler()
+516,like k_panic()
+517,define k_oops()
+518,the _fatal_error_handler()
+519,define k_panic()
+520,void z_timer_expiration_handler(struct _timeout *timeout)
+521,"void k_str_out(char *c, size_t n)"
+522,int k_float_disable(struct k_thread *thread)
+523,by z_swap()
+524,"be loaded (if the most
+ * recent user of the FPU was preempted, or if this thread is the first user
+ * of the FPU)"
+525,SSE registers (and also x87 FPU and MMX registers)
+526,"int k_float_enable(struct k_thread *thread, unsigned int options)"
+527,"int k_thread_runtime_stats_get(k_tid_t thread,
+			       k_thread_runtime_stats_t *stats)"
+528,int k_thread_runtime_stats_all_get(k_thread_runtime_stats_t *stats)
+529,int k_thread_runtime_stats_enable(k_tid_t thread)
+530,int k_thread_runtime_stats_disable(k_tid_t thread)
+531,void k_sys_runtime_stats_enable(void)
+532,void k_sys_runtime_stats_disable(void)
+533,"struct k_pipe {
+	unsigned char *buffer;          /**< Pipe buffer: may be NULL */
+	size_t         size;            /**< Buffer size */
+	size_t         bytes_used;      /**< Number of bytes used in buffer */
+	size_t         read_index;      /**< Where in buffer to read from */
+	size_t         write_index;     /**< Where in buffer to write */
+	struct k_spinlock lock;		/**< Synchronization lock */
+
+	struct {
+		_wait_q_t      readers; /**< Reader wait queue */
+		_wait_q_t      writers; /**< Writer wait queue */
+	} wait_q;"
+534,"enum execution_context_types {
+	K_ISR = 0,
+	K_COOP_THREAD,
+	K_PREEMPT_THREAD,
+};"
+535,"enum _poll_types_bits {
+	/* can be used to ignore an event */
+	_POLL_TYPE_IGNORE,
+
+	/* to be signaled by k_poll_signal_raise() */
+	_POLL_TYPE_SIGNAL,
+
+	/* semaphore availability */
+	_POLL_TYPE_SEM_AVAILABLE,
+
+	/* queue/FIFO/LIFO data availability */
+	_POLL_TYPE_DATA_AVAILABLE,
+
+	/* msgq data availability */
+	_POLL_TYPE_MSGQ_DATA_AVAILABLE,
+
+	/* pipe data availability */
+	_POLL_TYPE_PIPE_DATA_AVAILABLE,
+
+	_POLL_NUM_TYPES
+};"
+536,"enum _poll_states_bits {
+	/* default state when creating event */
+	_POLL_STATE_NOT_READY,
+
+	/* signaled by k_poll_signal_raise() */
+	_POLL_STATE_SIGNALED,
+
+	/* semaphore is available */
+	_POLL_STATE_SEM_AVAILABLE,
+
+	/* data is available to read on queue/FIFO/LIFO */
+	_POLL_STATE_DATA_AVAILABLE,
+
+	/* queue/FIFO/LIFO wait was cancelled */
+	_POLL_STATE_CANCELLED,
+
+	/* data is available to read on a message queue */
+	_POLL_STATE_MSGQ_DATA_AVAILABLE,
+
+	/* data is available to read from a pipe */
+	_POLL_STATE_PIPE_DATA_AVAILABLE,
+
+	_POLL_NUM_STATES
+};"
+537,"enum k_poll_modes {
+	/* polling thread does not take ownership of objects when available */
+	K_POLL_MODE_NOTIFY_ONLY = 0,
+
+	K_POLL_NUM_MODES
+};"
+538,#include zephyr/kernel_includes.h
+539,#include errno.h
+540,#include limits.h
+541,#include stdbool.h
+542,#include zephyr/toolchain.h
+543,#include zephyr/tracing/tracing_macros.h
+544,#include zephyr/sys/mem_stats.h
+545,#include zephyr/sys/iterable_sections.h
+546,#include zephyr/tracing/tracing.h
+547,#include zephyr/syscalls/kernel.h
+548,"define _NET_WIFI_BASE	(NET_MGMT_IFACE_BIT |			\
+			 NET_MGMT_LAYER(_NET_WIFI_LAYER)"
+549,define _NET_WIFI_EVENT	(_NET_WIFI_BASE | NET_MGMT_EVENT_BIT)
+550,WIFI_MGMT_SKIP_INACTIVITY_POLL IS_ENABLED(CONFIG_WIFI_MGMT_AP_STA_SKIP_INACTIVITY_POLL)
+551,dwell time (in ms)
+552,dwell time (in ms)
+553,info attribute (see net_mgmt.h)
+554,SAE password (same as PSK but with no length restrictions)
+555,power save (in ms)
+556,Service period (SP)
+557,define WIFI_MAX_TWT_INTERVAL_US (LONG_MAX - 1)
+558,define WIFI_MAX_TWT_WAKE_AHEAD_DURATION_US (LONG_MAX - 1)
+559,transmission power (in dBm)
+560,if defined(CONFIG_WIFI_MGMT_RAW_SCAN_RESULTS)
+561,define WIFI_AP_STA_MAX_INACTIVITY (LONG_MAX - 1)
+562,typedef void (*scan_result_cb_t)
+563,typedef void (*raw_scan_result_cb_t)
+564,if defined(CONFIG_NET_STATISTICS_WIFI)
+565,in ROM (preferred)
+566,if defined(CONFIG_WIFI_USE_NATIVE_NETWORKING)
+567,if defined(CONFIG_WIFI_NM_WPA_SUPPLICANT)
+568,if defined(CONFIG_WIFI_NM_WPA_SUPPLICANT)
+569,API struct (it is the first one)
+570,"void wifi_mgmt_raise_connect_result_event(struct net_if *iface, int status)"
+571,"void wifi_mgmt_raise_disconnect_result_event(struct net_if *iface, int status)"
+572,"void wifi_mgmt_raise_iface_status_event(struct net_if *iface,
+		struct wifi_iface_status *iface_status)"
+573,"void wifi_mgmt_raise_twt_event(struct net_if *iface,
+		struct wifi_twt_params *twt_params)"
+574,"void wifi_mgmt_raise_twt_sleep_state(struct net_if *iface, int twt_sleep_state)"
+575,if defined(CONFIG_WIFI_MGMT_RAW_SCAN_RESULTS)
+576,"void wifi_mgmt_raise_raw_scan_result_event(struct net_if *iface,
+		struct wifi_raw_scan_result *raw_scan_info)"
+577,"void wifi_mgmt_raise_disconnect_complete_event(struct net_if *iface, int status)"
+578,"void wifi_mgmt_raise_ap_enable_result_event(struct net_if *iface, enum wifi_ap_status status)"
+579,"void wifi_mgmt_raise_ap_disable_result_event(struct net_if *iface, enum wifi_ap_status status)"
+580,"void wifi_mgmt_raise_ap_sta_connected_event(struct net_if *iface,
+		struct wifi_ap_sta_info *sta_info)"
+581,"void wifi_mgmt_raise_ap_sta_disconnected_event(struct net_if *iface,
+		struct wifi_ap_sta_info *sta_info)"
+582,"struct wifi_twt_params {
+	/** TWT operation, see enum wifi_twt_operation */
+	enum wifi_twt_operation operation;
+	/** TWT negotiation type, see enum wifi_twt_negotiation_type */
+	enum wifi_twt_negotiation_type negotiation_type;
+	/** TWT setup command, see enum wifi_twt_setup_cmd */
+	enum wifi_twt_setup_cmd setup_cmd;
+	/** TWT setup response status, see enum wifi_twt_setup_resp_status */
+	enum wifi_twt_setup_resp_status resp_status;
+	/** TWT teardown cmd status, see enum wifi_twt_teardown_status */
+	enum wifi_twt_teardown_status teardown_status;
+	/** Dialog token, used to map requests to responses */
+	uint8_t dialog_token;
+	/** Flow ID, used to map setup with teardown */
+	uint8_t flow_id;
+	union {
+		/** Setup specific parameters */
+		struct {
+			/**Interval = Wake up time + Sleeping time */
+			uint64_t twt_interval;
+			/** Requestor or responder */
+			bool responder;
+			/** Trigger enabled or disabled */
+			bool trigger;
+			/** Implicit or explicit */
+			bool implicit;
+			/** Announced or unannounced */
+			bool announce;
+			/** Wake up time */
+			uint32_t twt_wake_interval;
+			/** Wake ahead notification is sent earlier than
+			 * TWT Service period (SP) start based on this duration.
+			 * This should give applications ample time to
+			 * prepare the data before TWT SP starts.
+			 */
+			uint32_t twt_wake_ahead_duration;
+		} setup;"
+583,"struct wifi_reg_chan_info {
+	/** Center frequency in MHz */
+	unsigned short center_frequency;
+	/** Maximum transmission power (in dBm) */
+	unsigned short max_power:8;
+	/** Is channel supported or not */
+	unsigned short supported:1;
+	/** Passive transmissions only */
+	unsigned short passive_only:1;
+	/** Is a DFS channel */
+	unsigned short dfs:1;
+} __packed;"
+584,"enum net_request_wifi_cmd {
+	/** Scan for Wi-Fi networks */
+	NET_REQUEST_WIFI_CMD_SCAN = 1,
+	/** Connect to a Wi-Fi network */
+	NET_REQUEST_WIFI_CMD_CONNECT,
+	/** Disconnect from a Wi-Fi network */
+	NET_REQUEST_WIFI_CMD_DISCONNECT,
+	/** Enable AP mode */
+	NET_REQUEST_WIFI_CMD_AP_ENABLE,
+	/** Disable AP mode */
+	NET_REQUEST_WIFI_CMD_AP_DISABLE,
+	/** Get interface status */
+	NET_REQUEST_WIFI_CMD_IFACE_STATUS,
+	/** Set power save status */
+	NET_REQUEST_WIFI_CMD_PS,
+	/** Setup or teardown TWT flow */
+	NET_REQUEST_WIFI_CMD_TWT,
+	/** Get power save config */
+	NET_REQUEST_WIFI_CMD_PS_CONFIG,
+	/** Set or get regulatory domain */
+	NET_REQUEST_WIFI_CMD_REG_DOMAIN,
+	/** Set or get Mode of operation */
+	NET_REQUEST_WIFI_CMD_MODE,
+	/** Set or get packet filter setting for current mode */
+	NET_REQUEST_WIFI_CMD_PACKET_FILTER,
+	/** Set or get Wi-Fi channel for Monitor or TX-Injection mode */
+	NET_REQUEST_WIFI_CMD_CHANNEL,
+	/** Disconnect a STA from AP */
+	NET_REQUEST_WIFI_CMD_AP_STA_DISCONNECT,
+	/** Get Wi-Fi driver and Firmware versions */
+	NET_REQUEST_WIFI_CMD_VERSION,
+	/** Set RTS threshold */
+	NET_REQUEST_WIFI_CMD_RTS_THRESHOLD,
+	/** Configure AP parameter */
+	NET_REQUEST_WIFI_CMD_AP_CONFIG_PARAM,
+/** @cond INTERNAL_HIDDEN */
+	NET_REQUEST_WIFI_CMD_MAX
+/** @endcond */
+};"
+585,"enum net_event_wifi_cmd {
+	/** Scan results available */
+	NET_EVENT_WIFI_CMD_SCAN_RESULT = 1,
+	/** Scan done */
+	NET_EVENT_WIFI_CMD_SCAN_DONE,
+	/** Connect result */
+	NET_EVENT_WIFI_CMD_CONNECT_RESULT,
+	/** Disconnect result */
+	NET_EVENT_WIFI_CMD_DISCONNECT_RESULT,
+	/** Interface status */
+	NET_EVENT_WIFI_CMD_IFACE_STATUS,
+	/** TWT events */
+	NET_EVENT_WIFI_CMD_TWT,
+	/** TWT sleep status: awake or sleeping, can be used by application
+	 * to determine if it can send data or not.
+	 */
+	NET_EVENT_WIFI_CMD_TWT_SLEEP_STATE,
+	/** Raw scan results available */
+	NET_EVENT_WIFI_CMD_RAW_SCAN_RESULT,
+	/** Disconnect complete */
+	NET_EVENT_WIFI_CMD_DISCONNECT_COMPLETE,
+	/** AP mode enable result */
+	NET_EVENT_WIFI_CMD_AP_ENABLE_RESULT,
+	/** AP mode disable result */
+	NET_EVENT_WIFI_CMD_AP_DISABLE_RESULT,
+	/** STA connected to AP */
+	NET_EVENT_WIFI_CMD_AP_STA_CONNECTED,
+	/** STA disconnected from AP */
+	NET_EVENT_WIFI_CMD_AP_STA_DISCONNECTED,
+};"
+586,"enum wifi_conn_status {
+	/** Connection successful */
+	WIFI_STATUS_CONN_SUCCESS = 0,
+	/** Connection failed - generic failure */
+	WIFI_STATUS_CONN_FAIL,
+	/** Connection failed - wrong password
+	 * Few possible reasons for 4-way handshake failure that we can guess are as follows:
+	 * 1) Incorrect key
+	 * 2) EAPoL frames lost causing timeout
+	 *
+	 * #1 is the likely cause, so, we convey to the user that it is due to
+	 * Wrong passphrase/password.
+	 */
+	WIFI_STATUS_CONN_WRONG_PASSWORD,
+	/** Connection timed out */
+	WIFI_STATUS_CONN_TIMEOUT,
+	/** Connection failed - AP not found */
+	WIFI_STATUS_CONN_AP_NOT_FOUND,
+	/** Last connection status */
+	WIFI_STATUS_CONN_LAST_STATUS,
+	/** Connection disconnected status */
+	WIFI_STATUS_DISCONN_FIRST_STATUS = WIFI_STATUS_CONN_LAST_STATUS,
+};"
+587,"enum wifi_disconn_reason {
+	/** Success, overload status as reason */
+	WIFI_REASON_DISCONN_SUCCESS = 0,
+	/** Unspecified reason */
+	WIFI_REASON_DISCONN_UNSPECIFIED,
+	/** Disconnected due to user request */
+	WIFI_REASON_DISCONN_USER_REQUEST,
+	/** Disconnected due to AP leaving */
+	WIFI_REASON_DISCONN_AP_LEAVING,
+	/** Disconnected due to inactivity */
+	WIFI_REASON_DISCONN_INACTIVITY,
+};"
+588,"enum wifi_ap_status {
+	/** AP mode enable or disable successful */
+	WIFI_STATUS_AP_SUCCESS = 0,
+	/** AP mode enable or disable failed - generic failure */
+	WIFI_STATUS_AP_FAIL,
+	/** AP mode enable failed - channel not supported */
+	WIFI_STATUS_AP_CHANNEL_NOT_SUPPORTED,
+	/** AP mode enable failed - channel not allowed */
+	WIFI_STATUS_AP_CHANNEL_NOT_ALLOWED,
+	/** AP mode enable failed - SSID not allowed */
+	WIFI_STATUS_AP_SSID_NOT_ALLOWED,
+	/** AP mode enable failed - authentication type not supported */
+	WIFI_STATUS_AP_AUTH_TYPE_NOT_SUPPORTED,
+	/** AP mode enable failed - operation not supported */
+	WIFI_STATUS_AP_OP_NOT_SUPPORTED,
+	/** AP mode enable failed - operation not permitted */
+	WIFI_STATUS_AP_OP_NOT_PERMITTED,
+};"
+589,"enum wifi_mgmt_op {
+	/** Get operation */
+	WIFI_MGMT_GET = 0,
+	/** Set operation */
+	WIFI_MGMT_SET = 1,
+};"
+590,"enum wifi_twt_sleep_state {
+	/** TWT sleep state: sleeping */
+	WIFI_TWT_STATE_SLEEP = 0,
+	/** TWT sleep state: awake */
+	WIFI_TWT_STATE_AWAKE = 1,
+};"
+591,#include zephyr/net/net_mgmt.h
+592,#include zephyr/net/wifi.h
+593,#include zephyr/net/ethernet.h
+594,#include zephyr/net/offloaded_netdev.h
+595,#include zephyr/net/net_if.h
+596,for poll()
+597,error condition (output value only)
+598,closed connection (output value only)
+599,Invalid socket (output value only)
+600,for shutdown()
+601,the hostname (may be NULL to disable hostname verification)
+602,"mbedTLS defaults (none for servers, required
+ *  for clients)"
+603,on connect()
+604,DTLS connect()
+605,DTLS connect()
+606,"peer address (as with regular
+ *  UDP socket)"
+607,consecutive send()
+608,ref TLS_DTLS_CID (Connection ID)
+609,by getaddrinfo()
+610,the getaddrinfo()
+611,like k_object_access_grant()
+612,see zsock_get_context_object()
+613,"int zsock_socket(int family, int type, int proto)"
+614,"int zsock_socketpair(int family, int type, int proto, int *sv)"
+615,"is defined (in which case it
+ * may conflict with generic POSIX ``close()"
+616,int zsock_close(int sock)
+617,"int zsock_shutdown(int sock, int how)"
+618,"int zsock_bind(int sock, const struct sockaddr *addr,
+			 socklen_t addrlen)"
+619,"int zsock_connect(int sock, const struct sockaddr *addr,
+			    socklen_t addrlen)"
+620,"int zsock_listen(int sock, int backlog)"
+621,"int zsock_accept(int sock, struct sockaddr *addr, socklen_t *addrlen)"
+622,"ssize_t zsock_sendto(int sock, const void *buf, size_t len,
+			       int flags, const struct sockaddr *dest_addr,
+			       socklen_t addrlen)"
+623,"ssize_t zsock_send(int sock, const void *buf, size_t len,
+				 int flags)"
+624,"return zsock_sendto(sock, buf, len, flags, NULL, 0)"
+625,"ssize_t zsock_sendmsg(int sock, const struct msghdr *msg,
+				int flags)"
+626,"ssize_t zsock_recvfrom(int sock, void *buf, size_t max_len,
+				 int flags, struct sockaddr *src_addr,
+				 socklen_t *addrlen)"
+627,"ssize_t zsock_recvmsg(int sock, struct msghdr *msg, int flags)"
+628,"ssize_t zsock_recv(int sock, void *buf, size_t max_len,
+				 int flags)"
+629,"return zsock_recvfrom(sock, buf, max_len, flags, NULL, NULL)"
+630,allow to (only)
+631,blocking operation (O_NONBLOCK)
+632,"is defined (in which case
+ * it may conflict with generic POSIX ``fcntl()"
+633,"int zsock_fcntl_impl(int sock, int cmd, int flags)"
+634,"int zsock_fcntl_wrapper(int sock, int cmd, ...)"
+635,"return zsock_fcntl_impl(sock, cmd, flags)"
+636,"is defined (in which case
+ * it may conflict with generic POSIX ``ioctl()"
+637,"int zsock_ioctl_impl(int sock, unsigned long request, va_list ap)"
+638,"int zsock_ioctl_wrapper(int sock, unsigned long request, ...)"
+639,"is defined (in which case
+ * it may conflict with generic POSIX ``poll()"
+640,"int zsock_poll(struct zsock_pollfd *fds, int nfds, int timeout)"
+641,"in Linux (some options are dummy and provided to ease porting
+ * of existing code)"
+642,"int zsock_getsockopt(int sock, int level, int optname,
+			       void *optval, socklen_t *optlen)"
+643,"in Linux (some options are dummy and provided to ease porting
+ * of existing code)"
+644,"int zsock_setsockopt(int sock, int level, int optname,
+			       const void *optval, socklen_t optlen)"
+645,"int zsock_getpeername(int sock, struct sockaddr *addr,
+				socklen_t *addrlen)"
+646,"int zsock_getsockname(int sock, struct sockaddr *addr,
+				socklen_t *addrlen)"
+647,"int zsock_gethostname(char *buf, size_t len)"
+648,"return net_addr_ntop(family, src, dst, size)"
+649,"int zsock_inet_pton(sa_family_t family, const char *src, void *dst)"
+650,"int z_zsock_getaddrinfo_internal(const char *host,
+					   const char *service,
+					   const struct zsock_addrinfo *hints,
+					   struct zsock_addrinfo *res)"
+651,for getaddrinfo()
+652,for getaddrinfo()
+653,for bind()
+654,for connect()
+655,Assume service (port)
+656,flags present (see RFC 5014)
+657,"int zsock_getaddrinfo(const char *host, const char *service,
+		      const struct zsock_addrinfo *hints,
+		      struct zsock_addrinfo **res)"
+658,by zsock_getaddrinfo()
+659,void zsock_freeaddrinfo(struct zsock_addrinfo *ai)
+660,Convert zsock_getaddrinfo()
+661,for getnameinfo()
+662,"int zsock_getnameinfo(const struct sockaddr *addr, socklen_t addrlen,
+		      char *host, socklen_t hostlen,
+		      char *serv, socklen_t servlen, int flags)"
+663,if defined(CONFIG_NET_SOCKETS_POSIX_NAMES)
+664,"int socket(int family, int type, int proto)"
+665,"return zsock_socket(family, type, proto)"
+666,"int socketpair(int family, int type, int proto, int sv[2])"
+667,"return zsock_socketpair(family, type, proto, sv)"
+668,int close(int sock)
+669,return zsock_close(sock)
+670,"int shutdown(int sock, int how)"
+671,"return zsock_shutdown(sock, how)"
+672,"int bind(int sock, const struct sockaddr *addr, socklen_t addrlen)"
+673,"return zsock_bind(sock, addr, addrlen)"
+674,"int connect(int sock, const struct sockaddr *addr,
+			  socklen_t addrlen)"
+675,"return zsock_connect(sock, addr, addrlen)"
+676,"int listen(int sock, int backlog)"
+677,"return zsock_listen(sock, backlog)"
+678,"int accept(int sock, struct sockaddr *addr, socklen_t *addrlen)"
+679,"return zsock_accept(sock, addr, addrlen)"
+680,"ssize_t send(int sock, const void *buf, size_t len, int flags)"
+681,"return zsock_send(sock, buf, len, flags)"
+682,"ssize_t recv(int sock, void *buf, size_t max_len, int flags)"
+683,"return zsock_recv(sock, buf, max_len, flags)"
+684,"ssize_t sendto(int sock, const void *buf, size_t len, int flags,
+			     const struct sockaddr *dest_addr,
+			     socklen_t addrlen)"
+685,"return zsock_sendto(sock, buf, len, flags, dest_addr, addrlen)"
+686,"ssize_t sendmsg(int sock, const struct msghdr *message,
+			      int flags)"
+687,"return zsock_sendmsg(sock, message, flags)"
+688,"ssize_t recvfrom(int sock, void *buf, size_t max_len, int flags,
+			       struct sockaddr *src_addr, socklen_t *addrlen)"
+689,"return zsock_recvfrom(sock, buf, max_len, flags, src_addr, addrlen)"
+690,"ssize_t recvmsg(int sock, struct msghdr *msg, int flags)"
+691,"return zsock_recvmsg(sock, msg, flags)"
+692,"int poll(struct zsock_pollfd *fds, int nfds, int timeout)"
+693,"return zsock_poll(fds, nfds, timeout)"
+694,"int getsockopt(int sock, int level, int optname,
+			     void *optval, socklen_t *optlen)"
+695,"return zsock_getsockopt(sock, level, optname, optval, optlen)"
+696,"int setsockopt(int sock, int level, int optname,
+			     const void *optval, socklen_t optlen)"
+697,"return zsock_setsockopt(sock, level, optname, optval, optlen)"
+698,"int getpeername(int sock, struct sockaddr *addr,
+			      socklen_t *addrlen)"
+699,"return zsock_getpeername(sock, addr, addrlen)"
+700,"int getsockname(int sock, struct sockaddr *addr,
+			      socklen_t *addrlen)"
+701,"return zsock_getsockname(sock, addr, addrlen)"
+702,"int getaddrinfo(const char *host, const char *service,
+			      const struct zsock_addrinfo *hints,
+			      struct zsock_addrinfo **res)"
+703,"return zsock_getaddrinfo(host, service, hints, res)"
+704,void freeaddrinfo(struct zsock_addrinfo *ai)
+705,return zsock_gai_strerror(errcode)
+706,"int getnameinfo(const struct sockaddr *addr, socklen_t addrlen,
+			      char *host, socklen_t hostlen,
+			      char *serv, socklen_t servlen, int flags)"
+707,"return zsock_getnameinfo(addr, addrlen, host, hostlen,
+				 serv, servlen, flags)"
+708,"int gethostname(char *buf, size_t len)"
+709,"return zsock_gethostname(buf, len)"
+710,"int inet_pton(sa_family_t family, const char *src, void *dst)"
+711,"return zsock_inet_pton(family, src, dst)"
+712,"return zsock_inet_ntop(family, src, dst, size)"
+713,if defined(CONFIG_NET_INTERFACE_NAME)
+714,level options (SOL_SOCKET)
+715,"debugging information (ignored, for compatibility)"
+716,"to host (ignored, for compatibility)"
+717,"is supported (ignored, for compatibility)"
+718,"receive stream (ignored, for compatibility)"
+719,"on close (ignored, for compatibility)"
+720,"low watermark (ignored, for compatibility)"
+721,"low watermark (ignored, for compatibility)"
+722,like recv()
+723,to connect()
+724,"incoming connections (ignored, for compatibility)"
+725,TX time (when the data should be sent)
+726,TX time (same as SO_TXTIME)
+727,SOF_TIMESTAMPING_RX_HARDWARE BIT(0)
+728,SOF_TIMESTAMPING_TX_HARDWARE BIT(1)
+729,level options (IPPROTO_TCP)
+730,"TCP buffering (ignored, for compatibility)"
+731,this period (seconds)
+732,between keepalives (seconds)
+733,level options (IPPROTO_IP)
+734,calling recvmsg()
+735,level options (IPPROTO_IPV6)
+736,interface configuration (this is the default value)
+737,Prefer CGA (Cryptographically Generated Address)
+738,calling recvmsg()
+739,for listen()
+740,if defined(CONFIG_NET_SOCKETS_OBJ_CORE)
+741,"define NET_SOCKET_GET_NAME(socket_name, prio)"
+742,if defined(CONFIG_NET_SOCKETS_OBJ_CORE)
+743,"K_OBJ_TYPE_SOCK  K_OBJ_TYPE_ID_GEN(""SOCK"")"
+744,define NET_SOCKET_REGISTER_NAME(_name)
+745,define NET_SOCKET_REGISTER_NAME(_name)
+746,"define _NET_SOCKET_REGISTER(socket_name, prio, _family, _is_supported, _handler, _is_offloaded)"
+747,"const STRUCT_SECTION_ITERABLE(net_socket_register,	\
+			NET_SOCKET_GET_NAME(socket_name, prio)"
+748,"define NET_SOCKET_REGISTER(socket_name, prio, _family, _is_supported, _handler)"
+749,"define NET_SOCKET_OFFLOAD_REGISTER(socket_name, prio, _family, _is_supported, _handler)"
+750,if defined(CONFIG_POSIX_API)
+751,#include zephyr/kernel.h
+752,#include sys/types.h
+753,#include zephyr/types.h
+754,#include zephyr/device.h
+755,#include zephyr/net/net_ip.h
+756,#include zephyr/net/socket_select.h
+757,#include zephyr/net/socket_poll.h
+758,#include zephyr/sys/iterable_sections.h
+759,#include zephyr/sys/fdtable.h
+760,#include zephyr/net/dns_resolve.h
+761,#include stdlib.h
+762,#include zephyr/syscalls/socket.h
+763,#include zephyr/posix/arpa/inet.h
+764,#include zephyr/posix/netdb.h
+765,#include zephyr/posix/unistd.h
+766,#include zephyr/posix/poll.h
+767,#include zephyr/posix/sys/socket.h
+768,define MQTT_UTF8_LITERAL(literal)
+769,connection acknowledgment (CONNACK)
+770,publish acknowledgment (PUBACK)
+771,publish receive (PUBREC)
+772,publish release (PUBREL)
+773,publish complete (PUBCOMP)
+774,subscription acknowledgment (SUBACK)
+775,unsubscribe acknowledgment (UNSUBACK)
+776,publish message (PUBLISH)
+777,its payload (if any)
+778,Contains parameters (if any)
+779,error code (errno.h)
+780,typedef void (*mqtt_evt_cb_t)
+781,if defined(CONFIG_MQTT_LIB_TLS_USE_ALPN)
+782,if defined(CONFIG_MQTT_LIB_TLS)
+783,TCP transport (TLS)
+784,if defined(CONFIG_MQTT_LIB_WEBSOCKET)
+785,if defined(CONFIG_MQTT_LIB_TLS)
+786,Websocket transport (TLS)
+787,if defined(CONFIG_MQTT_LIB_CUSTOM_TRANSPORT)
+788,if defined(CONFIG_MQTT_LIB_TLS)
+789,if defined(CONFIG_MQTT_LIB_WEBSOCKET)
+790,if defined(CONFIG_MQTT_LIB_CUSTOM_TRANSPORT)
+791,if defined(CONFIG_SOCKS)
+792,clock value (in milliseconds)
+793,User name (if any)
+794,a fresh (1)
+795,retained session (0)
+796,void mqtt_client_init(struct mqtt_client *client)
+797,if defined(CONFIG_SOCKS)
+798,error code (errno.h)
+800,"int mqtt_client_set_proxy(struct mqtt_client *client,
+			  struct sockaddr *proxy_addr,
+			  socklen_t addrlen)"
+801,error code (errno.h)
+802,int mqtt_connect(struct mqtt_client *client)
+803,error code (errno.h)
+804,"int mqtt_publish(struct mqtt_client *client,
+		 const struct mqtt_publish_param *param)"
+805,error code (errno.h)
+806,"int mqtt_publish_qos1_ack(struct mqtt_client *client,
+			  const struct mqtt_puback_param *param)"
+807,error code (errno.h)
+814,"int mqtt_subscribe(struct mqtt_client *client,
+		   const struct mqtt_subscription_list *param)"
+815,error code (errno.h)
+816,"int mqtt_unsubscribe(struct mqtt_client *client,
+		     const struct mqtt_subscription_list *param)"
+817,error code (errno.h)
+818,int mqtt_ping(struct mqtt_client *client)
+819,error code (errno.h)
+820,int mqtt_disconnect(struct mqtt_client *client)
+821,error code (errno.h)
+822,int mqtt_abort(struct mqtt_client *client)
+823,error code (errno.h)
+824,int mqtt_live(struct mqtt_client *client)
+825,int mqtt_keepalive_time_left(const struct mqtt_client *client)
+826,error code (errno.h)
+827,int mqtt_input(struct mqtt_client *client)
+828,error code (errno.h)
+829,"int mqtt_read_publish_payload(struct mqtt_client *client, void *buffer,
+			      size_t length)"
+830,error code (errno.h)
+831,"int mqtt_read_publish_payload_blocking(struct mqtt_client *client, void *buffer,
+				       size_t length)"
+832,error code (errno.h)
+833,"int mqtt_readall_publish_payload(struct mqtt_client *client, uint8_t *buffer,
+				 size_t length)"
+834,"struct mqtt_transport {
+	/** Transport type selection for client instance.
+	 *  @ref mqtt_transport_type for possible values. MQTT_TRANSPORT_MAX
+	 *  is not a valid type.
+	 */
+	enum mqtt_transport_type type;
+
+	/** Use either unsecured TCP or secured TLS transport */
+	union {
+		/** TCP socket transport for MQTT */
+		struct {
+			/** Socket descriptor. */
+			int sock;
+		} tcp;"
+835,"enum mqtt_evt_type {
+	/** Acknowledgment of connection request. Event result accompanying
+	 *  the event indicates whether the connection failed or succeeded.
+	 */
+	MQTT_EVT_CONNACK,
+
+	/** Disconnection Event. MQTT Client Reference is no longer valid once
+	 *  this event is received for the client.
+	 */
+	MQTT_EVT_DISCONNECT,
+
+	/** Publish event received when message is published on a topic client
+	 *  is subscribed to.
+	 *
+	 * @note PUBLISH event structure only contains payload size, the payload
+	 *       data parameter should be ignored. Payload content has to be
+	 *       read manually with @ref mqtt_read_publish_payload function.
+	 */
+	MQTT_EVT_PUBLISH,
+
+	/** Acknowledgment for published message with QoS 1. */
+	MQTT_EVT_PUBACK,
+
+	/** Reception confirmation for published message with QoS 2. */
+	MQTT_EVT_PUBREC,
+
+	/** Release of published message with QoS 2. */
+	MQTT_EVT_PUBREL,
+
+	/** Confirmation to a publish release message with QoS 2. */
+	MQTT_EVT_PUBCOMP,
+
+	/** Acknowledgment to a subscribe request. */
+	MQTT_EVT_SUBACK,
+
+	/** Acknowledgment to a unsubscribe request. */
+	MQTT_EVT_UNSUBACK,
+
+	/** Ping Response from server. */
+	MQTT_EVT_PINGRESP,
+};"
+836,"enum mqtt_version {
+	MQTT_VERSION_3_1_0 = 3, /**< Protocol level for 3.1.0. */
+	MQTT_VERSION_3_1_1 = 4  /**< Protocol level for 3.1.1. */
+};"
+837,"enum mqtt_qos {
+	/** Lowest Quality of Service, no acknowledgment needed for published
+	 *  message.
+	 */
+	MQTT_QOS_0_AT_MOST_ONCE = 0x00,
+
+	/** Medium Quality of Service, if acknowledgment expected for published
+	 *  message, duplicate messages permitted.
+	 */
+	MQTT_QOS_1_AT_LEAST_ONCE = 0x01,
+
+	/** Highest Quality of Service, acknowledgment expected and message
+	 *  shall be published only once. Message not published to interested
+	 *  parties unless client issues a PUBREL.
+	 */
+	MQTT_QOS_2_EXACTLY_ONCE  = 0x02
+};"
+838,"enum mqtt_conn_return_code {
+	/** Connection accepted. */
+	MQTT_CONNECTION_ACCEPTED                = 0x00,
+
+	/** The Server does not support the level of the MQTT protocol
+	 * requested by the Client.
+	 */
+	MQTT_UNACCEPTABLE_PROTOCOL_VERSION      = 0x01,
+
+	/** The Client identifier is correct UTF-8 but not allowed by the
+	 *  Server.
+	 */
+	MQTT_IDENTIFIER_REJECTED                = 0x02,
+
+	/** The Network Connection has been made but the MQTT service is
+	 *  unavailable.
+	 */
+	MQTT_SERVER_UNAVAILABLE                 = 0x03,
+
+	/** The data in the user name or password is malformed. */
+	MQTT_BAD_USER_NAME_OR_PASSWORD          = 0x04,
+
+	/** The Client is not authorized to connect. */
+	MQTT_NOT_AUTHORIZED                     = 0x05
+};"
+839,"enum mqtt_suback_return_code {
+	/** Subscription with QoS 0 succeeded. */
+	MQTT_SUBACK_SUCCESS_QoS_0 = 0x00,
+
+	/** Subscription with QoS 1 succeeded. */
+	MQTT_SUBACK_SUCCESS_QoS_1 = 0x01,
+
+	/** Subscription with QoS 2 succeeded. */
+	MQTT_SUBACK_SUCCESS_QoS_2 = 0x02,
+
+	/** Subscription for a topic failed. */
+	MQTT_SUBACK_FAILURE = 0x80
+};"
+840,"enum mqtt_transport_type {
+	/** Use non secure TCP transport for MQTT connection. */
+	MQTT_TRANSPORT_NON_SECURE,
+
+#if defined(CONFIG_MQTT_LIB_TLS)
+	/** Use secure TCP transport (TLS) for MQTT connection. */
+	MQTT_TRANSPORT_SECURE,
+#endif /* CONFIG_MQTT_LIB_TLS */
+
+#if defined(CONFIG_MQTT_LIB_WEBSOCKET)
+	/** Use non secure Websocket transport for MQTT connection. */
+	MQTT_TRANSPORT_NON_SECURE_WEBSOCKET,
+#if defined(CONFIG_MQTT_LIB_TLS)
+	/** Use secure Websocket transport (TLS) for MQTT connection. */
+	MQTT_TRANSPORT_SECURE_WEBSOCKET,
+#endif
+#endif /* CONFIG_MQTT_LIB_WEBSOCKET */
+#if defined(CONFIG_MQTT_LIB_CUSTOM_TRANSPORT)
+	/** Use custom transport for MQTT connection. */
+	MQTT_TRANSPORT_CUSTOM,
+#endif /* CONFIG_MQTT_LIB_CUSTOM_TRANSPORT */
+
+	/** Shall not be used as a transport type.
+	 *  Indicator of maximum transport types possible.
+	 */
+	MQTT_TRANSPORT_NUM
+};"
+841,#include stddef.h
+842,#include zephyr/kernel.h
+843,#include zephyr/types.h
+844,#include zephyr/net/tls_credentials.h
+845,#include zephyr/net/net_ip.h
+846,#include zephyr/sys/mutex.h
+847,#include zephyr/net/websocket.h
+848,"void sys_rand_get(void *dst, size_t len)"
+849,use sys_rand_get()
+850,"int sys_csrand_get(void *dst, size_t len)"
+851,uint8_t sys_rand8_get(void)
+852,uint16_t sys_rand16_get(void)
+853,uint32_t sys_rand32_get(void)
+854,uint64_t sys_rand64_get(void)
+855,#include zephyr/types.h
+856,#include stddef.h
+857,#include zephyr/kernel.h
+858,#include zephyr/syscalls/random.h
+859,define Z_DEVICE_IS_MUTABLE(node_id)
+860,a SYS_INIT()
+861,see device_handle_get()
+862,see device_from_handle()
+863,by DEVICE_DEFINE()
+864,to DEVICE_DEFINE()
+865,for device_get_binding()
+866,define DEVICE_NAME_GET(dev_id)
+867,define Z_DEVICE_DT_DEV_ID(node_id)
+868,use DEVICE_DT_DEFINE()
+869,"initialization level (PRE_KERNEL_1, PRE_KERNEL_2 or
+ * POST_KERNEL)"
+870,"define DEVICE_DEFINE(dev_id, name, init_fn, pm, data, config, level, prio,    \
+		      api)"
+871,define DEVICE_DT_NAME(node_id)
+872,define DEVICE_DT_DEFER(node_id)
+874,"initialization level (PRE_KERNEL_1, PRE_KERNEL_2 or
+ * POST_KERNEL)"
+875,"define DEVICE_DT_DEFINE(node_id, init_fn, pm, data, config, level, prio, api, \
+			 ...)"
+876,Like DEVICE_DT_DEFINE()
+877,to DEVICE_DT_DEFINE()
+878,by DEVICE_DT_DEFINE()
+879,"define DEVICE_DT_INST_DEFINE(inst, ...)"
+880,using DEVICE_DT_DEFINE()
+881,or DEVICE_DT_INST_DEFINE()
+882,for DEVICE_DT_GET()
+883,define DEVICE_DT_NAME_GET(node_id)
+884,define DEVICE_DT_GET(node_id)
+885,define DEVICE_DT_INST_GET(inst
+887,define DEVICE_DT_GET_ANY(compat)
+889,define DEVICE_DT_GET_ONE(compat)
+890,define DEVICE_DT_GET_OR_NULL(node_id)
+891,to DEVICE_DEFINE()
+892,by DEVICE_DEFINE()
+893,define DEVICE_GET(dev_id)
+894,that DEVICE_GET()
+895,by DEVICE_DEFINE()
+896,of DEVICE_GET()
+897,define DEVICE_DECLARE(dev_id)
+898,device DEVICE_NAME_GET(dev_id)
+899,define DEVICE_INIT_DT_GET(node_id)
+900,define DEVICE_INIT_GET(dev_id)
+901,dynamic structure (in RAM)
+902,return code (positive errno value)
+903,if defined(CONFIG_DEVICE_DT_METADATA)
+904,device structure (in ROM)
+905,if defined(CONFIG_DEVICE_DEPS)
+906,as device_required_handles_get()
+907,if defined(CONFIG_PM_DEVICE)
+908,"PM resources (only available if
+	 * @kconfig{CONFIG_PM_DEVICE} is enabled)"
+909,if defined(CONFIG_DEVICE_DT_METADATA)
+910,device_handle_t device_handle_get(const struct device *dev)
+911,if defined(CONFIG_DEVICE_DEPS)
+912,see device_required_foreach()
+913,see device_supported_foreach()
+914,typedef int (*device_visitor_callback_t)
+915,"int device_required_foreach(const struct device *dev,
+			    device_visitor_callback_t visitor_cb,
+			    void *context)"
+916,"int device_supported_foreach(const struct device *dev,
+			     device_visitor_callback_t visitor_cb,
+			     void *context)"
+917,size_t z_device_get_all_static(const struct device **devices)
+918,from DEVICE_DT_GET()
+919,of device_get_binding()
+920,bool device_is_ready(const struct device *dev)
+921,"was deferred (by marking it as
+ * ``zephyr,deferred-init`` on devicetree)"
+922,int device_init(const struct device *dev)
+923,define Z_DEVICE_STATE_NAME(dev_id)
+924,define Z_DEVICE_STATE_DEFINE(dev_id)
+925,static Z_DECL_ALIGN(struct device_state)
+926,if defined(CONFIG_DEVICE_DEPS)
+927,define Z_DEVICE_DEPS_NAME(dev_id)
+928,define Z_DEVICE_EXTRA_DEPS(...)
+929,"weak definitions (to prevent the reference from being captured when the
+ * original object file is compiled)"
+930,"pass1 section (which
+ * will be replaced by postprocessing)"
+931,dependency ordinals (if any)
+932,dependency ordinals (if any)
+933,supporting ordinals (if any)
+934,dependency handles (if any)
+935,dependency handles (if any)
+936,support handles (if any)
+937,is also (experimentally)
+938,"define Z_DEVICE_DEPS_DEFINE(node_id, dev_id, ...)"
+939,"device_handle_t Z_DEVICE_DEPS_NAME(         \
+		dev_id)"
+940,Z_DEVICE_DEPS_CONST Z_DECL_ALIGN(device_handle_t)
+941,if defined(CONFIG_DEVICE_DT_METADATA)
+942,see device_get_dt_nodelabels()
+943,with DEVICE_DT_DEFINE()
+944,that device_get_by_dt_nodelabel()
+945,define Z_DEVICE_DT_METADATA_NAME_GET(dev_id)
+946,define Z_DEVICE_DT_NODELABELS_NAME_GET(dev_id)
+947,"define Z_DEVICE_DT_METADATA_DEFINE(node_id, dev_id)"
+948,define Z_DEVICE_INIT_SUB_PRIO(node_id)
+949,that device_get_binding()
+950,define Z_DEVICE_NAME_CHECK(name)
+951,ref pm_device_base (optional)
+952,"define Z_DEVICE_INIT(name_, pm_, data_, config_, api_, state_, deps_, node_id_,	\
+		      dev_id_)"
+953,if defined(__STDC_VERSION__)
+954,define Z_DEVICE_INIT_PM_BASE(pm_)
+955,define Z_DEVICE_INIT_PM_BASE(pm_)
+956,section name (used for sorting purposes)
+957,"define Z_DEVICE_SECTION_NAME(level, prio)"
+958,"the device (DT_INVALID_NODE if a
+ * software device)"
+959,Device identifier (used to name the defined @ref device)
+960,"define Z_DEVICE_BASE_DEFINE(node_id, dev_id, name, pm, data, config, level, prio, api, state,     \
+			     deps)"
+961,define Z_DEVICE_LEVEL_CHECK_DEPRECATED_LEVEL(level)
+962,"the device (DT_INVALID_NODE if a
+ * software device)"
+963,"define Z_DEVICE_INIT_ENTRY_DEFINE(node_id, dev_id, init_fn_, level, prio)"
+964,const Z_DECL_ALIGN(struct init_entry)
+965,"__noasan Z_INIT_ENTRY_SECTION(         \
+		level, prio, Z_DEVICE_INIT_SUB_PRIO(node_id)"
+966,"define Z_DEFER_DEVICE_INIT_ENTRY_DEFINE(node_id, dev_id, init_fn_)"
+967,const Z_DECL_ALIGN(struct init_entry)
+968,if defined(__STDC_VERSION__)
+969,"define Z_DEVICE_INIT_ENTRY_DEV(node_id, dev_id)"
+970,"define Z_DEVICE_INIT_ENTRY_DEV(node_id, dev_id)"
+971,"define Z_DEV_ENTRY_DEV(node_id, dev_id)"
+972,"the device (DT_INVALID_NODE if a
+ * software device)"
+973,Device identifier (used to name the defined @ref device)
+974,"define Z_DEVICE_DEFINE(node_id, dev_id, name, init_fn, pm, data, config,       \
+			level, prio, api, state, ...)"
+975,define Z_MAYBE_DEVICE_DECLARE_INTERNAL(node_id)
+976,extern COND_CODE_1(Z_DEVICE_IS_MUTABLE(node_id)
+977,device DEVICE_DT_NAME_GET(node_id)
+978,#include stdint.h
+979,#include zephyr/devicetree.h
+980,#include zephyr/init.h
+981,#include zephyr/linker/sections.h
+982,#include zephyr/pm/state.h
+983,#include zephyr/sys/device_mmio.h
+984,#include zephyr/sys/iterable_sections.h
+985,#include zephyr/sys/util.h
+986,#include zephyr/toolchain.h
+987,#include zephyr/syscalls/device.h
+988,define MQTT_SN_DATA_STRING_LITERAL(literal)
+989,define MQTT_SN_DATA_BYTES(...)
+990,typedef void (*mqtt_sn_evt_cb_t)
+991,If poll()
+992,define UDP_TRANSPORT(transport)
+993,"int mqtt_sn_transport_udp_init(struct mqtt_sn_transport_udp *udp, struct sockaddr *gwaddr,
+			       socklen_t addrlen)"
+994,error code (errno.h)
+995,"int mqtt_sn_client_init(struct mqtt_sn_client *client, const struct mqtt_sn_data *client_id,
+			struct mqtt_sn_transport *transport, mqtt_sn_evt_cb_t evt_cb, void *tx,
+			size_t txsz, void *rx, size_t rxsz)"
+996,void mqtt_sn_client_deinit(struct mqtt_sn_client *client)
+997,error code (errno.h)
+998,"int mqtt_sn_connect(struct mqtt_sn_client *client, bool will, bool clean_session)"
+999,error code (errno.h)
+1000,int mqtt_sn_disconnect(struct mqtt_sn_client *client)
+1001,Sleep duration (in seconds)
+1002,"int mqtt_sn_sleep(struct mqtt_sn_client *client, uint16_t duration)"
+1003,error code (errno.h)
+1004,"int mqtt_sn_subscribe(struct mqtt_sn_client *client, enum mqtt_sn_qos qos,
+		      struct mqtt_sn_data *topic_name)"
+1005,error code (errno.h)
+1006,"int mqtt_sn_unsubscribe(struct mqtt_sn_client *client, enum mqtt_sn_qos qos,
+			struct mqtt_sn_data *topic_name)"
+1007,error code (errno.h)
+1008,"int mqtt_sn_publish(struct mqtt_sn_client *client, enum mqtt_sn_qos qos,
+		    struct mqtt_sn_data *topic_name, bool retain, struct mqtt_sn_data *data)"
+1009,error code (errno.h)
+1010,int mqtt_sn_input(struct mqtt_sn_client *client)
+1011,"int mqtt_sn_get_topic_name(struct mqtt_sn_client *client, uint16_t id,
+			   struct mqtt_sn_data *topic_name)"
+1012,"enum mqtt_sn_qos {
+	MQTT_SN_QOS_0, /**< QOS 0 */
+	MQTT_SN_QOS_1, /**< QOS 1 */
+	MQTT_SN_QOS_2, /**< QOS 2 */
+	MQTT_SN_QOS_M1 /**< QOS -1 */
+};"
+1013,"enum mqtt_sn_topic_type {
+	/**
+	 * Normal topic.
+	 * It allows usage of any valid UTF-8 string as a topic name.
+	 */
+	MQTT_SN_TOPIC_TYPE_NORMAL,
+	/**
+	 * Pre-defined topic.
+	 * It allows usage of a two-byte identifier representing a topic name for
+	 * which the corresponding topic name is known in advance by both the client
+	 * and the gateway/server.
+	 */
+	MQTT_SN_TOPIC_TYPE_PREDEF,
+	/**
+	 * Short topic.
+	 * It allows usage of a two-byte string as a topic name.
+	 */
+	MQTT_SN_TOPIC_TYPE_SHORT
+};"
+1014,"enum mqtt_sn_return_code {
+	MQTT_SN_CODE_ACCEPTED = 0x00, /**< Accepted */
+	MQTT_SN_CODE_REJECTED_CONGESTION = 0x01, /**< Rejected: congestion */
+	MQTT_SN_CODE_REJECTED_TOPIC_ID = 0x02, /**< Rejected: Invalid Topic ID */
+	MQTT_SN_CODE_REJECTED_NOTSUP = 0x03, /**< Rejected: Not Supported */
+};"
+1015,"enum mqtt_sn_evt_type {
+	MQTT_SN_EVT_CONNECTED,	  /**< Connected to a gateway */
+	MQTT_SN_EVT_DISCONNECTED, /**< Disconnected */
+	MQTT_SN_EVT_ASLEEP,	  /**< Entered ASLEEP state */
+	MQTT_SN_EVT_AWAKE,	  /**< Entered AWAKE state */
+	MQTT_SN_EVT_PUBLISH,	  /**< Received a PUBLISH message */
+	MQTT_SN_EVT_PINGRESP	  /**< Received a PINGRESP */
+};"
+1016,#include stddef.h
+1017,#include zephyr/net/buf.h
+1018,#include zephyr/types.h
+1019,#include sys/types.h
+1020,#include zephyr/net/net_ip.h
+1021,if defined(CONFIG_FLASH_PAGE_LAYOUT)
+1022,define FLASH_ERASE_CAPS_UNSET		(int)
+1023,int flash_params_get_erase_cap(const struct flash_parameters *p)
+1024,if defined(CONFIG_FLASH_HAS_EXPLICIT_ERASE)
+1025,if defined(CONFIG_FLASH_HAS_NO_EXPLICIT_ERASE)
+1026,"else
+	ARG_UNUSED(p)"
+1027,typedef int (*flash_api_read)
+1028,operation completes (successfully or not)
+1029,typedef int (*flash_api_write)
+1030,operation completes (successfully or not)
+1031,typedef int (*flash_api_erase)
+1032,if defined(CONFIG_FLASH_PAGE_LAYOUT)
+1033,typedef void (*flash_api_pages_layout)
+1034,typedef int (*flash_api_sfdp_read)
+1035,typedef int (*flash_api_read_jedec_id)
+1036,typedef int (*flash_api_ex_op)
+1037,if defined(CONFIG_FLASH_PAGE_LAYOUT)
+1038,if defined(CONFIG_FLASH_JESD216_API)
+1039,if defined(CONFIG_FLASH_EX_OP_ENABLED)
+1040,"int flash_read(const struct device *dev, off_t offset, void *data,
+			 size_t len)"
+1041,"int z_impl_flash_read(const struct device *dev, off_t offset,
+				    void *data,
+				    size_t len)"
+1042,"int flash_write(const struct device *dev, off_t offset,
+			  const void *data,
+			  size_t len)"
+1043,"int z_impl_flash_write(const struct device *dev, off_t offset,
+				     const void *data, size_t len)"
+1044,using flash_get_page_info_by_offs()
+1045,see flash_flatten()
+1046,see flash_get_page_info_by_offs()
+1047,see flash_get_page_info_by_idx()
+1048,"int flash_erase(const struct device *dev, off_t offset, size_t size)"
+1049,"int z_impl_flash_erase(const struct device *dev, off_t offset,
+				     size_t size)"
+1050,"int flash_fill(const struct device *dev, uint8_t val, off_t offset, size_t size)"
+1051,see flash_erase()
+1052,"int flash_flatten(const struct device *dev, off_t offset, size_t size)"
+1053,if defined(CONFIG_FLASH_PAGE_LAYOUT)
+1054,"int flash_get_page_info_by_offs(const struct device *dev,
+					  off_t offset,
+					  struct flash_pages_info *info)"
+1055,"int flash_get_page_info_by_idx(const struct device *dev,
+					 uint32_t page_index,
+					 struct flash_pages_info *info)"
+1056,size_t flash_get_page_count(const struct device *dev)
+1057,see flash_page_foreach()
+1058,typedef bool (*flash_page_cb)
+1059,"void flash_page_foreach(const struct device *dev, flash_page_cb cb,
+			void *data)"
+1060,if defined(CONFIG_FLASH_JESD216_API)
+1061,"int flash_sfdp_read(const struct device *dev, off_t offset,
+			      void *data, size_t len)"
+1062,"int z_impl_flash_sfdp_read(const struct device *dev,
+					 off_t offset,
+					 void *data, size_t len)"
+1063,"int flash_read_jedec_id(const struct device *dev, uint8_t *id)"
+1064,"int z_impl_flash_read_jedec_id(const struct device *dev,
+					     uint8_t *id)"
+1065,size_t flash_get_write_block_size(const struct device *dev)
+1066,size_t z_impl_flash_get_write_block_size(const struct device *dev)
+1067,"be unique (supported on small number of
+ *  flash controllers)"
+1068,"int flash_ex_op(const struct device *dev, uint16_t code,
+			  const uintptr_t in, void *out)"
+1069,vendor codes (MSb == 1)
+1070,define FLASH_EX_OP_IS_VENDOR(c)
+1071,"int z_impl_flash_ex_op(const struct device *dev, uint16_t code,
+				     const uintptr_t in, void *out)"
+1072,if defined(CONFIG_FLASH_EX_OP_ENABLED)
+1073,"else
+	ARG_UNUSED(dev)"
+1074,"struct flash_parameters {
+	/** Minimal write alignment and size */
+	const size_t write_block_size;
+
+	/** @cond INTERNAL_HIDDEN */
+	/* User code should call flash_params_get_ functions on flash_parameters
+	 * to get capabilities, rather than accessing object contents directly.
+	 */
+	struct {
+		/* Device has no explicit erase, so it either erases on
+		 * write or does not require it at all.
+		 * This also includes devices that support erase but
+		 * do not require it.
+		 */
+		bool no_explicit_erase: 1;
+	} caps;"
+1075,"enum flash_ex_op_types {
+	/*
+	 * Reset flash device.
+	 */
+	FLASH_EX_OP_RESET = 0,
+};"
+1076,#include errno.h
+1077,#include zephyr/types.h
+1078,#include stddef.h
+1079,#include sys/types.h
+1080,#include zephyr/device.h
+1081,#include zephyr/syscalls/flash.h
+1082,if defined(CONFIG_FLASH_AREA_CHECK_INTEGRITY)
+1083,"int flash_area_check_int_sha256(const struct flash_area *fa,
+				const struct flash_area_check *fac)"
+1084,"int flash_area_open(uint8_t id, const struct flash_area **fa)"
+1085,void flash_area_close(const struct flash_area *fa)
+1086,"int flash_area_read(const struct flash_area *fa, off_t off, void *dst,
+		    size_t len)"
+1087,"int flash_area_write(const struct flash_area *fa, off_t off, const void *src,
+		     size_t len)"
+1088,"int flash_area_erase(const struct flash_area *fa, off_t off, size_t len)"
+1089,see flash_area_erase()
+1090,see flash_flatten()
+1091,"int flash_area_flatten(const struct flash_area *fa, off_t off, size_t len)"
+1092,uint32_t flash_area_align(const struct flash_area *fa)
+1093,"int flash_area_get_sectors(int fa_id, uint32_t *count,
+			   struct flash_sector *sectors)"
+1094,typedef void (*flash_area_cb_t)
+1095,"void flash_area_foreach(flash_area_cb_t user_cb, void *user_data)"
+1096,int flash_area_has_driver(const struct flash_area *fa)
+1097,uint8_t flash_area_erased_val(const struct flash_area *fa)
+1098,define FIXED_PARTITION_EXISTS(label)
+1099,define FIXED_PARTITION_ID(label)
+1100,define FIXED_PARTITION_OFFSET(label)
+1101,define FIXED_PARTITION_NODE_OFFSET(node)
+1102,define FIXED_PARTITION_SIZE(label)
+1103,define FIXED_PARTITION_NODE_SIZE(node)
+1104,define FLASH_AREA_DEVICE(label)
+1105,define FIXED_PARTITION_DEVICE(label)
+1106,define FIXED_PARTITION_NODE_DEVICE(node)
+1107,#include zephyr/types.h
+1108,#include stddef.h
+1109,#include sys/types.h
+1110,#include zephyr/device.h
+1111,#include zephyr/devicetree.h
+1112,volatile Storage (NVS)
+1113,volatile Storage (NVS)
+1114,int nvs_mount(struct nvs_fs *fs)
+1115,int nvs_clear(struct nvs_fs *fs)
+1116,"effectively removed (it is
+ * equivalent to calling of nvs_delete)"
+1117,"ssize_t nvs_write(struct nvs_fs *fs, uint16_t id, const void *data, size_t len)"
+1118,"int nvs_delete(struct nvs_fs *fs, uint16_t id)"
+1119,"ssize_t nvs_read(struct nvs_fs *fs, uint16_t id, void *data, size_t len)"
+1120,"ssize_t nvs_read_hist(struct nvs_fs *fs, uint16_t id, void *data, size_t len, uint16_t cnt)"
+1121,ssize_t nvs_calc_free_space(struct nvs_fs *fs)
+1122,#include sys/types.h
+1123,#include zephyr/kernel.h
+1124,#include zephyr/device.h
+1125,#include zephyr/toolchain.h
+1126,define I2C_SPEED_STANDARD		(0x1U)
+1127,define I2C_SPEED_FAST			(0x2U)
+1128,define I2C_SPEED_FAST_PLUS		(0x3U)
+1129,define I2C_SPEED_HIGH			(0x4U)
+1130,define I2C_SPEED_ULTRA			(0x5U)
+1131,define I2C_SPEED_DT			(0x7U)
+1132,define I2C_SPEED_SHIFT			(1U)
+1133,define I2C_SPEED_SET(speed)
+1134,define I2C_SPEED_MASK			(0x7U << I2C_SPEED_SHIFT)
+1135,define I2C_SPEED_GET(cfg)
+1136,I2C_ADDR_10_BITS		BIT(0)
+1137,I2C_MODE_CONTROLLER		BIT(4)
+1138,from devicetree (on I3C bus)
+1139,define I2C_DT_SPEC_GET_ON_I3C(node_id)
+1140,from devicetree (on I2C bus)
+1141,define I2C_DT_SPEC_GET_ON_I2C(node_id)
+1142,define I2C_DT_SPEC_GET(node_id)
+1143,define I2C_DT_SPEC_INST_GET(inst)
+1144,define I2C_MSG_WRITE			(0U << 0U)
+1145,I2C_MSG_READ			BIT(0)
+1146,I2C_MSG_RW_MASK			BIT(0)
+1147,I2C_MSG_STOP			BIT(1)
+1148,I2C_MSG_RESTART			BIT(2)
+1149,I2C_MSG_ADDR_10_BITS		BIT(3)
+1150,of i2c_transfer()
+1151,typedef void (*i2c_callback_t)
+1152,typedef int (*i2c_api_configure_t)
+1153,typedef int (*i2c_api_get_config_t)
+1154,typedef int (*i2c_api_full_io_t)
+1155,typedef int (*i2c_api_target_register_t)
+1156,typedef int (*i2c_api_target_unregister_t)
+1157,typedef int (*i2c_api_transfer_cb_t)
+1158,if defined(CONFIG_I2C_RTIO)
+1159,typedef void (*i2c_api_iodev_submit)
+1160,typedef int (*i2c_api_recover_bus_t)
+1161,typedef int (*i2c_target_api_register_t)
+1162,typedef int (*i2c_target_api_unregister_t)
+1163,I2C_TARGET_FLAGS_ADDR_10_BITS	BIT(0)
+1164,typedef int (*i2c_target_write_requested_cb_t)
+1165,typedef int (*i2c_target_write_received_cb_t)
+1166,typedef int (*i2c_target_read_requested_cb_t)
+1167,typedef int (*i2c_target_read_processed_cb_t)
+1168,typedef void (*i2c_target_buf_write_received_cb_t)
+1169,typedef int (*i2c_target_buf_read_requested_cb_t)
+1170,typedef int (*i2c_target_stop_cb_t)
+1171,the i2c_target_register()
+1172,to i2c_target_register()
+1173,bool i2c_is_ready_dt(const struct i2c_dt_spec *spec
+1175,bool i2c_is_read_op(struct i2c_msg *msg)
+1176,are writes (W)
+1177,"like this (with name ""testing"")"
+1178,"void i2c_dump_msgs_rw(const struct device *dev, const struct i2c_msg *msgs, uint8_t num_msgs,
+		      uint16_t addr, bool dump_read)"
+1179,"void i2c_dump_msgs(const struct device *dev, const struct i2c_msg *msgs,
+				 uint8_t num_msgs, uint16_t addr)"
+1180,if defined(CONFIG_I2C_STATS)
+1181,"void i2c_xfer_stats(const struct device *dev, struct i2c_msg *msgs,
+				  uint8_t num_msgs)"
+1182,define Z_I2C_DEVICE_STATE_DEFINE(dev_id)
+1183,i2c_device_state Z_DEVICE_STATE_NAME(dev_id)
+1184,common data (such as stats)
+1185,"define Z_I2C_INIT_FN(dev_id, init_fn)"
+1186,"int UTIL_CAT(dev_id, _init)"
+1187,return init_fn(dev)
+1188,Like DEVICE_DT_DEFINE()
+1189,resources reference (NULL if device does not use PM)
+1190,See SYS_INIT()
+1191,"define I2C_DEVICE_DT_DEFINE(node_id, init_fn, pm, data, config, level,	\
+			     prio, api, ...)"
+1192,"void i2c_xfer_stats(const struct device *dev, struct i2c_msg *msgs,
+				  uint8_t num_msgs)"
+1193,"define I2C_DEVICE_DT_DEFINE(node_id, init_fn, pm, data, config, level,	\
+			     prio, api, ...)"
+1194,Like I2C_DEVICE_DT_DEFINE()
+1195,to I2C_DEVICE_DT_DEFINE()
+1196,by I2C_DEVICE_DT_DEFINE()
+1197,"define I2C_DEVICE_DT_INST_DEFINE(inst, ...)"
+1198,"int i2c_configure(const struct device *dev, uint32_t dev_config)"
+1199,"int z_impl_i2c_configure(const struct device *dev,
+				       uint32_t dev_config)"
+1200,"int i2c_get_config(const struct device *dev, uint32_t *dev_config)"
+1201,"int z_impl_i2c_get_config(const struct device *dev, uint32_t *dev_config)"
+1203,"gather write (multiple consecutive
+ * `i2c_msg` buffers all configured for `I2C_MSG_WRITE`)"
+1204,"int i2c_transfer(const struct device *dev,
+			   struct i2c_msg *msgs, uint8_t num_msgs,
+			   uint16_t addr)"
+1205,"int z_impl_i2c_transfer(const struct device *dev,
+				      struct i2c_msg *msgs, uint8_t num_msgs,
+				      uint16_t addr)"
+1206,if defined(CONFIG_I2C_CALLBACK)
+1207,see i2c_transfer()
+1208,"int i2c_transfer_cb(const struct device *dev,
+				 struct i2c_msg *msgs,
+				 uint8_t num_msgs,
+				 uint16_t addr,
+				 i2c_callback_t cb,
+				 void *userdata)"
+1209,from i2c_transfer_cb()
+1210,"int i2c_transfer_cb_dt(const struct i2c_dt_spec *spec,
+				struct i2c_msg *msgs,
+				uint8_t num_msgs,
+				i2c_callback_t cb,
+				void *userdata)"
+1211,"return i2c_transfer_cb(spec->bus, msgs, num_msgs, spec->addr, cb, userdata)"
+1212,"int i2c_write_read_cb(const struct device *dev, struct i2c_msg *msgs,
+				 uint8_t num_msgs, uint16_t addr, const void *write_buf,
+				 size_t num_write, void *read_buf, size_t num_read,
+				 i2c_callback_t cb, void *userdata)"
+1213,"return i2c_transfer_cb(dev, msgs, num_msgs, addr, cb, userdata)"
+1214,from i2c_write_read_cb()
+1215,"int i2c_write_read_cb_dt(const struct i2c_dt_spec *spec, struct i2c_msg *msgs,
+				       uint8_t num_msgs, const void *write_buf, size_t num_write,
+				       void *read_buf, size_t num_read, i2c_callback_t cb,
+				       void *userdata)"
+1216,"return i2c_write_read_cb(spec->bus, msgs, num_msgs, spec->addr, write_buf, num_write,
+				 read_buf, num_read, cb, userdata)"
+1217,if defined(CONFIG_POLL)
+1218,"void z_i2c_transfer_signal_cb(const struct device *dev, int result, void *userdata)"
+1219,see i2c_transfer_cb()
+1220,"int i2c_transfer_signal(const struct device *dev,
+				 struct i2c_msg *msgs,
+				 uint8_t num_msgs,
+				 uint16_t addr,
+				 struct k_poll_signal *sig)"
+1221,if defined(CONFIG_I2C_RTIO)
+1222,Submit request(s)
+1223,void i2c_iodev_submit(struct rtio_iodev_sqe *iodev_sqe)
+1224,"define I2C_DT_IODEV_DEFINE(name, node_id)"
+1225,"define I2C_IODEV_DEFINE(name, _bus, _addr)"
+1226,from i2c_transfer()
+1227,"int i2c_transfer_dt(const struct i2c_dt_spec *spec,
+				  struct i2c_msg *msgs, uint8_t num_msgs)"
+1228,"return i2c_transfer(spec->bus, msgs, num_msgs, spec->addr)"
+1229,int i2c_recover_bus(const struct device *dev)
+1230,int z_impl_i2c_recover_bus(const struct device *dev)
+1231,"int i2c_target_register(const struct device *dev,
+				     struct i2c_target_config *cfg)"
+1232,"int i2c_target_unregister(const struct device *dev,
+				       struct i2c_target_config *cfg)"
+1233,s i2c_target_register()
+1234,int i2c_target_driver_register(const struct device *dev)
+1235,int z_impl_i2c_target_driver_register(const struct device *dev)
+1236,s i2c_target_register()
+1237,int i2c_target_driver_unregister(const struct device *dev)
+1238,int z_impl_i2c_target_driver_unregister(const struct device *dev)
+1239,of i2c_transfer()
+1240,"int i2c_write(const struct device *dev, const uint8_t *buf,
+			    uint32_t num_bytes, uint16_t addr)"
+1241,"return i2c_transfer(dev, &msg, 1, addr)"
+1242,from i2c_write()
+1243,"int i2c_write_dt(const struct i2c_dt_spec *spec,
+			       const uint8_t *buf, uint32_t num_bytes)"
+1244,"return i2c_write(spec->bus, buf, num_bytes, spec->addr)"
+1245,"int i2c_read(const struct device *dev, uint8_t *buf,
+			   uint32_t num_bytes, uint16_t addr)"
+1246,"return i2c_transfer(dev, &msg, 1, addr)"
+1250,"int i2c_write_read(const struct device *dev, uint16_t addr,
+				 const void *write_buf, size_t num_write,
+				 void *read_buf, size_t num_read)"
+1251,"return i2c_transfer(dev, msg, 2, addr)"
+1252,from i2c_write_read()
+1253,"int i2c_write_read_dt(const struct i2c_dt_spec *spec,
+				    const void *write_buf, size_t num_write,
+				    void *read_buf, size_t num_read)"
+1254,"return i2c_write_read(spec->bus, spec->addr,
+			      write_buf, num_write,
+			      read_buf, num_read)"
+1255,by i2c_write_read()
+1256,"int i2c_burst_read(const struct device *dev,
+				 uint16_t dev_addr,
+				 uint8_t start_addr,
+				 uint8_t *buf,
+				 uint32_t num_bytes)"
+1257,"return i2c_write_read(dev, dev_addr,
+			      &start_addr, sizeof(start_addr)"
+1258,from i2c_burst_read()
+1259,"int i2c_burst_read_dt(const struct i2c_dt_spec *spec,
+				    uint8_t start_addr,
+				    uint8_t *buf,
+				    uint32_t num_bytes)"
+1260,"return i2c_burst_read(spec->bus, spec->addr,
+			      start_addr, buf, num_bytes)"
+1261,to i2c_write()
+1262,"int i2c_burst_write(const struct device *dev,
+				  uint16_t dev_addr,
+				  uint8_t start_addr,
+				  const uint8_t *buf,
+				  uint32_t num_bytes)"
+1263,"return i2c_transfer(dev, msg, 2, dev_addr)"
+1264,from i2c_burst_write()
+1265,"int i2c_burst_write_dt(const struct i2c_dt_spec *spec,
+				     uint8_t start_addr,
+				     const uint8_t *buf,
+				     uint32_t num_bytes)"
+1266,"return i2c_burst_write(spec->bus, spec->addr,
+			       start_addr, buf, num_bytes)"
+1267,"int i2c_reg_read_byte(const struct device *dev,
+				    uint16_t dev_addr,
+				    uint8_t reg_addr, uint8_t *value)"
+1268,"return i2c_write_read(dev, dev_addr,
+			      &reg_addr, sizeof(reg_addr)"
+1269,from i2c_reg_read_byte()
+1270,"int i2c_reg_read_byte_dt(const struct i2c_dt_spec *spec,
+				       uint8_t reg_addr, uint8_t *value)"
+1271,"return i2c_reg_read_byte(spec->bus, spec->addr, reg_addr, value)"
+1272,"int i2c_reg_write_byte(const struct device *dev,
+				     uint16_t dev_addr,
+				     uint8_t reg_addr, uint8_t value)"
+1273,"return i2c_write(dev, tx_buf, 2, dev_addr)"
+1274,from i2c_reg_write_byte()
+1275,"int i2c_reg_write_byte_dt(const struct i2c_dt_spec *spec,
+					uint8_t reg_addr, uint8_t value)"
+1276,"return i2c_reg_write_byte(spec->bus, spec->addr, reg_addr, value)"
+1277,"int i2c_reg_update_byte(const struct device *dev,
+				      uint8_t dev_addr,
+				      uint8_t reg_addr, uint8_t mask,
+				      uint8_t value)"
+1278,"return i2c_reg_write_byte(dev, dev_addr, reg_addr, new_value)"
+1279,from i2c_reg_update_byte()
+1280,"int i2c_reg_update_byte_dt(const struct i2c_dt_spec *spec,
+					 uint8_t reg_addr, uint8_t mask,
+					 uint8_t value)"
+1281,"return i2c_reg_update_byte(spec->bus, spec->addr,
+				   reg_addr, mask, value)"
+1282,#include errno.h
+1283,#include zephyr/types.h
+1284,#include zephyr/device.h
+1285,#include zephyr/kernel.h
+1286,#include zephyr/sys/slist.h
+1287,#include zephyr/rtio/rtio.h
+1288,#include zephyr/stats/stats.h
+1289,#include zephyr/syscalls/i2c.h
+1290,Field width (with or without leading zeroes)
+1291,"CONFIG_PRINTK
+
+__printf_like(1, 2)"
+1292,"void printk(const char *fmt, ...)"
+1293,"void vprintk(const char *fmt, va_list ap)"
+1294,"inline __printf_like(1, 2)"
+1295,"void printk(const char *fmt, ...)"
+1296,"inline __printf_like(1, 0)"
+1297,"void vprintk(const char *fmt, va_list ap)"
+1298,define snprintk(...)
+1299,"define vsnprintk(str, size, fmt, ap)"
+1300,"else
+
+__printf_like(3, 4)"
+1301,"int snprintk(char *str, size_t size,
+					const char *fmt, ...)"
+1302,"int vsnprintk(char *str, size_t size,
+					  const char *fmt, va_list ap)"
+1303,#include zephyr/toolchain.h
+1304,#include stddef.h
+1305,#include stdarg.h
+1306,#include inttypes.h
+1307,#include stdio.h
+1308,"response code (ex. 2, 4, 5, ...)"
+1309,"define COAP_MAKE_RESPONSE_CODE(class, det)"
+1310,define COAP_CODE_EMPTY (0)
+1311,define GET_BLOCK_NUM(v)
+1312,define GET_BLOCK_SIZE(v)
+1313,define GET_MORE(v)
+1314,typedef int (*coap_method_t)
+1315,typedef void (*coap_notify_t)
+1316,options length (delta + len + value)
+1317,if defined(CONFIG_COAP_KEEP_USER_DATA)
+1318,if defined(CONFIG_COAP_EXTENDED_OPTIONS_LEN)
+1319,typedef int (*coap_reply_t)
+1320,an acknowledgment (ACK)
+1321,uint8_t coap_header_get_version(const struct coap_packet *cpkt)
+1322,uint8_t coap_header_get_type(const struct coap_packet *cpkt)
+1323,the token (if any)
+1324,CoAP packet (0 - COAP_TOKEN_MAX_LEN)
+1325,"uint8_t coap_header_get_token(const struct coap_packet *cpkt, uint8_t *token)"
+1326,uint8_t coap_header_get_code(const struct coap_packet *cpkt)
+1327,"int coap_header_set_code(const struct coap_packet *cpkt, uint8_t code)"
+1328,uint16_t coap_header_get_id(const struct coap_packet *cpkt)
+1329,from coap_packet_parse()
+1330,"bool coap_uri_path_match(const char * const *path,
+			 struct coap_option *options,
+			 uint8_t opt_num)"
+1331,"int coap_packet_parse(struct coap_packet *cpkt, uint8_t *data, uint16_t len,
+		      struct coap_option *options, uint8_t opt_num)"
+1332,coap path (with/without query)
+1333,"int coap_packet_set_path(struct coap_packet *cpkt, const char *path)"
+1334,"int coap_packet_init(struct coap_packet *cpkt, uint8_t *data, uint16_t max_len,
+		     uint8_t ver, uint8_t type, uint8_t token_len,
+		     const uint8_t *token, uint8_t code, uint16_t id)"
+1335,"int coap_ack_init(struct coap_packet *cpkt, const struct coap_packet *req,
+		  uint8_t *data, uint16_t max_len, uint8_t code)"
+1336,uint16_t coap_next_id(void)
+1337,"int coap_find_options(const struct coap_packet *cpkt, uint16_t code,
+		      struct coap_option *options, uint16_t veclen)"
+1338,"int coap_packet_append_option(struct coap_packet *cpkt, uint16_t code,
+			      const uint8_t *value, uint16_t len)"
+1339,"int coap_packet_remove_option(struct coap_packet *cpkt, uint16_t code)"
+1340,int coap_option_value_to_int(const struct coap_option *option)
+1341,"int coap_append_option_int(struct coap_packet *cpkt, uint16_t code,
+			   unsigned int val)"
+1342,payload marker (0xFF)
+1343,int coap_packet_append_payload_marker(struct coap_packet *cpkt)
+1344,"int coap_packet_append_payload(struct coap_packet *cpkt, const uint8_t *payload,
+			       uint16_t payload_len)"
+1345,bool coap_packet_is_request(const struct coap_packet *cpkt)
+1346,from coap_packet_parse()
+1347,"int coap_handle_request_len(struct coap_packet *cpkt,
+			    struct coap_resource *resources,
+			    size_t resources_len,
+			    struct coap_option *options,
+			    uint8_t opt_num,
+			    struct sockaddr *addr, socklen_t addr_len)"
+1348,known resources (terminated with empty resource)
+1349,from coap_packet_parse()
+1350,"int coap_handle_request(struct coap_packet *cpkt,
+			struct coap_resource *resources,
+			struct coap_option *options,
+			uint8_t opt_num,
+			struct sockaddr *addr, socklen_t addr_len)"
+1351,"uint16_t coap_block_size_to_bytes(
+	enum coap_block_size block_size)"
+1352,coap_block_size coap_bytes_to_block_size(uint16_t bytes)
+1353,"int coap_block_transfer_init(struct coap_block_context *ctx,
+			     enum coap_block_size block_size,
+			     size_t total_size)"
+1354,"int coap_append_descriptive_block_option(struct coap_packet *cpkt, struct coap_block_context *ctx)"
+1355,bool coap_has_descriptive_block_option(struct coap_packet *cpkt)
+1356,int coap_remove_descriptive_block_option(struct coap_packet *cpkt)
+1357,bool coap_block_has_more(struct coap_packet *cpkt)
+1358,"int coap_append_block1_option(struct coap_packet *cpkt,
+			      struct coap_block_context *ctx)"
+1359,"int coap_append_block2_option(struct coap_packet *cpkt,
+			      struct coap_block_context *ctx)"
+1360,"int coap_append_size1_option(struct coap_packet *cpkt,
+			     struct coap_block_context *ctx)"
+1361,"int coap_append_size2_option(struct coap_packet *cpkt,
+			     struct coap_block_context *ctx)"
+1362,"int coap_get_option_int(const struct coap_packet *cpkt, uint16_t code)"
+1363,"int coap_get_block1_option(const struct coap_packet *cpkt, bool *has_more, uint32_t *block_number)"
+1364,"int coap_get_block2_option(const struct coap_packet *cpkt, bool *has_more,
+			   uint32_t *block_number)"
+1365,"int coap_update_from_block(const struct coap_packet *cpkt,
+			   struct coap_block_context *ctx)"
+1366,"int coap_next_block_for_option(const struct coap_packet *cpkt,
+			       struct coap_block_context *ctx,
+			       enum coap_option_num option)"
+1367,"size_t coap_next_block(const struct coap_packet *cpkt,
+		       struct coap_block_context *ctx)"
+1368,"void coap_observer_init(struct coap_observer *observer,
+			const struct coap_packet *request,
+			const struct sockaddr *addr)"
+1369,"bool coap_register_observer(struct coap_resource *resource,
+			    struct coap_observer *observer)"
+1370,"bool coap_remove_observer(struct coap_resource *resource,
+			  struct coap_observer *observer)"
+1371,function coap_find_observer()
+1372,function coap_find_observer()
+1373,"void coap_reply_init(struct coap_reply *reply,
+		     const struct coap_packet *request)"
+1374,"int coap_pending_init(struct coap_pending *pending,
+		      const struct coap_packet *request,
+		      const struct sockaddr *addr,
+		      const struct coap_transmission_parameters *params)"
+1375,bool coap_pending_cycle(struct coap_pending *pending)
+1376,void coap_pending_clear(struct coap_pending *pending)
+1377,"void coap_pendings_clear(struct coap_pending *pendings, size_t len)"
+1378,"size_t coap_pendings_count(struct coap_pending *pendings, size_t len)"
+1379,void coap_reply_clear(struct coap_reply *reply)
+1380,"void coap_replies_clear(struct coap_reply *replies, size_t len)"
+1381,int coap_resource_notify(struct coap_resource *resource)
+1382,bool coap_request_is_observe(const struct coap_packet *request)
+1383,coap_transmission_parameters coap_get_transmission_parameters(void)
+1384,void coap_set_transmission_parameters(const struct coap_transmission_parameters *params)
+1385,"enum coap_option_num {
+	COAP_OPTION_IF_MATCH = 1,        /**< If-Match */
+	COAP_OPTION_URI_HOST = 3,        /**< Uri-Host */
+	COAP_OPTION_ETAG = 4,            /**< ETag */
+	COAP_OPTION_IF_NONE_MATCH = 5,   /**< If-None-Match */
+	COAP_OPTION_OBSERVE = 6,         /**< Observe (RFC 7641) */
+	COAP_OPTION_URI_PORT = 7,        /**< Uri-Port */
+	COAP_OPTION_LOCATION_PATH = 8,   /**< Location-Path */
+	COAP_OPTION_URI_PATH = 11,       /**< Uri-Path */
+	COAP_OPTION_CONTENT_FORMAT = 12, /**< Content-Format */
+	COAP_OPTION_MAX_AGE = 14,        /**< Max-Age */
+	COAP_OPTION_URI_QUERY = 15,      /**< Uri-Query */
+	COAP_OPTION_ACCEPT = 17,         /**< Accept */
+	COAP_OPTION_LOCATION_QUERY = 20, /**< Location-Query */
+	COAP_OPTION_BLOCK2 = 23,         /**< Block2 (RFC 7959) */
+	COAP_OPTION_BLOCK1 = 27,         /**< Block1 (RFC 7959) */
+	COAP_OPTION_SIZE2 = 28,          /**< Size2 (RFC 7959) */
+	COAP_OPTION_PROXY_URI = 35,      /**< Proxy-Uri */
+	COAP_OPTION_PROXY_SCHEME = 39,   /**< Proxy-Scheme */
+	COAP_OPTION_SIZE1 = 60,          /**< Size1 */
+	COAP_OPTION_ECHO = 252,          /**< Echo (RFC 9175) */
+	COAP_OPTION_REQUEST_TAG = 292    /**< Request-Tag (RFC 9175) */
+};"
+1386,"enum coap_method {
+	COAP_METHOD_GET = 1,     /**< GET */
+	COAP_METHOD_POST = 2,    /**< POST */
+	COAP_METHOD_PUT = 3,     /**< PUT */
+	COAP_METHOD_DELETE = 4,  /**< DELETE */
+	COAP_METHOD_FETCH = 5,   /**< FETCH */
+	COAP_METHOD_PATCH = 6,   /**< PATCH */
+	COAP_METHOD_IPATCH = 7,  /**< IPATCH */
+};"
+1387,"enum coap_msgtype {
+	/**
+	 * Confirmable message.
+	 *
+	 * The packet is a request or response the destination end-point must
+	 * acknowledge.
+	 */
+	COAP_TYPE_CON = 0,
+	/**
+	 * Non-confirmable message.
+	 *
+	 * The packet is a request or response that doesn't
+	 * require acknowledgements.
+	 */
+	COAP_TYPE_NON_CON = 1,
+	/**
+	 * Acknowledge.
+	 *
+	 * Response to a confirmable message.
+	 */
+	COAP_TYPE_ACK = 2,
+	/**
+	 * Reset.
+	 *
+	 * Rejecting a packet for any reason is done by sending a message
+	 * of this type.
+	 */
+	COAP_TYPE_RESET = 3
+};"
+1388,"enum coap_response_code {
+	/** 2.00 - OK */
+	COAP_RESPONSE_CODE_OK = COAP_MAKE_RESPONSE_CODE(2, 0),
+	/** 2.01 - Created */
+	COAP_RESPONSE_CODE_CREATED = COAP_MAKE_RESPONSE_CODE(2, 1),
+	/** 2.02 - Deleted */
+	COAP_RESPONSE_CODE_DELETED = COAP_MAKE_RESPONSE_CODE(2, 2),
+	/** 2.03 - Valid */
+	COAP_RESPONSE_CODE_VALID = COAP_MAKE_RESPONSE_CODE(2, 3),
+	/** 2.04 - Changed */
+	COAP_RESPONSE_CODE_CHANGED = COAP_MAKE_RESPONSE_CODE(2, 4),
+	/** 2.05 - Content */
+	COAP_RESPONSE_CODE_CONTENT = COAP_MAKE_RESPONSE_CODE(2, 5),
+	/** 2.31 - Continue */
+	COAP_RESPONSE_CODE_CONTINUE = COAP_MAKE_RESPONSE_CODE(2, 31),
+	/** 4.00 - Bad Request */
+	COAP_RESPONSE_CODE_BAD_REQUEST = COAP_MAKE_RESPONSE_CODE(4, 0),
+	/** 4.01 - Unauthorized */
+	COAP_RESPONSE_CODE_UNAUTHORIZED = COAP_MAKE_RESPONSE_CODE(4, 1),
+	/** 4.02 - Bad Option */
+	COAP_RESPONSE_CODE_BAD_OPTION = COAP_MAKE_RESPONSE_CODE(4, 2),
+	/** 4.03 - Forbidden */
+	COAP_RESPONSE_CODE_FORBIDDEN = COAP_MAKE_RESPONSE_CODE(4, 3),
+	/** 4.04 - Not Found */
+	COAP_RESPONSE_CODE_NOT_FOUND = COAP_MAKE_RESPONSE_CODE(4, 4),
+	/** 4.05 - Method Not Allowed */
+	COAP_RESPONSE_CODE_NOT_ALLOWED = COAP_MAKE_RESPONSE_CODE(4, 5),
+	/** 4.06 - Not Acceptable */
+	COAP_RESPONSE_CODE_NOT_ACCEPTABLE = COAP_MAKE_RESPONSE_CODE(4, 6),
+	/** 4.08 - Request Entity Incomplete */
+	COAP_RESPONSE_CODE_INCOMPLETE = COAP_MAKE_RESPONSE_CODE(4, 8),
+	/** 4.12 - Precondition Failed */
+	COAP_RESPONSE_CODE_CONFLICT = COAP_MAKE_RESPONSE_CODE(4, 9),
+	/** 4.12 - Precondition Failed */
+	COAP_RESPONSE_CODE_PRECONDITION_FAILED = COAP_MAKE_RESPONSE_CODE(4, 12),
+	/** 4.13 - Request Entity Too Large */
+	COAP_RESPONSE_CODE_REQUEST_TOO_LARGE = COAP_MAKE_RESPONSE_CODE(4, 13),
+	/** 4.15 - Unsupported Content-Format */
+	COAP_RESPONSE_CODE_UNSUPPORTED_CONTENT_FORMAT =
+						COAP_MAKE_RESPONSE_CODE(4, 15),
+	/** 4.22 - Unprocessable Entity */
+	COAP_RESPONSE_CODE_UNPROCESSABLE_ENTITY = COAP_MAKE_RESPONSE_CODE(4, 22),
+	/** 4.29 - Too Many Requests */
+	COAP_RESPONSE_CODE_TOO_MANY_REQUESTS = COAP_MAKE_RESPONSE_CODE(4, 29),
+	/** 5.00 - Internal Server Error */
+	COAP_RESPONSE_CODE_INTERNAL_ERROR = COAP_MAKE_RESPONSE_CODE(5, 0),
+	/** 5.01 - Not Implemented */
+	COAP_RESPONSE_CODE_NOT_IMPLEMENTED = COAP_MAKE_RESPONSE_CODE(5, 1),
+	/** 5.02 - Bad Gateway */
+	COAP_RESPONSE_CODE_BAD_GATEWAY = COAP_MAKE_RESPONSE_CODE(5, 2),
+	/** 5.03 - Service Unavailable */
+	COAP_RESPONSE_CODE_SERVICE_UNAVAILABLE = COAP_MAKE_RESPONSE_CODE(5, 3),
+	/** 5.04 - Gateway Timeout */
+	COAP_RESPONSE_CODE_GATEWAY_TIMEOUT = COAP_MAKE_RESPONSE_CODE(5, 4),
+	/** 5.05 - Proxying Not Supported */
+	COAP_RESPONSE_CODE_PROXYING_NOT_SUPPORTED =
+						COAP_MAKE_RESPONSE_CODE(5, 5)
+};"
+1389,"enum coap_content_format {
+	COAP_CONTENT_FORMAT_TEXT_PLAIN = 0,             /**< text/plain;charset=utf-8 */
+	COAP_CONTENT_FORMAT_APP_LINK_FORMAT = 40,       /**< application/link-format */
+	COAP_CONTENT_FORMAT_APP_XML = 41,               /**< application/xml */
+	COAP_CONTENT_FORMAT_APP_OCTET_STREAM = 42,      /**< application/octet-stream */
+	COAP_CONTENT_FORMAT_APP_EXI = 47,               /**< application/exi */
+	COAP_CONTENT_FORMAT_APP_JSON = 50,              /**< application/json */
+	COAP_CONTENT_FORMAT_APP_JSON_PATCH_JSON = 51,   /**< application/json-patch+json */
+	COAP_CONTENT_FORMAT_APP_MERGE_PATCH_JSON = 52,  /**< application/merge-patch+json */
+	COAP_CONTENT_FORMAT_APP_CBOR = 60               /**< application/cbor */
+};"
+1390,"enum coap_block_size {
+	COAP_BLOCK_16,   /**< 16-byte block size */
+	COAP_BLOCK_32,   /**< 32-byte block size */
+	COAP_BLOCK_64,   /**< 64-byte block size */
+	COAP_BLOCK_128,  /**< 128-byte block size */
+	COAP_BLOCK_256,  /**< 256-byte block size */
+	COAP_BLOCK_512,  /**< 512-byte block size */
+	COAP_BLOCK_1024, /**< 1024-byte block size */
+};"
+1391,#include zephyr/types.h
+1392,#include stddef.h
+1393,#include stdbool.h
+1394,#include zephyr/net/net_ip.h
+1395,#include zephyr/sys/math_extras.h
+1396,#include zephyr/sys/slist.h
+1397,"struct mqtt_publish_param {
+	/** Messages including topic, QoS and its payload (if any)
+	 *  to be published.
+	 */
+	struct mqtt_publish_message message;
+
+	/** Message id used for the publish message. Redundant for QoS 0. */
+	uint16_t message_id;
+
+	/** Duplicate flag. If 1, it indicates the message is being
+	 *  retransmitted. Has no meaning with QoS 0.
+	 */
+	uint8_t dup_flag : 1;
+
+	/** Retain flag. If 1, the message shall be stored persistently
+	 *  by the broker.
+	 */
+	uint8_t retain_flag : 1;
+};"
+1398,"/**
+ * @brief MQTT Client definition to maintain information relevant to the
+ *        client.
+ */
+struct mqtt_client {
+	/** MQTT client internal state. */
+	struct mqtt_internal internal;
+
+	/** MQTT transport configuration and data. */
+	struct mqtt_transport transport;
+
+	/** Unique client identification to be used for the connection. */
+	struct mqtt_utf8 client_id;
+
+	/** Broker details, for example, address, port. Address type should
+	 *  be compatible with transport used.
+	 */
+	const void *broker;
+
+	/** User name (if any) to be used for the connection. NULL indicates
+	 *  no user name.
+	 */
+	struct mqtt_utf8 *user_name;
+
+	/** Password (if any) to be used for the connection. Note that if
+	 *  password is provided, user name shall also be provided. NULL
+	 *  indicates no password.
+	 */
+	struct mqtt_utf8 *password;
+
+	/** Will topic and QoS. Can be NULL. */
+	struct mqtt_topic *will_topic;
+
+	/** Will message. Can be NULL. Non NULL value valid only if will topic
+	 *  is not NULL.
+	 */
+	struct mqtt_utf8 *will_message;
+
+	/** Application callback registered with the module to get MQTT events.
+	 */
+	mqtt_evt_cb_t evt_cb;
+
+	/** Receive buffer used for MQTT packet reception in RX path. */
+	uint8_t *rx_buf;
+
+	/** Size of receive buffer. */
+	uint32_t rx_buf_size;
+
+	/** Transmit buffer used for creating MQTT packet in TX path. */
+	uint8_t *tx_buf;
+
+	/** Size of transmit buffer. */
+	uint32_t tx_buf_size;
+
+	/** Keepalive interval for this client in seconds.
+	 *  Default is CONFIG_MQTT_KEEPALIVE.
+	 */
+	uint16_t keepalive;
+
+	/** MQTT protocol version. */
+	uint8_t protocol_version;
+
+	/** Unanswered PINGREQ count on this connection. */
+	int8_t unacked_ping;
+
+	/** Will retain flag, 1 if will message shall be retained persistently.
+	 */
+	uint8_t will_retain : 1;
+
+	/** Clean session flag indicating a fresh (1) or a retained session (0).
+	 *  Default is CONFIG_MQTT_CLEAN_SESSION.
+	 */
+	uint8_t clean_session : 1;
+
+	/** User specific opaque data */
+	void *user_data;
+};"
+,"/** @brief Parameters for a publish message. */
+struct mqtt_publish_message {
+	struct mqtt_topic topic;     /**< Topic on which data was published. */
+	struct mqtt_binstr payload; /**< Payload on the topic published. */
+};"
+,"/**
+ * @brief Initializes the client instance.
+ *
+ * @param[in] client Client instance for which the procedure is requested.
+ *                   Shall not be NULL.
+ *
+ * @note Shall be called to initialize client structure, before setting any
+ *       client parameters and before connecting to broker.
+ */
+void mqtt_client_init(struct mqtt_client *client);"
+,"/**
+ * @brief API to request new MQTT client connection.
+ *
+ * @param[in] client Client instance for which the procedure is requested.
+ *                   Shall not be NULL.
+ *
+ * @note This memory is assumed to be resident until mqtt_disconnect is called.
+ * @note Any subsequent changes to parameters like broker address, user name,
+ *       device id, etc. have no effect once MQTT connection is established.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ *
+ * @note Default protocol revision used for connection request is 3.1.1. Please
+ *       set client.protocol_version = MQTT_VERSION_3_1_0 to use protocol 3.1.0.
+ * @note
+ *       Please modify @kconfig{CONFIG_MQTT_KEEPALIVE} time to override default
+ *       of 1 minute.
+ */
+int mqtt_connect(struct mqtt_client *client);"
+,"/**
+ * @brief API to publish messages on topics.
+ *
+ * @param[in] client Client instance for which the procedure is requested.
+ *                   Shall not be NULL.
+ * @param[in] param Parameters to be used for the publish message.
+ *                  Shall not be NULL.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ */
+int mqtt_publish(struct mqtt_client *client,
+		 const struct mqtt_publish_param *param);"
+,"/**
+ * @brief API to disconnect MQTT connection.
+ *
+ * @param[in] client Identifies client instance for which procedure is
+ *                   requested.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ */
+int mqtt_disconnect(struct mqtt_client *client);"
+,"/**
+ * @brief API to abort MQTT connection. This will close the corresponding
+ *        transport without closing the connection gracefully at the MQTT level
+ *        (with disconnect message).
+ *
+ * @param[in] client Identifies client instance for which procedure is
+ *                   requested.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ */
+int mqtt_abort(struct mqtt_client *client);"
+,"/**
+ * @brief This API should be called periodically for the client to be able
+ *        to keep the connection alive by sending Ping Requests if need be.
+ *
+ * @param[in] client Client instance for which the procedure is requested.
+ *                   Shall not be NULL.
+ *
+ * @note  Application shall ensure that the periodicity of calling this function
+ *        makes it possible to respect the Keep Alive time agreed with the
+ *        broker on connection. @ref mqtt_connect for details on Keep Alive
+ *        time.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ */
+int mqtt_live(struct mqtt_client *client);"
+,"/**
+ * @brief Receive an incoming MQTT packet. The registered callback will be
+ *        called with the packet content.
+ *
+ * @note In case of PUBLISH message, the payload has to be read separately with
+ *       @ref mqtt_read_publish_payload function. The size of the payload to
+ *       read is provided in the publish event structure.
+ *
+ * @note This is a non-blocking call.
+ *
+ * @param[in] client Client instance for which the procedure is requested.
+ *                   Shall not be NULL.
+ *
+ * @return 0 or a negative error code (errno.h) indicating reason of failure.
+ */
+int mqtt_input(struct mqtt_client *client);"
+,"static int publish(struct mqtt_client *client, enum mqtt_qos qos){
+	struct mqtt_publish_param param;
+	param.message.topic.qos = qos;
+	param.message.topic.topic.utf8 = (uint8_t *)TOPIC;
+	param.message.topic.topic.size = strlen(TOPIC);
+	param.message.payload.data = (uint8_t *)PAYLOAD;
+	param.message.payload.len = strlen(PAYLOAD);
+	param.message_id = sys_rand16_get();
+	param.dup_flag = 0U;
+	param.retain_flag = 0U;
+	return mqtt_publish(client, &param);
+}"
+," * @brief Creates a new CoAP Packet from input data.
+ *
+ * @param cpkt New packet to be initialized using the storage from @a data.
+ * @param data Data that will contain a CoAP packet information
+ * @param max_len Maximum allowable length of data
+ * @param ver CoAP header version
+ * @param type CoAP header type
+ * @param token_len CoAP header token length
+ * @param token CoAP header token
+ * @param code CoAP header code
+ * @param id CoAP header message id
+ *
+ * @return 0 in case of success or negative in case of error.
+ */
+int coap_packet_init(struct coap_packet *cpkt, uint8_t *data, uint16_t max_len,
+		     uint8_t ver, uint8_t type, uint8_t token_len,
+		     const uint8_t *token, uint8_t code, uint16_t id);"
+,"/**
+ * @brief Returns the data pointer and length of the CoAP packet.
+ *
+ * @param cpkt CoAP packet representation
+ * @param len Total length of CoAP payload
+ *
+ * @return data pointer and length if payload exists
+ *         NULL pointer and length set to 0 in case there is no payload
+ */
+const uint8_t *coap_packet_get_payload(const struct coap_packet *cpkt,
+				       uint16_t *len);"
+,"/**
+ * @brief Atomic get.
+ *
+ * This routine performs an atomic read on @a target.
+ *
+ * @note @atomic_api
+ *
+ * @param target Address of atomic variable.
+ *
+ * @return Value of @a target.
+ */
+atomic_val_t atomic_get(const atomic_t *target);"
+,"/**
+ * @brief Atomic get-and-set.
+ *
+ * This routine atomically sets @a target to @a value and returns
+ * the previous value of @a target.
+ *
+ * @note @atomic_api
+ *
+ * @param target Address of atomic variable.
+ * @param value Value to write to @a target.
+ *
+ * @return Previous value of @a target.
+ */
+atomic_val_t atomic_set(atomic_t *target, atomic_val_t value);"
+,"/**
+ * @brief Atomic clear.
+ *
+ * This routine atomically sets @a target to zero and returns its previous
+ * value. (Hence, it is equivalent to atomic_set(target, 0).)
+ *
+ * @note @atomic_api
+ *
+ * @param target Address of atomic variable.
+ *
+ * @return Previous value of @a target.
+ */
+atomic_val_t atomic_clear(atomic_t *target);"
+,"struct mqtt_client {
+	/** MQTT client internal state. */
+	struct mqtt_internal internal;
+
+	/** MQTT transport configuration and data. */
+	struct mqtt_transport transport;
+
+	/** Unique client identification to be used for the connection. */
+	struct mqtt_utf8 client_id;
+
+	/** Broker details, for example, address, port. Address type should
+	 *  be compatible with transport used.
+	 */
+	const void *broker;
+
+	/** User name (if any) to be used for the connection. NULL indicates
+	 *  no user name.
+	 */
+	struct mqtt_utf8 *user_name;
+
+	/** Password (if any) to be used for the connection. Note that if
+	 *  password is provided, user name shall also be provided. NULL
+	 *  indicates no password.
+	 */
+	struct mqtt_utf8 *password;
+
+	/** Will topic and QoS. Can be NULL. */
+	struct mqtt_topic *will_topic;
+
+	/** Will message. Can be NULL. Non NULL value valid only if will topic
+	 *  is not NULL.
+	 */
+	struct mqtt_utf8 *will_message;
+
+	/** Application callback registered with the module to get MQTT events.
+	 */
+	mqtt_evt_cb_t evt_cb;
+
+	/** Receive buffer used for MQTT packet reception in RX path. */
+	uint8_t *rx_buf;
+
+	/** Size of receive buffer. */
+	uint32_t rx_buf_size;
+
+	/** Transmit buffer used for creating MQTT packet in TX path. */
+	uint8_t *tx_buf;
+
+	/** Size of transmit buffer. */
+	uint32_t tx_buf_size;
+
+	/** Keepalive interval for this client in seconds.
+	 *  Default is CONFIG_MQTT_KEEPALIVE.
+	 */
+	uint16_t keepalive;
+
+	/** MQTT protocol version. */
+	uint8_t protocol_version;
+
+	/** Unanswered PINGREQ count on this connection. */
+	int8_t unacked_ping;
+
+	/** Will retain flag, 1 if will message shall be retained persistently.
+	 */
+	uint8_t will_retain : 1;
+
+	/** Clean session flag indicating a fresh (1) or a retained session (0).
+	 *  Default is CONFIG_MQTT_CLEAN_SESSION.
+	 */
+	uint8_t clean_session : 1;
+
+	/** User specific opaque data */
+	void *user_data;
+};"
+,"struct mqtt_topic {
+	/** Topic on to be published or subscribed to. */
+	struct mqtt_utf8 topic;
+
+	/** Quality of service requested for the subscription.
+	 *  @ref mqtt_qos for details.
+	 */
+	uint8_t qos;
+};"
+,"struct mqtt_publish_message {
+	struct mqtt_topic topic;     /**< Topic on which data was published. */
+	struct mqtt_binstr payload; /**< Payload on the topic published. */
+};"
+,"/**
+ * @brief Mount an NVS file system onto the flash device specified in @p fs.
+ *
+ * @param fs Pointer to file system
+ * @retval 0 Success
+ * @retval -ERRNO errno code if error
+ */
+int nvs_mount(struct nvs_fs *fs);"
+,"/**
+ * @brief Clear the NVS file system from flash.
+ *
+ * @param fs Pointer to file system
+ * @retval 0 Success
+ * @retval -ERRNO errno code if error
+ */
+int nvs_clear(struct nvs_fs *fs);"
+,"/**
+ *  @brief  Get the size and start offset of flash page at certain flash offset.
+ *
+ *  @param  dev flash device
+ *  @param  offset Offset within the page
+ *  @param  info Page Info structure to be filled
+ *
+ *  @return  0 on success, -EINVAL if page of the offset doesn't exist.
+ */
+__syscall int flash_get_page_info_by_offs(const struct device *dev,
+					  off_t offset,
+					  struct flash_pages_info *info);
+"
+,"/**
+ * @brief Mount an NVS file system onto the flash device specified in @p fs.
+ *
+ * @param fs Pointer to file system
+ * @retval 0 Success
+ * @retval -ERRNO errno code if error
+ */
+int nvs_mount(struct nvs_fs *fs);"
+,"/**
+ * @brief Write an entry to the file system.
+ *
+ * @note  When @p len parameter is equal to @p 0 then entry is effectively removed (it is
+ * equivalent to calling of nvs_delete). Any calls to nvs_read for entries with data of length
+ * @p 0 will return error.@n It is not possible to distinguish between deleted entry and entry
+ * with data of length 0.
+ *
+ * @param fs Pointer to file system
+ * @param id Id of the entry to be written
+ * @param data Pointer to the data to be written
+ * @param len Number of bytes to be written
+ *
+ * @return Number of bytes written. On success, it will be equal to the number of bytes requested
+ * to be written. When a rewrite of the same data already stored is attempted, nothing is written
+ * to flash, thus 0 is returned. On error, returns negative value of errno.h defined error codes.
+ */
+ssize_t nvs_write(struct nvs_fs *fs, uint16_t id, const void *data, size_t len);"

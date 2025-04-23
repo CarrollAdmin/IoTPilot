@@ -1,0 +1,13 @@
+[0;1;32m●[0m frps.service - frps daemon
+   Loaded: loaded (/lib/systemd/system/frps.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Mon 2024-12-02 16:03:01 CST; 25ms ago
+ Main PID: 11221 (frpc)
+    Tasks: 5 (limit: 4915)
+   CGroup: /system.slice/frps.service
+           └─11221 /home/kaikai/IoTPilotV2/frp/frp_0.38.0_linux_amd64/frpc -c /home/kaikai/IoTPilotV2/frp/frp_0.38.0_linux_amd64/frpc.ini
+
+Dec 02 16:03:01 kaikai-System systemd[1]: Started frps daemon.
+Dec 02 16:03:01 kaikai-System frpc[11221]: 2024/12/02 16:03:01 [I] [service.go:301] [bd758b3f59d87ee5] login to server success, get run id [bd758b3f59d87ee5], server udp port [0]
+Dec 02 16:03:01 kaikai-System frpc[11221]: 2024/12/02 16:03:01 [I] [proxy_manager.go:144] [bd758b3f59d87ee5] proxy added: [ssh-kaikai-system ssh]
+Dec 02 16:03:01 kaikai-System frpc[11221]: 2024/12/02 16:03:01 [I] [control.go:180] [bd758b3f59d87ee5] [ssh-kaikai-system] start proxy success
+Dec 02 16:03:01 kaikai-System frpc[11221]: 2024/12/02 16:03:01 [I] [control.go:180] [bd758b3f59d87ee5] [ssh] start proxy success

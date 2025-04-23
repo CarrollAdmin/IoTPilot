@@ -1,0 +1,122 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "DHT_INIT_OK",
+                    "target": "NETWORK_INIT"
+                },
+                {
+                    "condition": "DHT_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "NETWORK_INIT",
+            "transitions": [
+                {
+                    "condition": "msg_queue_INIT_OK",
+                    "target": "CONNECT"
+                },
+                {
+                    "condition": "msg_queue_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "CONNECT",
+            "transitions": [
+                {
+                    "condition": "connect_to_broker_SUCCESS",
+                    "target": "SUBSCRIBE"
+                },
+                {
+                    "condition": "connect_to_broker_FAIL",
+                    "target": "RECONNECT_LOOP"
+                }
+            ]
+        },
+        {
+            "name": "RECONNECT_LOOP",
+            "transitions": [
+                {
+                    "condition": "RECONNECT_ATTEMPT_OK",
+                    "target": "SUBSCRIBE"
+                }
+            ]
+        },
+        {
+            "name": "SUBSCRIBE",
+            "transitions": [
+                {
+                    "condition": "subscribe_to_topic_SUCCESS",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "subscribe_to_topic_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH_LOOP",
+            "transitions": [
+                {
+                    "condition": "publish_to_topic_SUCCESS",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "publish_to_topic_FAIL",
+                    "target": "PUBLISH_ERROR_HANDLING"
+                },
+                {
+                    "condition": "user_interrupt_DISCONNECT",
+                    "target": "DISCONNECT"
+                }
+            ]
+        },
+        {
+            "name": "PUBLISH_ERROR_HANDLING",
+            "transitions": [
+                {
+                    "condition": "RETRY_PUBLISH_SUCCESS",
+                    "target": "PUBLISH_LOOP"
+                },
+                {
+                    "condition": "RETRY_PUBLISH_FAIL",
+                    "target": "RECONNECT_LOOP"
+                }
+            ]
+        },
+        {
+            "name": "DISCONNECT",
+            "transitions": [
+                {
+                    "condition": "disconnect_from_broker_SUCCESS",
+                    "target": "EXIT"
+                },
+                {
+                    "condition": "disconnect_from_broker_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "user_resolve_ISSUE",
+                    "target": "INIT"
+                }
+            ]
+        },
+        {
+            "name": "EXIT",
+            "transitions": []
+        }
+    ]
+}

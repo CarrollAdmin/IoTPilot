@@ -1,0 +1,101 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "rtc_init == OK",
+                    "target": "GET_CURRENT_TIME"
+                },
+                {
+                    "condition": "rtc_init == FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "GET_CURRENT_TIME",
+            "transitions": [
+                {
+                    "condition": "rtc_get_time == OK",
+                    "target": "SET_TIME"
+                },
+                {
+                    "condition": "rtc_get_time == FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SET_TIME",
+            "transitions": [
+                {
+                    "condition": "rtc_set_time == OK",
+                    "target": "GET_NEW_TIME"
+                },
+                {
+                    "condition": "rtc_set_time == FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "GET_NEW_TIME",
+            "transitions": [
+                {
+                    "condition": "rtc_get_time == OK",
+                    "target": "SET_ALARM"
+                },
+                {
+                    "condition": "rtc_get_time == FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SET_ALARM",
+            "transitions": [
+                {
+                    "condition": "rtc_set_alarm == OK",
+                    "target": "ALARM_WAIT"
+                },
+                {
+                    "condition": "rtc_set_alarm == FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ALARM_WAIT",
+            "transitions": [
+                {
+                    "condition": "while(!mutex_trylock()) { xtimer_sleep(1) }",
+                    "target": "APPLICATION_FINISHED",
+                    "repeat": true
+                },
+                {
+                    "condition": "mutex_trylock == SUCCESS",
+                    "target": "APPLICATION_FINISHED"
+                }
+            ]
+        },
+        {
+            "name": "APPLICATION_FINISHED",
+            "transitions": []
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "handle_error()",
+                    "target": "END"
+                }
+            ]
+        },
+        {
+            "name": "END",
+            "transitions": []
+        }
+    ]
+}

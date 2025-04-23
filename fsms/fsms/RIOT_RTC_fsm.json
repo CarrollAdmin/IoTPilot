@@ -1,0 +1,57 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "RTC_INIT_OK",
+                    "target": "SET_TIME"
+                },
+                {
+                    "condition": "RTC_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SET_TIME",
+            "transitions": [
+                {
+                    "condition": "TIME_SET_OK",
+                    "target": "WAIT_FOR_ALARM"
+                },
+                {
+                    "condition": "TIME_SET_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WAIT_FOR_ALARM",
+            "transitions": [
+                {
+                    "condition": "ALARM_TRIGGERED",
+                    "target": "ALARM_CALLBACK"
+                }
+            ]
+        },
+        {
+            "name": "ALARM_CALLBACK",
+            "transitions": [
+                {
+                    "condition": "ALARM_PROCESSED",
+                    "target": "WAIT_FOR_ALARM"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "HANDLE_ERROR",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

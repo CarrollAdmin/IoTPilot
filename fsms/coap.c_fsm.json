@@ -1,0 +1,113 @@
+
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "NVS_INIT_OK",
+                    "target": "WIFI_INIT"
+                },
+                {
+                    "condition": "NVS_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WIFI_INIT",
+            "transitions": [
+                {
+                    "condition": "WIFI_INIT_OK",
+                    "target": "WIFI_CONNECTED"
+                },
+                {
+                    "condition": "WIFI_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "WIFI_CONNECTED",
+            "transitions": [
+                {
+                    "condition": "WIFI_IS_CONNECTED",
+                    "target": "SEND_COAP"
+                },
+                {
+                    "condition": "!WIFI_IS_CONNECTED",
+                    "target": "WIFI_RECONNECT"
+                }
+            ]
+        },
+        {
+            "name": "WIFI_RECONNECT",
+            "transitions": [
+                {
+                    "condition": "WIFI_RECONNECT_OK",
+                    "target": "SEND_COAP"
+                },
+                {
+                    "condition": "WIFI_RECONNECT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "SEND_COAP",
+            "transitions": [
+                {
+                    "condition": "COAP_SEND_OK",
+                    "target": "RESPONSE_HANDLER"
+                },
+                {
+                    "condition": "COAP_SEND_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "RESPONSE_HANDLER",
+            "transitions": [
+                {
+                    "condition": "RESPONSE_OK",
+                    "target": "WIFI_CONNECTED"
+                },
+                {
+                    "condition": "RESPONSE_TIMEOUT",
+                    "target": "RETRY_SEND_COAP"
+                },
+                {
+                    "condition": "RESPONSE_TRUNC",
+                    "target": "WIFI_CONNECTED"
+                },
+                {
+                    "condition": "RESPONSE_ERROR",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "RETRY_SEND_COAP",
+            "transitions": [
+                {
+                    "condition": "RETRY_SUCCESSFUL",
+                    "target": "SEND_COAP"
+                },
+                {
+                    "condition": "RETRY_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RESET",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

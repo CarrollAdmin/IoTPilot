@@ -1,0 +1,91 @@
+{
+                    "states": [
+                        {
+                            "name": "INIT",
+                            "transitions": [
+                                {
+                                    "condition": "NVS_INIT_OK",
+                                    "target": "OPEN_STORAGE"
+                                },
+                                {
+                                    "condition": "NVS_INIT_FAIL",
+                                    "target": "ERROR"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "OPEN_STORAGE",
+                            "transitions": [
+                                {
+                                    "condition": "NVS_OPEN_OK",
+                                    "target": "UPDATE_STATE"
+                                },
+                                {
+                                    "condition": "NVS_OPEN_FAIL",
+                                    "target": "RECOVERY"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "UPDATE_STATE",
+                            "transitions": [
+                                {
+                                    "condition": "STATE_READ_OK",
+                                    "target": "STATE_WRITE"
+                                },
+                                {
+                                    "condition": "STATE_READ_FAIL",
+                                    "target": "RECOVERY"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "STATE_WRITE",
+                            "transitions": [
+                                {
+                                    "condition": "STATE_WRITE_OK",
+                                    "target": "STATE_COMMIT"
+                                },
+                                {
+                                    "condition": "STATE_WRITE_FAIL",
+                                    "target": "RECOVERY"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "STATE_COMMIT",
+                            "transitions": [
+                                {
+                                    "condition": "COMMIT_OK",
+                                    "target": "SLEEP"
+                                },
+                                {
+                                    "condition": "COMMIT_FAIL",
+                                    "target": "RECOVERY"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "SLEEP",
+                            "transitions": [
+                                {
+                                    "condition": "TIME_ELAPSED",
+                                    "target": "UPDATE_STATE"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "RECOVERY",
+                            "transitions": [
+                                {
+                                    "condition": "NVS_ERASE_INIT_OK",
+                                    "target": "INIT"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "ERROR",
+                            "transitions": []
+                        }
+                    ]
+                }

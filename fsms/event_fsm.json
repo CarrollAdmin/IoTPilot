@@ -1,0 +1,52 @@
+
+{
+    "states": [
+        {
+            "name": "INIT_STATE",
+            "transitions": [
+                {
+                    "condition": "event_periodic_callback_init_success",
+                    "target": "CONFIGURE_STATE"
+                },
+                {
+                    "condition": "event_periodic_callback_init_failure",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "CONFIGURE_STATE",
+            "transitions": [
+                {
+                    "condition": "event_periodic_callback_set_count_success && event_periodic_callback_start_success",
+                    "target": "RUNNING_STATE"
+                },
+                {
+                    "condition": "event_periodic_callback_set_count_failure || event_periodic_callback_start_failure",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "RUNNING_STATE",
+            "transitions": [
+                {
+                    "condition": "ztimer_sleep_expired",
+                    "target": "END_STATE"
+                },
+                {
+                    "condition": "exception_occurred",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "END_STATE",
+            "transitions": []
+        },
+        {
+            "name": "ERROR",
+            "transitions": []
+        }
+    ]
+}

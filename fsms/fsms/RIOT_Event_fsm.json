@@ -1,0 +1,44 @@
+{
+    "states": [
+        {
+            "name": "INIT",
+            "transitions": [
+                {
+                    "condition": "TIMER_INIT_OK",
+                    "target": "TIMER_RUNNING"
+                },
+                {
+                    "condition": "TIMER_INIT_FAIL",
+                    "target": "ERROR"
+                }
+            ]
+        },
+        {
+            "name": "TIMER_RUNNING",
+            "transitions": [
+                {
+                    "condition": "TIMER_PERIODIC_TRIGGER",
+                    "target": "PERIODIC_CALLBACK"
+                }
+            ]
+        },
+        {
+            "name": "PERIODIC_CALLBACK",
+            "transitions": [
+                {
+                    "condition": "CALLBACK_DONE",
+                    "target": "TIMER_RUNNING"
+                }
+            ]
+        },
+        {
+            "name": "ERROR",
+            "transitions": [
+                {
+                    "condition": "RETRY_INIT",
+                    "target": "INIT"
+                }
+            ]
+        }
+    ]
+}

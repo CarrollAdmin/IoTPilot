@@ -96,20 +96,5 @@ To use IoTPilot, follow these steps:
 3. Third, after the server returns IoTPilot's generated results, there will be two buttons in the upper right corner of each response. These buttons allow you to conveniently copy the code to the clipboard or directly overwrite the current file content with that code (see Figure 3). 
 4. Fourth, if most of the code is usable but contains minor errors, you can select the relevant code lines and continue the conversation with IoTPilot. This selected content will be included in the prompt to assist IoTPilot in subsequent generation (see Figure 3).
 5. With the generated code, you can quickly start your IoT programming tasks. You can interact with IoTPilot in multiple iterations to enhance the quality of the generated code, making it eventually usable.
- 
- <div style="display: flex; justify-content: center; align-items: flex-end; gap: 10px; flex-wrap: wrap;">
-  <figure style="text-align: center; margin: 12px;">
-    <img src="extension/images/setting.png" alt="Figure 1" style="max-width: 190px;" />
-    <figcaption>Figure 1: Settings Interface</figcaption>
-  </figure>
-  <figure style="text-align: center; margin: 12px;">
-    <img src="extension/images/dialogue.png" alt="Figure 2" style="max-width: 195px;" />
-    <figcaption>Figure 2: Dialogue Interface</figcaption>
-  </figure>
-  <figure style="text-align: center; margin: 12px;">
-    <img src="extension/images/4.png" alt="Figure 3" style="max-width: 320px;" />
-    <figcaption>Figure 3: Select and Accept Interface</figcaption>
-  </figure>
-</div>
 
 

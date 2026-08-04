@@ -9,7 +9,7 @@ IoTPilot is accepted by ACM MobiSys'25.
 * ./extension: includes the source code of IoTPilot VScode extension.
 * ./test: includes scripts for calculating the success rate of API and header usage.
 
-# Inroduction
+# Introduction
 We take a first step towards LLM-based embedded IoT application development and present IoTPilot, an LLM-driven embedded IoT programming tool. IoTPilot introduces two self-thinking chains to integrate internal LLM knowledge with external documentation, addressing conflicts in APIs and headers. 
 
 ## Preparation
